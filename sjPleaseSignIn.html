@@ -1,0 +1,80 @@
+ <!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Please Sign In | Sourjoe</title>
+
+  <style>
+    /* 🧩 [SJ-SIGNIN-01] Simple centered layout */
+    body{
+      margin:0;
+      padding:0;
+      background:#fff;
+      font-family: Arial, Helvetica, sans-serif;
+      color:#111;
+    }
+
+    .page{
+      width:100%;
+      min-height:100vh;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:flex-start;
+      padding:24px 14px 40px;
+      box-sizing:border-box;
+    }
+
+    /* 🧩 [SJ-SIGNIN-02] Logo sizing & centering */
+    .logo{
+      margin-top:10px;
+      margin-bottom:24px;
+      width:100%;
+      display:flex;
+      justify-content:center;
+    }
+
+    /* 🧩 [SJ-SIGNIN-03] Message styling */
+    .msg{
+      text-align:center;
+      font-size: clamp(16px, 2.2vw, 22px);
+      line-height:1.35;
+      max-width: 900px;
+      padding: 0 6px;
+    }
+
+    .msg a{
+      color:#0b57d0;
+      text-decoration: underline;
+      font-weight: 600;
+    }
+
+    .msg a:focus,
+    .msg a:hover{
+      text-decoration-thickness: 2px;
+    }
+  </style>
+</head>
+
+<body>
+  <main class="page">
+
+    <div class="logo">
+      <img
+        src="https://sjmedia0.w3spaces.com/sjNewsletterPICS/sjNewsletterHeader.png"
+        width="500"
+        style="width: 80%; max-width: 600px; display: block;"
+        alt="Sourjoe Header"
+      >
+    </div>
+
+    <div class="msg">
+      Please sign into
+      <a href="https://app.sourjoe.com" rel="noopener noreferrer">app.sourjoe.com</a>
+      to access the Book of Sourjoe.
+    </div>
+
+  </main>
+</body>
+</html>

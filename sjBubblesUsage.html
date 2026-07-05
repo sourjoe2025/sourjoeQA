@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>sjBubbles Usage</title>
+
+  <!--
+    This standalone page demonstrates how to use sjBubbles.
+    It depends only on:
+      1) sjBubbles.css
+      2) sjBubbles.js
+
+    The page also includes a few simple layout styles purely for presentation.
+  -->
+  <link rel="stylesheet" href="./sjBubbles.css" />
+  <script src="./sjBubbles.js" defer></script>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #f5f9ff;
+      color: #0f172a;
+    }
+
+    .page {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+
+    .card {
+      background: #fff;
+      border: 1px solid #cbd5e1;
+      border-radius: 12px;
+      padding: 18px;
+      margin-bottom: 18px;
+      box-shadow: 0 6px 18px rgba(15, 23, 42, 0.06);
+    }
+
+    .row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      align-items: center;
+      margin-top: 12px;
+    }
+
+    .demo-btn {
+      border: 1px solid #94a3b8;
+      border-radius: 8px;
+      padding: 10px 14px;
+      background: #fff;
+      cursor: pointer;
+      font: inherit;
+    }
+
+    #sjbHelperToggleRow {
+      display: inline-flex;
+      gap: 10px;
+      align-items: center;
+      border: 1px solid #cbd5e1;
+      border-radius: 999px;
+      padding: 8px 12px;
+      background: #fff;
+    }
+
+    .demo-link {
+      color: #2563eb;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+
+    .swatch {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <h1>sjBubbles Usage</h1>
+    <p>
+      This page is a self-contained demonstration of the <strong>sjBubbles</strong> module.
+      It uses only <code>sjBubbles.css</code> and <code>sjBubbles.js</code>, plus a few page-local styles for layout.
+    </p>
+
+    <div class="card">
+      <h2>1) Global Helper Toggle</h2>
+
+      <!--
+        sjBubbles automatically watches this toggle pattern.
+        Controlled helpers are hidden when OFF.
+        Enabled helpers remain available.
+      -->
+      <div id="sjbHelperToggleRow">
+        <label for="sjbHelperToggle"><strong>Helper Messages</strong></label>
+        <input id="sjbHelperToggle" type="checkbox" />
+        <span class="sjb-helpDot" data-sjb="usageToggleHelp" behaviour-sjb="enabled" tabindex="0"><strong>?</strong></span>
+      </div>
+
+      <p>
+        Controlled triggers disappear when the toggle is OFF.
+        Enabled triggers still work so you can explain the system itself.
+      </p>
+    </div>
+
+    <div class="card">
+      <h2>2) Controlled vs Enabled</h2>
+      <div class="row">
+        <span class="swatch">
+          <span>Controlled help:</span>
+          <span class="sjb-helpDot" data-sjb="usageControlledHelp" behaviour-sjb="controlled" tabindex="0"><strong>?</strong></span>
+        </span>
+        <span class="swatch">
+          <span>Always-enabled help:</span>
+          <span class="sjb-helpDot" data-sjb="usageEnabledHelp" behaviour-sjb="enabled" tabindex="0"><strong>?</strong></span>
+        </span>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>3) White Bubble Theme + Left Justification</h2>
+      <p>
+        A helper can be attached to any element with <code>data-sjb</code>.
+        This button uses a white bubble because image-like or richer content often reads better on a light surface.
+      </p>
+      <button class="demo-btn" data-sjb="usageWhiteBubble" behaviour-sjb="enabled" colour-sjb="white" justify-sjb="left">White bubble demo</button>
+    </div>
+
+    <div class="card">
+      <h2>4) Adjacent Link Helper</h2>
+
+      <!--
+        Important usage pattern:
+        Keep the anchor as a REAL anchor so it behaves normally on one click.
+        Put the help trigger on a separate adjacent icon/dot.
+      -->
+      <p>
+        For links, SourJoe often uses a separate icon beside the link so the link keeps its normal single-click behavior:
+        <a class="demo-link" href="https://app.sourjoe.com/recipes" target="_blank" rel="noopener">Recipes</a>
+        <span class="sjb-helpDot sjb-helpDot--tiny" data-sjb="usageLinkHelp" behaviour-sjb="controlled" tabindex="0"><strong>?</strong></span>
+      </p>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      if (window.SJBubbles && typeof window.SJBubbles.setMessages === 'function') {
+        window.SJBubbles.setMessages({
+          usageToggleHelp: {
+            html: true,
+            text: "<ul><li>This toggle is read automatically by sjBubbles.</li><li>Its state is persisted in localStorage.</li><li>Enabled helpers still work even when controlled helpers are hidden.</li></ul>",
+            placement: "auto"
+          },
+          usageControlledHelp: {
+            html: true,
+            text: "<ul><li>This trigger uses <strong>behaviour-sjb=\"controlled\"</strong>.</li><li>Turn the global switch OFF and this helper should disappear.</li></ul>",
+            placement: "auto"
+          },
+          usageEnabledHelp: {
+            html: true,
+            text: "<ul><li>This trigger uses <strong>behaviour-sjb=\"enabled\"</strong>.</li><li>It remains available even when controlled helpers are globally hidden.</li></ul>",
+            placement: "auto"
+          },
+          usageWhiteBubble: {
+            html: true,
+            text: "<div style='display:flex;flex-direction:column;gap:8px;'><strong>White bubble example</strong><div>Use <code>colour-sjb=\"white\"</code> for helpers that contain richer HTML, images, or screenshot-style content.</div><div>The matching <code>justify-sjb=\"left\"</code> setting is useful for paragraph or list content.</div></div>",
+            placement: "auto",
+            maxWidth: 320
+          },
+          usageLinkHelp: {
+            html: true,
+            text: "<div><strong>Not the intent.</strong> The earlier demo used a styled span, which looked like a link but was not a real anchor. This updated demo uses a real <code>&lt;a&gt;</code> tag for normal navigation and keeps the helper on a separate adjacent dot.</div>",
+            placement: "auto",
+            maxWidth: 300
+          }
+        });
+      }
+    });
+  </script>
+</body>
+</html>

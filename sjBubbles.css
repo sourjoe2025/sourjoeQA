@@ -1,0 +1,922 @@
+/* ===============================================================
+   sjBubbles.css
+   ✅ 2026-02-25 🧩 [SJ-BUBBLES-CSS-01] Helper bubble visuals (SourJoe style mimic)
+   ✅ 2026-04-11 🧩 [SJ-BUBBLES-CSS-18] Header synopsis refresh / usage notes
+
+   FEATURES
+   - Hidden singleton helper bubble used by sjBubbles.js
+   - 4-position arrow/nib system: top / bottom / left / right
+   - Black theme by default, optional white theme via JS class
+   - Bubble text justification support: left / center / right
+   - Optional bubble footer action area for controlled helpers
+   - Optional help-dot/help-icon triggers in default / tiny / nano sizes
+   - Global Helpers ON/OFF switch styling
+   - Portrait suppression retired; helpers are available in all device orientations
+   - TOC "Turn ON Helpers" row/button styling
+
+   BASIC HTML USAGE
+   - Bubble trigger on an existing element:
+       <span class="sjb-helpTrigger" data-sjb="myHelp">Label</span>
+
+   - Small circular help marker:
+       <span class="sjb-helpDot" data-sjb="myHelp" tabindex="0">?</span>
+
+   - Backward-compatible alias:
+       <span class="sjb-helpIcon" data-sjb="myHelp" tabindex="0">i</span>
+
+   COMMON OPTIONAL ATTRIBUTES
+   - behaviour-sjb="enabled"     -> always available even when Helpers are OFF
+   - behaviour-sjb="controlled"  -> default helper behaviour
+   - justify-sjb="left|center|right"
+   - colour-sjb="white|black"
+
+   NOTE ABOUT THE CHARACTER INSIDE .sjb-helpDot / .sjb-helpIcon
+   - The marker character is bold in CSS by default.
+   - Plain HTML like ? or i is enough; no <strong> tag is needed.
+   - If you want a lighter marker on one instance, you can override it inline,
+     e.g. style="font-weight:400;"
+   =============================================================== */
+
+/* Hidden singleton bubble (created by sjBubbles.js) */
+.sjb-bubble {
+  position: fixed;
+  left: -9999px;
+  top: -9999px;
+  display: none;
+  /* ✅ 2026-02-27 🧩 [SJ-BUBBLES-CSS-03] Make bubbles a bit more "square" (less wide by default) */
+  max-width: min(300px, calc(100vw - 20px));
+  padding: 12px 14px;
+  border-radius: 8px; /* ✅ 25Feb26 🧩 [SJ-BUBBLES-CSS-02] tighter radius to match SourJoe bubble */
+
+  /* ✅ 2026-02-27 🧩 [SJ-BUBBLES-CSS-THEME-01]
+     Theme variables (default = black bubble, white text)
+     - Allows per-trigger switching via `colour-sjb="white"` (or "black")
+  */
+  --sjb-bg: rgba(0, 0, 0, 0.90);
+  --sjb-fg: #fff;
+
+  background: var(--sjb-bg);
+  color: var(--sjb-fg);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
+  font-size: clamp(13px, 1.5vw, 16px);
+  line-height: 1.35;
+  letter-spacing: 0.01em;
+  pointer-events: auto;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ✅ 2026-02-27 🧩 [SJ-BUBBLES-CSS-THEME-02]
+   White bubble option (for images/GIFs, etc.)
+   Triggered by JS adding class: .sjb-theme-white
+*/
+.sjb-bubble.sjb-theme-white {
+  --sjb-bg: #ffffff;
+  --sjb-fg: #000000;
+  border: 1px solid rgba(0, 0, 0, 0.18);
+}
+
+.sjb-bubble.is-open {
+  display: block;
+}
+
+.sjb-bubble__content {
+  white-space: normal;
+  text-align: center;
+}
+
+
+/* ---------------------------------------------------------------
+   ✅ 2026-02-28 🧩 [SJ-BUBBLES-CSS-04] Text justification inside bubbles
+   - Default remains centered (traditional tooltip look)
+   - JS will auto-set:
+       * enabled   -> center
+       * controlled-> left
+     Override per-trigger with: justify-sjb="left|center|right"
+   --------------------------------------------------------------- */
+.sjb-bubble.sjb-justify-left .sjb-bubble__content  { text-align: left; }
+.sjb-bubble.sjb-justify-center .sjb-bubble__content{ text-align: center; }
+.sjb-bubble.sjb-justify-right .sjb-bubble__content { text-align: right; }
+
+
+/* ---------------------------------------------------------------
+   ✅ 2026-03-03 🧩 [SJ-BUBBLES-CSS-16] Controlled bubble footer action: Turn OFF Helpers
+   - Appears only in behaviour-sjb="controlled" bubbles (JS-injected)
+   - Clicking turns global Helper Messages OFF and closes the bubble (no scrolling)
+   --------------------------------------------------------------- */
+.sjb-bubble__actions {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(255, 255, 255, 0.25);
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+.sjb-bubble.sjb-theme-white .sjb-bubble__actions {
+  border-top-color: rgba(0, 0, 0, 0.18);
+}
+
+.sjb-bubble__action {
+  font: inherit;
+  font-size: 13px;
+  line-height: 1;
+  padding: 6px 10px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  background: rgba(255, 255, 255, 0.08);
+  color: inherit;
+  cursor: pointer;
+  user-select: none;
+}
+
+.sjb-bubble__action:hover {
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.sjb-bubble.sjb-theme-white .sjb-bubble__action {
+  border-color: rgba(0, 0, 0, 0.35);
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.sjb-bubble.sjb-theme-white .sjb-bubble__action:hover {
+  background: rgba(0, 0, 0, 0.08);
+}
+
+.sjb-bubble__action:focus {
+  outline: 2px solid rgba(255, 255, 255, 0.65);
+  outline-offset: 2px;
+}
+
+.sjb-bubble.sjb-theme-white .sjb-bubble__action:focus {
+  outline-color: rgba(0, 0, 0, 0.45);
+}
+
+
+
+/* ---------------------------------------------------------------
+   ✅ 2026-03-03 🧩 [SJ-BUBBLES-TOC-CSS-01] TOC Drawer shortcut: "Turn ON Helpers"
+   - Injected into any TOC drawer content opened via open_drawer(..., 'toc', ..., contentEl)
+   - Visible only when Helpers are OFF (JS toggles display)
+   - In small-screen PORTRAIT (where CONTROLLED helpers are disabled), button disables and a note shows
+   --------------------------------------------------------------- */
+.sjb-tocHelpersRow {
+  /* ✅ 2026-03-04 🧩 [SJ-BUBBLES-CSS-17] TOC Helpers toggle: smaller + placed at bottom of TOC list */
+  margin: 12px 0 0 0;         /* bottom placement: separate from last TOC item */
+  padding: 6px 0 0 0;         /* keep it tight */
+  border-radius: 0;
+  border: 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.14);
+  background: transparent;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sjb-tocHelpersBtn {
+  font: inherit;
+  font-size: 12px;            /* smaller than main UI buttons */
+  line-height: 1;
+  padding: 5px 10px;          /* tighter pill */
+  border-radius: 999px;
+  border: 1px solid rgba(0, 0, 0, 0.32);
+  background: #ffffff;
+  color: inherit;
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.sjb-tocHelpersBtn:hover {
+  background: rgba(0, 0, 0, 0.04);
+}
+
+.sjb-tocHelpersBtn:focus {
+  outline: 2px solid rgba(0, 0, 0, 0.35);
+  outline-offset: 2px;
+}
+
+.sjb-tocHelpersBtn:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+
+.sjb-tocHelpersNote {
+  font-size: 11px;
+  line-height: 1.2;
+  opacity: 0.80;
+  display: none; /* shown only in portrait-disabled mode (JS) */
+}
+
+/* ---------------------------------------------------------------
+   ✅ 2026-02-28 🧩 [SJ-BUBBLES-CSS-05] Tight list styling for bubbles
+   - Allows clean bullet guidance in compact bubble boxes
+   --------------------------------------------------------------- */
+.sjb-bubble__content ul,
+.sjb-bubble__content ol {
+  margin: 6px 0 0 0;
+  padding-left: 18px;
+  text-align: left; /* list items should read naturally even if bubble is centered */
+}
+
+.sjb-bubble__content li {
+  margin: 2px 0;
+}
+
+.sjb-bubble__content ul ul,
+.sjb-bubble__content ol ol,
+.sjb-bubble__content ul ol,
+.sjb-bubble__content ol ul {
+  margin-top: 4px;
+}
+
+/* Arrow / nib */
+.sjb-bubble::after {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-style: solid;
+}
+
+/* Bubble is ABOVE trigger -> arrow points DOWN at trigger */
+.sjb-bubble.sjb-pos-top::after {
+  left: var(--sjb-arrow-x, 24px);
+  top: 100%;
+  transform: translateX(-50%);
+  border-width: 10px 10px 0 10px;
+  border-color: var(--sjb-bg) transparent transparent transparent;
+}
+
+/* Bubble is BELOW trigger -> arrow points UP */
+.sjb-bubble.sjb-pos-bottom::after {
+  left: var(--sjb-arrow-x, 24px);
+  bottom: 100%;
+  transform: translateX(-50%);
+  border-width: 0 10px 10px 10px;
+  border-color: transparent transparent var(--sjb-bg) transparent;
+}
+
+/* Bubble is LEFT of trigger -> arrow points RIGHT */
+.sjb-bubble.sjb-pos-left::after {
+  left: 100%;
+  top: var(--sjb-arrow-y, 24px);
+  transform: translateY(-50%);
+  border-width: 10px 0 10px 10px;
+  border-color: transparent transparent transparent var(--sjb-bg);
+}
+
+/* Bubble is RIGHT of trigger -> arrow points LEFT */
+.sjb-bubble.sjb-pos-right::after {
+  right: 100%;
+  top: var(--sjb-arrow-y, 24px);
+  transform: translateY(-50%);
+  border-width: 10px 10px 10px 0;
+  border-color: transparent var(--sjb-bg) transparent transparent;
+}
+
+/* Optional adjacent help-dot icon (use beside <a> tags or any label)
+   - Default: 18×18 circle, subtle border + translucent background
+   - Add tabindex="0" for keyboard support
+   - Tiny variant: 15×15 (use .sjb-helpDot--tiny or .sjb-helpIcon--tiny)
+   - Marker character is bold by default; plain ? / i text is enough in HTML
+*/
+.sjb-helpDot,
+.sjb-helpIcon { /* .sjb-helpIcon kept for backward compatibility */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 20px;
+  height: 20px;
+  min-width: 18px;
+  min-height: 18px;
+
+  margin-left: 6px;
+  vertical-align: middle;
+
+  border-radius: 999px;
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  background: rgba(0, 0, 0, 0.06);
+
+  color: #4f5960;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 800; /* plain marker text is bold by default; no <strong> needed */
+  line-height: 1;
+
+  cursor: pointer; /* ✅ 2026-02-28 🧩 [SJ-BUBBLES-UI-05] Use a normal pointer cursor (avoid the extra "?" cursor on hover devices) */
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.sjb-helpDot:hover,
+.sjb-helpIcon:hover {
+  background: rgba(0, 0, 0, 0.10);
+  border-color: rgba(0, 0, 0, 0.30);
+}
+
+/* Keep legacy nested <strong> markers from becoming extra-heavy. */
+.sjb-helpDot strong,
+.sjb-helpIcon strong {
+  font-weight: inherit;
+}
+
+.sjb-helpDot:focus-visible,
+.sjb-helpIcon:focus-visible {
+  outline: 2px solid rgba(0, 0, 0, 0.35);
+  outline-offset: 2px;
+}
+
+.sjb-helpDot--tiny,
+.sjb-helpIcon--tiny {
+  width: 15px;
+  height: 15px;
+  min-width: 15px;
+  min-height: 15px;
+  font-size: 10px;
+}
+
+
+/* ---------------------------------------------------------------
+   ✅ 2026-03-03 🧩 [SJ-BUBBLES-UI-14] Spacing for help-dots that sit BEFORE a target
+   Why:
+   - Our default dot spacing uses margin-left (dot AFTER the target).
+   - In a few UI spots (e.g., left of the SourJoe logo, left of the "More..." button)
+     the dot appears BEFORE the target, so we need a clean right-side gap.
+   --------------------------------------------------------------- */
+/* Book header: dot sits BEFORE the logo/text link (keep same "gap" as dots that sit after icons) */
+.back-to-recipes-box > .sjb-helpDot,
+.back-to-recipes-box > .sjb-helpIcon {
+  margin-right: 6px;
+}
+
+/* Section headers: dot sits BEFORE the "More..." button */
+.center-title-container > .sjb-helpDot,
+.center-title-container > .sjb-helpIcon {
+  margin-right: 6px;
+}
+
+
+
+/* ---------------------------------------------------------------
+   ✅ 2026-03-03 🧩 [SJ-BUBBLES-UI-11] Controlled dot sizing (readability tweak)
+   - Medium/Large screens: ~10% larger than default dot
+   - Small screens: ~25% larger than default dot
+   - Excludes --tiny and --nano variants (those are explicit opt-ins)
+   --------------------------------------------------------------- */
+.sjb-helpDot[data-sjb]:not([behaviour-sjb="enabled"]):not([behavior-sjb="enabled"]):not(.sjb-helpDot--tiny):not(.sjb-helpDot--nano),
+.sjb-helpIcon[data-sjb]:not([behaviour-sjb="enabled"]):not([behavior-sjb="enabled"]):not(.sjb-helpIcon--tiny):not(.sjb-helpIcon--nano) {
+  width: 20px;      /* 18px * 1.10 ≈ 20px */
+  height: 20px;
+  min-width: 20px;
+  min-height: 20px;
+  font-size: 13px;  /* 12px * 1.10 ≈ 13px */
+}
+
+@media (max-width: 480px) {
+  .sjb-helpDot[data-sjb]:not([behaviour-sjb="enabled"]):not([behavior-sjb="enabled"]):not(.sjb-helpDot--tiny):not(.sjb-helpDot--nano),
+  .sjb-helpIcon[data-sjb]:not([behaviour-sjb="enabled"]):not([behavior-sjb="enabled"]):not(.sjb-helpIcon--tiny):not(.sjb-helpIcon--nano) {
+    width: 23px;      /* 18px * 1.25 = 22.5px */
+    height: 23px;
+    min-width: 23px;
+    min-height: 23px;
+    font-size: 15px;  /* 12px * 1.25 = 15px */
+  }
+}
+
+/* ---------------------------------------------------------------
+   ✅ 2026-02-28 🧩 [SJ-BUBBLES-UI-06] Controlled helper dots stand out (aggressive red)
+   - "controlled" is the default behaviour (i.e., no behaviour-sjb attribute)
+   - "enabled" dots stay subtle (they are always available even when Helpers are OFF)
+   - Controlled dots are already hidden when Helpers are OFF (see [SJ-BUBBLES-UI-01])
+   --------------------------------------------------------------- */
+.sjb-helpDot[data-sjb]:not([behaviour-sjb="enabled"]):not([behavior-sjb="enabled"]),
+.sjb-helpIcon[data-sjb]:not([behaviour-sjb="enabled"]):not([behavior-sjb="enabled"]) {
+  border-color: rgba(140, 0, 0, 0.75);
+  background: rgba(255, 0, 0, 0.12);
+  color: rgba(120, 0, 0, 0.95);
+}
+
+.sjb-helpDot[data-sjb]:not([behaviour-sjb="enabled"]):not([behavior-sjb="enabled"]):hover,
+.sjb-helpIcon[data-sjb]:not([behaviour-sjb="enabled"]):not([behavior-sjb="enabled"]):hover {
+  border-color: rgba(140, 0, 0, 0.90);
+  background: rgba(255, 0, 0, 0.18);
+}
+
+
+/* ---------------------------------------------------------------
+   ✅ 2026-05-24 🧩 [SJ-BUBBLES-UI-12C] High-contrast controlled dots on the BLACK fixed header
+   Why:
+   - The earlier high-contrast black-header treatment only applied above 480px.
+   - Below 480px the header dots fell back to the normal dark-red helper style,
+     which became hard to see against the fixed black header.
+   Goal:
+   - Use the same crisp pale-red fill + white ring on ALL screen widths.
+   - Limit this treatment to the TOP black header only; lower navigation/header
+     controls keep the standard helper-dot styling.
+   --------------------------------------------------------------- */
+.header-container .header-top-div .sjb-helpDot[data-sjb]:not([behaviour-sjb="enabled"]):not([behavior-sjb="enabled"]),
+.header-container .header-top-div .sjb-helpIcon[data-sjb]:not([behaviour-sjb="enabled"]):not([behavior-sjb="enabled"]) {
+  background: #ffe1e1;
+  color: #7d0000;
+  border: 1px solid #000;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.95);
+}
+
+.header-container .header-top-div .sjb-helpDot[data-sjb]:not([behaviour-sjb="enabled"]):not([behavior-sjb="enabled"]):hover,
+.header-container .header-top-div .sjb-helpIcon[data-sjb]:not([behaviour-sjb="enabled"]):not([behavior-sjb="enabled"]):hover {
+  background: #ffd1d1;
+}
+
+/* ✅ 2026-05-24 🧩 [SJ-BOOK-HEADER-SMALL-TITLE-01]
+   sjLearn only: the markup supplies these spans so the fixed black header can
+   show the compact brand title on very small screens without JavaScript. */
+#mainTitle .sj-book-title-short {
+  display: none;
+}
+
+@media (max-width: 480px) {
+  #mainTitle .sj-book-title-full {
+    display: none;
+  }
+
+  #mainTitle .sj-book-title-short {
+    display: inline;
+  }
+}
+
+/* ---------------------------------------------------------------
+   ✅ 2026-03-03 🧩 [SJ-BUBBLES-UI-15] Switch-row help-dot sizing
+   Why:
+   - The switch-row dot is behaviour-sjb="enabled" (always available),
+     which keeps it subtle but also left it visually smaller than the
+     controlled dots elsewhere.
+   Goal:
+   - Match the controlled-dot sizing so the switch help-dot doesn't feel tiny.
+   --------------------------------------------------------------- */
+#sjbHelperToggleRow .sjb-helpDot,
+#sjbHelperToggleRow .sjb-helpIcon {
+  width: 20px;
+  height: 20px;
+  min-width: 20px;
+  min-height: 20px;
+  font-size: 13px;
+}
+
+@media (max-width: 480px) {
+  #sjbHelperToggleRow .sjb-helpDot,
+  #sjbHelperToggleRow .sjb-helpIcon {
+    width: 23px;
+    height: 23px;
+    min-width: 23px;
+    min-height: 23px;
+    font-size: 15px;
+  }
+}
+
+/* ---------------------------------------------------------------
+   ✅ 2026-02-28 🧩 [SJ-BUBBLES-UI-07] Nano help-dot for tight phone UIs
+   - Keeps the *visual* dot small, but expands the tap target using ::before
+   - Use class .sjb-helpDot--nano where you have cramped UI (e.g., header clusters)
+   --------------------------------------------------------------- */
+.sjb-helpDot--nano,
+.sjb-helpIcon--nano {
+  width: 11px;
+  height: 11px;
+  min-width: 11px;
+  min-height: 11px;
+  font-size: 9px;
+  margin-left: 3px;
+  position: relative;
+}
+
+.sjb-helpDot--nano::before,
+.sjb-helpIcon--nano::before {
+  content: "";
+  position: absolute;
+  inset: -7px; /* bigger hit box without stealing layout width */
+}
+
+/* ✅ 2026-02-28 🧩 [SJ-BUBBLES-UI-08] Automatic nano sizing for small phone widths
+   ✅ 2026-03-03 🧩 [SJ-BUBBLES-UI-08A] Auto-nano DISABLED (too small / hard to read)
+   - We now rely on:
+       * Larger controlled dots on small screens  ([SJ-BUBBLES-UI-11])
+       * Portrait disable for controlled helpers  ([SJ-BUBBLES-UI-13])
+       * Optional explicit .sjb-helpDot--nano where YOU decide it's appropriate
+*/
+/* (intentionally left inactive) */
+
+/* ---------------------------------------------------------------
+   ✅ 2026-02-28 🧩 [SJ-BUBBLES-UI-09] Optional wrapper to float a help-dot
+   - Use only in *very* cramped zones to prevent layout distortion.
+
+   Example:
+     <span class="sjb-helpWrap sjb-helpWrap--floatDot">
+       <a href="...">Recipes</a>
+       <span class="sjb-helpDot" data-sjb="recipesHelp" behaviour-sjb="controlled" tabindex="0">?</span>
+     </span>
+   --------------------------------------------------------------- */
+.sjb-helpWrap {
+  display: inline-flex;
+  align-items: center;
+  position: relative;
+}
+
+.sjb-helpWrap--floatDot .sjb-helpDot,
+.sjb-helpWrap--floatDot .sjb-helpIcon {
+  position: absolute;
+  top: 50%;
+  right: -10px;
+  transform: translateY(-50%);
+  margin-left: 0;
+}
+
+
+/* If you attach data-sjb to any element and want a visual cue on desktop */
+@media (hover: hover) and (pointer: fine) {
+  [data-sjb] {
+    cursor: pointer; /* ✅ 2026-02-28 🧩 [SJ-BUBBLES-UI-05] Use a normal pointer cursor (avoid the extra "?" cursor on hover devices) */
+  }
+}
+
+
+
+/* ---------------------------------------------------------------
+   ✅ 2026-05-24 🧩 [SJ-BUBBLES-PASS12-CSS-01] Shared More/Less combo helper
+   - Lets the More/Less button itself be the helper trigger on both sjLearn and Public.
+   - The visible ? is drawn inside the button body so legacy JS can safely rewrite button text.
+   - Controlled state is respected: the ? appears only when Helper Messages are ON.
+
+   ✅ 2026-05-24 🧩 [SJ-BUBBLES-PASS12E-MORE-COMBO-SIZE-01]
+   - Match normal controlled 20×20 helper dots down to 480px screen width.
+   - Only shrink below 480px so the helper dot does not crowd the More/Less text.
+   --------------------------------------------------------------- */
+.left-box.moreButton.sjb-moreCombo,
+.moreButton.sjb-moreCombo {
+  position: relative;
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: clamp(66px, calc(-10px + 24vw), 110px);
+  min-width: 66px;
+  padding-left: clamp(24px, calc(16px + 1.7vw), 28px) !important;
+  padding-right: 5px !important;
+  white-space: nowrap;
+}
+
+.sjb-helpers-on .left-box.moreButton.sjb-moreCombo::before,
+.sjb-helpers-on .moreButton.sjb-moreCombo::before {
+  content: "?";
+  position: absolute;
+  left: 4px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 999px;
+  border: 1px solid rgba(140, 0, 0, 0.75);
+  background: rgba(255, 255, 255, 0.88);
+  color: rgba(120, 0, 0, 0.95);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 13px;
+  font-weight: 900;
+  line-height: 1;
+  pointer-events: none;
+}
+
+.sjb-helpers-off .left-box.moreButton.sjb-moreCombo::before,
+.sjb-helpers-off .moreButton.sjb-moreCombo::before {
+  content: none !important;
+}
+
+@media (max-width: 479px) {
+  .left-box.moreButton.sjb-moreCombo,
+  .moreButton.sjb-moreCombo {
+    width: clamp(60px, calc(-15px + 25vw), 110px);
+    min-width: 60px;
+    padding-left: 17px !important;
+    padding-right: 4px !important;
+  }
+
+  .sjb-helpers-on .left-box.moreButton.sjb-moreCombo::before,
+  .sjb-helpers-on .moreButton.sjb-moreCombo::before {
+    left: 3px;
+    width: 13px;
+    height: 13px;
+    font-size: 10px;
+  }
+}
+
+/* ✅ 2026-05-24 🧩 [SJ-BUBBLES-PASS12-CSS-02] Spacing for dynamically injected Public sjBubbles markers. */
+.center-box > .sjb-helpDot.sjp-sjb-before-title,
+.center-box > .sjb-helpIcon.sjp-sjb-before-title,
+.content-section-title .center-box > .sjb-helpDot[data-sjb="bubbleChapterTitle"],
+.content-section-title .center-box > .sjb-helpDot[data-sjb="bubbleSectionTitle"],
+.content-section-title .center-box > .sjb-helpIcon[data-sjb="bubbleChapterTitle"],
+.content-section-title .center-box > .sjb-helpIcon[data-sjb="bubbleSectionTitle"],
+.right-box > .sjb-helpDot.sjp-sjb-before-toc-icon,
+.right-box > .sjb-helpIcon.sjp-sjb-before-toc-icon,
+.sjp-info-rabbit-shell .sjb-helpDot.sjp-sjb-before-rabbit,
+.sjp-info-rabbit-shell .sjb-helpIcon.sjp-sjb-before-rabbit {
+  margin-left: 0;
+  margin-right: 8px;
+}
+
+/* ✅ 2026-05-24 🧩 [SJ-BUBBLES-PASS12D-TOC-HELPER-PLACEMENT-01]
+   Content-header TOC helpers sit AFTER the blue TOC icon; fixed headers are left untouched. */
+.right-box > .sjb-helpDot.sjp-sjb-after-toc-icon,
+.right-box > .sjb-helpIcon.sjp-sjb-after-toc-icon {
+  margin-left: 8px;
+  margin-right: 0;
+}
+
+/* Match sjLearn's hard-coded content-header TOC helpers to the same after-icon spacing. */
+.content-section-title .right-box > img.content-title-menu + .sjb-helpDot,
+.content-section-title .right-box > img.content-title-menu + .sjb-helpIcon,
+.content-section-title .right-box > a + .sjb-helpDot,
+.content-section-title .right-box > a + .sjb-helpIcon {
+  margin-left: 8px;
+  margin-right: 0;
+}
+
+.sjp-sjb-start-plus {
+  margin-left: 0 !important;
+  margin-right: 9px !important;
+}
+
+/* ======================================================================
+   ✅ 2026-02-27 🧩 [SJ-BUBBLES-TOGGLE-CSS-01] Helper Messages ON/OFF switch
+   - Classic slider switch + label
+   - Used in sjLearn lead-box ("Helper Messages")
+   ====================================================================== */
+
+.sjb-toggleRow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  margin: 14px auto 0;
+  padding: 6px 0 2px;
+}
+
+.sjb-toggleLabel {
+  font-weight: 600;
+  font-size: clamp(12px, 1.5vw, 15px);
+}
+
+.sjb-toggleState {
+  font-weight: 700;
+  font-size: clamp(12px, 1.5vw, 14px);
+  letter-spacing: 0.02em;
+  opacity: 0.9;
+  min-width: 32px;
+  text-align: left;
+}
+
+.sjb-switch {
+  position: relative;
+  display: inline-block;
+  width: 54px;
+  height: 28px;
+}
+
+.sjb-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.sjb-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.25);
+  border: 1px solid rgba(0,0,0,0.25);
+  transition: 0.2s;
+  border-radius: 16px;
+}
+
+.sjb-slider:before {
+  position: absolute;
+  content: "";
+  height: 22px;
+  width: 22px;
+  left: 3px;
+  top: 2px;
+  background: #fff;
+  transition: 0.2s;
+  border-radius: 50%;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+}
+
+.sjb-switch input:checked + .sjb-slider {
+  background: rgba(0,0,0,0.85);
+  border-color: rgba(0,0,0,0.65);
+}
+
+.sjb-switch input:checked + .sjb-slider:before {
+  transform: translateX(26px);
+}
+
+.sjb-switch input:focus + .sjb-slider {
+  outline: 2px solid rgba(0,0,0,0.35);
+  outline-offset: 2px;
+}
+
+/* ---------------------------------------------------------------
+   ✅ 2026-02-27 🧩 [SJ-BUBBLES-UI-01] Hide controlled helper icons/dots when Helpers are OFF
+   - Applies to visible "help markers" (ⓘ / ? dots), NOT normal content text triggers.
+   - A trigger can override this by setting:
+       behaviour-sjb="enabled"  (or behavior-sjb="enabled")
+   --------------------------------------------------------------- */
+.sjb-helpers-off .sjb-helpDot[data-sjb]:not([behaviour-sjb="enabled"]):not([behavior-sjb="enabled"]),
+.sjb-helpers-off .sjb-helpIcon[data-sjb]:not([behaviour-sjb="enabled"]):not([behavior-sjb="enabled"]),
+.sjb-helpers-off .sjb-helpTrigger[data-sjb]:not([behaviour-sjb="enabled"]):not([behavior-sjb="enabled"]) {
+  display: none !important;
+}
+
+
+/* ---------------------------------------------------------------
+   ✅ 2026-05-24 🧩 [SJ-BUBBLES-PASS12B-PORTRAIT-CSS-01] Portrait suppression retired.
+   Helper icons, bubbles, and TOC Helper ON/OFF controls are intentionally available in phone,
+   tablet, desktop, portrait, and landscape. The old .sjb-portrait-disabled selectors were removed
+   so a stale class from cached older JS cannot hide helpers.
+   --------------------------------------------------------------- */
+
+
+/* ---------------------------------------------------------------
+   ✅ 2026-03-03 🧩 [SJ-BUBBLES-TOC-CSS-02] Optional state styling for TOC Helpers toggle (ON/OFF)
+   - JS toggles .sjb-tocHelpersBtn--on / --off to keep the control obvious.
+   --------------------------------------------------------------- */
+.sjb-tocHelpersBtn--off {
+  border-color: rgba(120, 0, 0, 0.55);
+  background: rgba(255, 0, 0, 0.06);
+}
+
+.sjb-tocHelpersBtn--on {
+  border-color: rgba(0, 0, 0, 0.35);
+  background: #ffffff;
+}
+/* ---------------------------------------------------------------
+   ✅ 2026-06-08 🧩 [SJ-BUBBLES-PASS3B-HELPDOT-VISUAL-01]
+   Stronger controlled helper "?" icons after user testing found the old dots
+   too small/weak.  This is a pure CSS visual refresh; helper JS and placement
+   behavior are intentionally unchanged.
+   --------------------------------------------------------------- */
+.sjb-helpDot[data-sjb]:not([behaviour-sjb="enabled"]):not([behavior-sjb="enabled"]):not(.sjb-helpDot--tiny):not(.sjb-helpDot--nano),
+.sjb-helpIcon[data-sjb]:not([behaviour-sjb="enabled"]):not([behavior-sjb="enabled"]):not(.sjb-helpIcon--tiny):not(.sjb-helpIcon--nano) {
+  width: 23px;
+  height: 23px;
+  min-width: 23px;
+  min-height: 23px;
+  border: 2px solid #9d1111;
+  background: radial-gradient(circle at 35% 30%, #ffffff 0%, #fff4f4 45%, #ffd7d7 100%);
+  color: #8f0000;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 15px;
+  font-weight: 900;
+  line-height: 1;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.24), inset 0 0 0 1px rgba(255,255,255,0.85);
+}
+
+.sjb-helpDot[data-sjb]:not([behaviour-sjb="enabled"]):not([behavior-sjb="enabled"]):not(.sjb-helpDot--tiny):not(.sjb-helpDot--nano):hover,
+.sjb-helpIcon[data-sjb]:not([behaviour-sjb="enabled"]):not([behavior-sjb="enabled"]):not(.sjb-helpIcon--tiny):not(.sjb-helpIcon--nano):hover {
+  border-color: #6f0000;
+  background: radial-gradient(circle at 35% 30%, #ffffff 0%, #ffe8e8 45%, #ffc2c2 100%);
+  color: #730000;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.30), inset 0 0 0 1px rgba(255,255,255,0.9);
+}
+
+/* Keep controlled helpers crisp against the black fixed header after the global refresh. */
+.header-container .header-top-div .sjb-helpDot[data-sjb]:not([behaviour-sjb="enabled"]):not([behavior-sjb="enabled"]):not(.sjb-helpDot--tiny):not(.sjb-helpDot--nano),
+.header-container .header-top-div .sjb-helpIcon[data-sjb]:not([behaviour-sjb="enabled"]):not([behavior-sjb="enabled"]):not(.sjb-helpIcon--tiny):not(.sjb-helpIcon--nano) {
+  background: radial-gradient(circle at 35% 30%, #ffffff 0%, #ffe9e9 45%, #ffcfcf 100%);
+  border-color: #9d1111;
+  color: #810000;
+  box-shadow: 0 0 0 2px rgba(255,255,255,0.95), 0 1px 5px rgba(0,0,0,0.30);
+}
+
+.sjb-helpers-on .left-box.moreButton.sjb-moreCombo::before,
+.sjb-helpers-on .moreButton.sjb-moreCombo::before {
+  border: 2px solid #9d1111;
+  background: radial-gradient(circle at 35% 30%, #ffffff 0%, #fff4f4 45%, #ffd7d7 100%);
+  color: #8f0000;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.22), inset 0 0 0 1px rgba(255,255,255,0.85);
+}
+
+/* ---------------------------------------------------------------
+   ✅ 2026-06-08 🧩 [SJ-BUBBLES-PASS3C-HELPDOT-VISUAL-01]
+   Stronger helper "?" icons after live testing showed the previous refresh
+   was still too small/anemic.  This override is intentionally placed late in
+   the file so it also wins over legacy tiny/enabled calculator helpers.
+   --------------------------------------------------------------- */
+.sjb-helpDot[data-sjb]:not([behaviour-sjb="enabled"]):not([behavior-sjb="enabled"]):not(.sjb-helpDot--nano),
+.sjb-helpIcon[data-sjb]:not([behaviour-sjb="enabled"]):not([behavior-sjb="enabled"]):not(.sjb-helpIcon--nano),
+.sjb-helpDot.sjcalc-help[data-sjb],
+.sjb-helpIcon.sjcalc-help[data-sjb] {
+  width: 26px;
+  height: 26px;
+  min-width: 26px;
+  min-height: 26px;
+  box-sizing: border-box;
+  border: 2px solid #8d0000;
+  border-radius: 999px;
+  background: radial-gradient(circle at 35% 30%, #ffffff 0%, #fff7cf 43%, #ffd24d 100%);
+  color: #8d0000;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 17px;
+  font-weight: 900;
+  line-height: 1;
+  text-decoration: none;
+  box-shadow:
+    0 2px 5px rgba(0, 0, 0, 0.30),
+    inset 0 0 0 1px rgba(255,255,255,0.90);
+}
+
+.sjb-helpDot[data-sjb]:not([behaviour-sjb="enabled"]):not([behavior-sjb="enabled"]):not(.sjb-helpDot--nano):hover,
+.sjb-helpIcon[data-sjb]:not([behaviour-sjb="enabled"]):not([behavior-sjb="enabled"]):not(.sjb-helpIcon--nano):hover,
+.sjb-helpDot.sjcalc-help[data-sjb]:hover,
+.sjb-helpIcon.sjcalc-help[data-sjb]:hover {
+  border-color: #5f0000;
+  background: radial-gradient(circle at 35% 30%, #ffffff 0%, #fff0a8 43%, #ffc423 100%);
+  color: #5f0000;
+  box-shadow:
+    0 3px 7px rgba(0, 0, 0, 0.34),
+    inset 0 0 0 1px rgba(255,255,255,0.95);
+}
+
+/* Calculator table/intro helpers were intentionally marked --tiny/ enabled;
+   live testing showed they now need to be readable but not oversized. */
+.sjb-helpDot.sjcalc-help[data-sjb],
+.sjb-helpIcon.sjcalc-help[data-sjb] {
+  width: 20px;
+  height: 20px;
+  min-width: 20px;
+  min-height: 20px;
+  margin-left: 6px;
+  margin-right: 5px;
+  font-size: 13px;
+  border-width: 2px;
+  vertical-align: -2px;
+}
+
+/* Keep chapter/section title helpers from crowding title text after enlargement. */
+.content-section-title .center-box > .sjb-helpDot[data-sjb],
+.content-section-title .center-box > .sjb-helpIcon[data-sjb] {
+  margin-right: 8px;
+}
+
+/* More/Less integrated helper marker: match the stronger yellow/red badge. */
+.sjb-helpers-on .left-box.moreButton.sjb-moreCombo::before,
+.sjb-helpers-on .moreButton.sjb-moreCombo::before {
+  width: 22px;
+  height: 22px;
+  border: 2px solid #8d0000;
+  background: radial-gradient(circle at 35% 30%, #ffffff 0%, #fff7cf 43%, #ffd24d 100%);
+  color: #8d0000;
+  font-size: 14px;
+  font-weight: 900;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.28), inset 0 0 0 1px rgba(255,255,255,0.9);
+}
+
+/* Header helpers need a crisp ring against the black fixed header. */
+.header-container .header-top-div .sjb-helpDot[data-sjb]:not([behaviour-sjb="enabled"]):not([behavior-sjb="enabled"]):not(.sjb-helpDot--nano),
+.header-container .header-top-div .sjb-helpIcon[data-sjb]:not([behaviour-sjb="enabled"]):not([behavior-sjb="enabled"]):not(.sjb-helpIcon--nano) {
+  border-color: #8d0000;
+  background: radial-gradient(circle at 35% 30%, #ffffff 0%, #fff7cf 43%, #ffd24d 100%);
+  color: #8d0000;
+  box-shadow:
+    0 0 0 2px rgba(255,255,255,0.96),
+    0 2px 5px rgba(0,0,0,0.34),
+    inset 0 0 0 1px rgba(255,255,255,0.9);
+}
+
+@media (max-width: 480px) {
+  .sjb-helpDot[data-sjb]:not([behaviour-sjb="enabled"]):not([behavior-sjb="enabled"]):not(.sjb-helpDot--nano),
+  .sjb-helpIcon[data-sjb]:not([behaviour-sjb="enabled"]):not([behavior-sjb="enabled"]):not(.sjb-helpIcon--nano) {
+    width: 24px;
+    height: 24px;
+    min-width: 24px;
+    min-height: 24px;
+    font-size: 16px;
+  }
+
+  .sjb-helpDot.sjcalc-help[data-sjb],
+  .sjb-helpIcon.sjcalc-help[data-sjb] {
+    width: 19px;
+    height: 19px;
+    min-width: 19px;
+    min-height: 19px;
+    font-size: 12px;
+  }
+}

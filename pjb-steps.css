@@ -1,0 +1,414 @@
+/* --- Updated 1Mar26 to fix embedded Steps Videos (missing controls and unresponsive sizing). --- */
+
+    /* --- 1. GLOBAL WRAPPER --- */
+    .sj-wrapper { 
+      box-sizing:border-box; font-family:sans-serif; color:#333; 
+      display:flex; flex-direction:column; align-items:center; 
+      width:100%; overflow-x:hidden; position: relative; 
+    }
+    
+    /* --- 2. VIDEO CONTAINER --- */
+    .sj-video-box { 
+      width:100%; max-width:600px; 
+      
+      /* MARGIN: 2px shadow + 2px gap = 4px total space */
+      margin: 0 auto 4px auto; 
+      
+      border-radius:4px; overflow:hidden; aspect-ratio:16/9; 
+      background:transparent; 
+      border: 0; 
+      
+      /* Default transparent shadow (2px phantom border) */
+      box-shadow: 0 0 0 2px transparent;
+      transition: box-shadow 0.3s ease;
+    }
+    .sj-video-box iframe { width:100%; height:100%; border:0; }
+    
+    /* --- 3. THE LOGIC ENGINE --- */
+    input[name="sj-state"] { display: none; }
+    
+    /* --- 4. BUTTON STYLING --- */
+    .sj-ctrl-bar { 
+      width:100%; max-width:600px; display:flex; 
+      justify-content:center; gap:10px; margin-bottom:15px; 
+      z-index: 2; 
+    }
+    
+    .sj-button { 
+      background-color:#007BFF; color:#fff !important; 
+      padding:10px 20px; border-radius:50px; 
+      font-size:15px; box-shadow:0 3px 5px rgba(0,0,0,.1); 
+      cursor:pointer; user-select:none; display: inline-block; 
+      text-align: center; font-weight: 500; text-decoration: none;
+      border: none; background-image: none; opacity: 1;
+    }
+    .sj-button:active { transform:translateY(1px); box-shadow:0 1px 2px rgba(0,0,0,.1); }
+    .sj-btn-green { background-color:#28a745; }
+    
+    /* --- 5. CONTENT SECTIONS --- */
+    .sj-sect-box { 
+      width:100%; 
+      
+      /* --- CHANGE: WIDTH RE-CALCULATED TO 604px --- */
+      /* 600px Video + 2px Left Border + 2px Right Border */
+      max-width:604px; 
+      
+      margin-top: 0; 
+      padding: 15px; 
+      border-radius: 8px; flex-direction:column;
+    }
+    
+    /* Blue Section Styles - 2px Border */
+    .sj-sect-details { border: 2px solid #007BFF; background-color: #f1f8ff; }
+    /* Green Section Styles - 2px Border */
+    .sj-sect-explore { border: 2px solid #28a745; background-color: #f6fff8; }
+    
+    /* HEADERS */
+    .sj-head-blue { color: #004085; font-weight: bold; font-size: 1.1em; margin-bottom: 10px; }
+    .sj-head-green { color: #155724; font-weight: bold; font-size: 1.1em; margin-bottom: 15px; }
+    
+    /* Text & Links */
+    .sj-txt { text-align:justify; font-size:18px; line-height:1.5; }
+    .sj-txt ul { padding-left:1.2em; margin:5px 0; }
+    .sj-txt li { margin-bottom:8px; }
+    
+    .sj-link-group a { 
+      display:block; text-decoration:none; color:#28a745; 
+      font-weight:bold; margin-bottom:4px; font-size:16px; 
+      border-bottom: 1px dashed #bee5eb; padding-bottom: 5px;
+    }
+    .sj-link-group a:hover { text-decoration:none; color:#1e7e34; border-bottom-style: solid; }
+    
+    .sj-divider { border:0; border-top:1px solid #ccc; margin:10px 0 20px 0; width:100%; }
+    
+    /* --- 6. HIDING & TOGGLING LOGIC --- */
+    .sj-state-closer, .sj-sect-details, .sj-sect-explore { display: none !important; }
+    
+    /* DETAILS LOGIC */
+    #sj-opt-details:checked ~ .sj-ctrl-bar .sj-act-open-det { display: none !important; }
+    #sj-opt-details:checked ~ .sj-ctrl-bar .sj-act-close-det { display: inline-block !important; }
+    #sj-opt-details:checked ~ .sj-sect-details { display: flex !important; }
+    /* Shadow Blue (2px) */
+    #sj-opt-details:checked ~ .sj-video-box { box-shadow: 0 0 0 2px #007BFF; }
+    
+    /* EXPLORE LOGIC */
+    #sj-opt-explore:checked ~ .sj-ctrl-bar .sj-act-open-exp { display: none !important; }
+    #sj-opt-explore:checked ~ .sj-ctrl-bar .sj-act-close-exp { display: inline-block !important; }
+    #sj-opt-explore:checked ~ .sj-sect-explore { display: block !important; }   
+    /* Shadow Green (2px) */
+    #sj-opt-explore:checked ~ .sj-video-box { box-shadow: 0 0 0 2px #28a745; }
+
+/* ============================================================
+   SJ STEP UI v2 (no inline <style>, no IDs)  - 2026-02-20
+   Works with markup using .sj2-step / <details> toggles
+   ============================================================ */
+
+.sj2-step{
+  box-sizing:border-box;
+  font-family:sans-serif;
+  color:#333;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  width:100%;
+  overflow-x:hidden;
+}
+
+/* Video container (responsive) */
+.sj2-video{
+  width:100%;
+  max-width:600px;
+  margin:0 auto 8px auto;
+  border-radius:4px;
+  overflow:hidden;
+  position:relative; /* ✅ 2026-03-01 🧩 [SJ2-VIDEO-RESP-00] positioning context for absolute iframe */
+  aspect-ratio:16/9;
+  background:transparent;
+  box-shadow:0 0 0 2px transparent;
+  transition:box-shadow .25s ease;
+}
+
+/* Jodit wrapper override (it injects inline width/height) */
+.sj2-video jodit[data-jodit_iframe_wrapper]{
+  display:block !important;
+  width:100% !important;
+  height:100% !important;
+}
+.sj2-video iframe,
+.sj2-video video{
+  position:absolute;   /* ✅ 2026-03-01 🧩 [SJ2-VIDEO-RESP-00] fill the responsive box (Jodit-safe) */
+  inset:0;
+  width:100% !important;
+  height:100% !important;
+  display:block;
+  border:0 !important;
+  z-index:1;           /* keep the player above any editor wrappers */
+}
+
+
+/* Tabs area: two “pill buttons”, content spans full width when open */
+.sj2-tabs{
+  width:100%;
+  max-width:604px; /* 600 video + 2px L + 2px R */
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin:0 auto 10px auto;
+}
+
+/* Each details block */
+.sj2-tab{
+  margin:0;
+}
+
+/* When a tab is open, its content spans full width below */
+.sj2-tab[open]{
+  grid-column:1 / -1;
+}
+
+/* Summary styled as pill button */
+.sj2-tab > summary{
+  list-style:none;
+  user-select:none;
+  cursor:pointer;
+  display:block;
+  text-align:center;
+  padding:10px 20px;
+  border-radius:50px;
+  font-size:15px;
+  font-weight:500;
+  color:#fff;
+  box-shadow:0 3px 5px rgba(0,0,0,.1);
+}
+
+/* Remove default markers */
+.sj2-tab > summary::-webkit-details-marker{ display:none; }
+.sj2-tab > summary::marker{ content:""; }
+
+/* Button colors */
+.sj2-tab--details > summary{ background:#007BFF; }
+.sj2-tab--explore > summary{ background:#28a745; }
+
+/* Panels */
+.sj2-pane{
+  margin-top:10px;
+  padding:15px;
+  border-radius:8px;
+}
+
+.sj2-pane--details{
+  border:2px solid #007BFF;
+  background:#f1f8ff;
+}
+
+.sj2-pane--explore{
+  border:2px solid #28a745;
+  background:#f6fff8;
+}
+
+/* Headings + text */
+.sj2-head-blue{
+  color:#004085;
+  font-weight:bold;
+  font-size:1.1em;
+  margin-bottom:10px;
+}
+
+.sj2-head-green{
+  color:#155724;
+  font-weight:bold;
+  font-size:1.1em;
+  margin-bottom:15px;
+}
+
+.sj2-txt{
+  text-align:justify;
+  font-size:18px;
+  line-height:1.5;
+}
+
+.sj2-txt ul{ padding-left:1.2em; margin:5px 0; }
+.sj2-txt li{ margin-bottom:8px; }
+
+.sj2-divider{
+  border:0;
+  border-top:1px solid #ccc;
+  margin:10px 0 20px 0;
+  width:100%;
+}
+
+.sj2-links a{
+  display:block;
+  text-decoration:none;
+  color:#28a745;
+  font-weight:bold;
+  margin-bottom:4px;
+  font-size:16px;
+  border-bottom:1px dashed #bee5eb;
+  padding-bottom:5px;
+}
+.sj2-links a:hover{
+  color:#1e7e34;
+  border-bottom-style:solid;
+}
+
+/* Progressive enhancement: color the video “outline” based on open tab */
+@supports selector(:has(*)){
+  .sj2-step:has(.sj2-tab--details[open]) .sj2-video{ box-shadow:0 0 0 2px #007BFF; }
+  .sj2-step:has(.sj2-tab--explore[open]) .sj2-video{ box-shadow:0 0 0 2px #28a745; }
+}
+/* ============================================================
+   SJ STEP UI v3 (button + JS; panels below video) - 2026-02-20
+   ============================================================ */
+
+.sj2-ctrl{
+  width:100%;
+  max-width:600px;
+  display:flex;
+  justify-content:center;
+  gap:10px;
+  margin:0 auto 10px auto;
+}
+
+.sj2-button{
+  padding:7px 14px;
+  border-radius:999px;
+  font-size:14px;
+  font-weight:600;
+  cursor:pointer;
+  user-select:none;
+  border:0;
+  color:#fff !important;
+  box-shadow:0 3px 5px rgba(0,0,0,.1);
+}
+
+.sj2-button--details{ background:#007BFF; }
+.sj2-button--explore{ background:#28a745; }
+
+.sj2-step > .sj2-pane{
+  width:100%;
+  max-width:604px;
+}
+
+.sj2-step[data-open="details"] > .sj2-video{
+  box-shadow:0 0 0 2px #007BFF;
+}
+.sj2-step[data-open="explore"] > .sj2-video{
+  box-shadow:0 0 0 2px #28a745;
+}
+/* ============================================================
+   SJ STEP UI v3 overrides (spacing + outline thickness)
+   2026-02-20
+   ============================================================ */
+
+/* 1) Reduce the gap ONLY between the MAIN video and the panel below it */
+.sj2-step > .sj2-video{
+  margin-bottom:4px !important;  /* was visually too large */
+}
+.sj2-step > .sj2-pane{
+  margin-top:0 !important;
+}
+
+/* 2) Make the main video outline slightly thicker than the panel border */
+.sj2-step[data-open="details"] > .sj2-video{
+  box-shadow:0 0 0 3px #007BFF !important; /* was 2px */
+}
+.sj2-step[data-open="explore"] > .sj2-video{
+  box-shadow:0 0 0 3px #28a745 !important; /* was 2px */
+}
+
+/* ============================================================
+   ✅ 2026-03-01 🧩 [SJ2-VIDEO-RESP-01] Jodit-safe responsive embeds (Cloudflare + others)
+   Why:
+   - Jodit injects <jodit ... style="width:600px;height:338px"> which can distort layout or steal hover/tap.
+   - We keep the proven “sj-video-box” approach: .sj2-video is the 16:9 box; iframe/video is absolutely positioned.
+   Works with:
+   - iframe directly inside .sj2-video
+   - iframe nested inside Jodit wrappers
+   - iframe wrapped by .sj2-embed (created by jb-steps.js)
+   ============================================================ */
+
+/* If jb-steps.js creates .sj2-embed, make it fill the box without contributing layout height */
+.sj2-video .sj2-embed{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+}
+
+/* Disable any legacy padding-top “aspect box” trick if present (prevents double-height) */
+.sj2-video .sj2-embed::before{
+  display:none !important;
+  padding-top:0 !important;
+}
+
+/* Best-effort neutralization of Jodit iframe wrappers (inline width/height) */
+.sj2-video jodit[data-jodit_iframe_wrapper]{
+  display:contents !important;
+  width:auto !important;
+  height:auto !important;
+}
+
+/* Keep images inside panels from overflowing on small screens */
+.sj2-step img{
+  max-width:100%;
+  height:auto;
+  display:block;
+}
+
+
+
+/* ============================================================
+   ✅ 2026-03-01 🧩 [SJ2-VIDEO-JODIT-PE-01] Jodit wrapper cannot steal taps/hover
+   Why:
+   - Even after we remove Jodit wrappers in JS, some browsers will briefly render them,
+     and they can sit “on top” of the iframe and block player controls.
+   What:
+   - Make any injected <jodit data-jodit_iframe_wrapper> transparent to pointer events.
+   - Ensure the actual iframe is the topmost interactive layer.
+   ============================================================ */
+.sj2-video jodit[data-jodit_iframe_wrapper],
+.sj2-video jodit[data-jodit_iframe_wrapper] *{
+  pointer-events:none !important;
+}
+
+/* If .sj2-embed exists, keep it below the actual player layer */
+.sj2-video .sj2-embed{ z-index:1; }
+
+/* Player must be topmost + interactive */
+.sj2-video iframe,
+.sj2-video video{
+  z-index:2 !important;
+  pointer-events:auto !important;
+}
+
+
+/* ============================================================
+   ✅ 2026-03-01 🧩 [SJ-LEGACY-VIDEO-CSS-01] Legacy .sj-video-box made Jodit-proof
+   Why:
+   - Older Steps use .sj-video-box; Jodit can wrap/overlay iframes and kill controls.
+   What:
+   - Make the iframe the top interactive layer.
+   - Make any injected <jodit ...> transparent to pointer events.
+   ============================================================ */
+.sj-video-box{ position:relative; }
+
+.sj-video-box iframe,
+.sj-video-box video{
+  position:absolute;
+  inset:0;
+  width:100% !important;
+  height:100% !important;
+  border:0;
+  z-index:2 !important;
+  pointer-events:auto !important;
+}
+
+/* Jodit wrapper must NOT steal hover/tap */
+.sj-video-box jodit[data-jodit_iframe_wrapper],
+.sj-video-box jodit[data-jodit_iframe_wrapper] *{
+  pointer-events:none !important;
+}
+
+/* If wrapper exists, don't let it impose a fixed box */
+.sj-video-box jodit[data-jodit_iframe_wrapper]{ display:contents; }

@@ -1,0 +1,338 @@
+ <!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>SourJoe — Choose Currency → Plan</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root{
+      --bg:#f5f7fb;--card:#fff;--text:#1d2630;--muted:#5d6b7a;--line:#dfe6ef;
+      --accent:#2563eb;--accent-ink:#fff;--ok:#14a44d;--ok-ink:#fff;--ok-soft:#daf3e4;
+      --radius:14px;--shadow:0 2px 10px rgba(16,24,40,.06);
+    }
+    html,body{margin:0;background:var(--bg);color:var(--text);
+      font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,"Apple Color Emoji","Segoe UI Emoji";}
+    .wrap{max-width:1000px;margin:32px auto;padding:0 18px;}
+
+/* Updated Header: Centers the logo and title */
+    .header{
+      display:flex;align-items:center;justify-content:center; /* Added justify-content:center */
+      gap:14px;flex-wrap:wrap;
+    }
+    .header img{
+      width:70px;height:auto;flex-shrink:0;
+    }
+    .header h1{
+      font-size:clamp(1.4rem,1.2rem + 1.2vw,2rem);
+      margin:0;
+    }
+
+    /* NEW: Styles for the bulleted list */
+    .intro-list {
+      color: var(--muted);
+      margin: 10px auto 28px auto; /* Auto margins center the block */
+      padding: 0 0 0 20px; /* Space for bullets */
+      max-width: 600px; /* Keeps lines from getting too wide */
+      display: table; /* neat trick to make the box only as wide as the content, then center it */
+    }
+    .intro-list li {
+      margin-bottom: 6px;
+    }
+
+    p.lead{color:var(--muted);margin:10px 0 22px;}
+
+    /* Currency tabs */
+    .currency-tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:16px 0 28px;}
+    .tab{appearance:none;cursor:pointer;background:var(--card);border:1px solid var(--line);
+      border-radius:var(--radius);padding:8px;box-shadow:var(--shadow);
+      transition:border-color .12s,box-shadow .12s,transform .08s, background .12s, color .12s;
+      display:flex;align-items:center;justify-content:center;}
+    .tab:hover{transform:translateY(-1px);}
+    .tab:focus-visible{outline:none;box-shadow:0 0 0 3px #bfdbfe;border-color:#60a5fa;}
+    .tab img{width:56px;height:auto;border-radius:6px;box-shadow:0 1px 3px rgba(0,0,0,.1);
+      transition:transform .12s,box-shadow .12s;}
+    .tab:hover img{transform:scale(1.06);box-shadow:0 2px 5px rgba(0,0,0,.15);}
+    .tab.is-selected{background:var(--ok);color:var(--ok-ink);border-color:var(--ok);}
+    .tab.is-selected img{box-shadow:0 0 0 3px var(--ok-soft),0 0 0 1px var(--ok);}
+
+    /* Plans grid */
+    .plans{
+      display:grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap:14px;
+    }
+    .plan{appearance:none;cursor:pointer;text-align:left;background:var(--card);color:var(--text);
+      border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:20px;
+      transition:transform .06s,filter .12s, background .12s, color .12s, border-color .12s;}
+    .plan:hover{transform:translateY(-1px);}
+    .plan:focus-visible{outline:none;box-shadow:0 0 0 3px #bfdbfe;border-color:#60a5fa;}
+    .plan h3{margin:0 0 8px;font-size:1.05rem;}
+
+    /* 2026-05-15 JB - Plan price display update: show selected-currency pricing in each plan heading. */
+    .plan-heading{
+      display:flex;
+      align-items:baseline;
+      justify-content:space-between;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .plan-price{
+      font-weight:800;
+      font-size:1rem;
+      color:var(--accent);
+      white-space:nowrap;
+    }
+    .plan-heading--offer{
+      display:grid;
+      gap:2px;
+    }
+    .plan-heading--offer .plan-price{
+      font-size:1.08rem;
+    }
+    .offer-plan-name{
+      font-size:.96rem;
+      color:var(--muted);
+    }
+    .plan.is-selected .plan-price,
+    .plan.is-selected .offer-plan-name{
+      color:var(--ok-ink);
+    }
+
+    .plan ul{margin:0 0 0 18px;padding:0;color:var(--muted);font-size:.95rem;}
+    .plan ul li{margin-bottom:6px;}
+    .plan.is-selected{background:var(--ok);color:var(--ok-ink);border-color:var(--ok);}
+    .plan.is-selected ul{color:var(--ok-ink);}
+
+    .muted-note{color:var(--muted);font-size:.9rem;margin-top:14px;}
+
+    /* Single CTA */
+    .cta-wrap{display:flex;justify-content:center;margin:26px 0 6px;}
+    .cta{display:inline-flex;align-items:center;justify-content:center;text-decoration:none;font-weight:700;
+      background:var(--accent);color:var(--accent-ink);padding:12px 18px;border-radius:12px;
+      box-shadow:var(--shadow);transition:transform .06s,filter .12s,opacity .12s;}
+    .cta:hover{filter:brightness(1.06);transform:translateY(-1px);}
+    .cta.disabled{pointer-events:none;opacity:.55;}
+
+    @media (max-width:600px){
+      .currency-tabs{grid-template-columns:repeat(2,1fr)}
+      .plans{grid-template-columns:1fr}
+      .header img{width:55px;}
+    }
+
+    .visually-hidden{
+      position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);
+      white-space:nowrap;border:0;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+<div class="header">
+      <img src="https://sjmedia0.w3spaces.com/sjICONS/logoSOURJOETRANSPARENT_Cropped_31Aug21.png" alt="SourJoe logo">
+      <h1>Choose your Plan</h1>
+    </div>
+    
+    <ul class="intro-list">
+      <li><strong>Pick a currency and a plan</strong>. Then continue to Stripe to pay securely.</li>
+      <li>Please use the same email address entered on app.sourjoe.com Registration.</li>
+      <li>To update your account, Use the Manage Subscription button below.</li>
+      </ul>
+
+    <!-- Currency -->
+    <div class="currency-tabs" role="tablist" aria-label="Currency">
+      <button class="tab is-selected" role="tab" aria-selected="true" data-currency="CAD" id="tab-cad" title="Pay in CAD">
+        <img src="https://flagcdn.com/w80/ca.png" alt="Canada flag">
+      </button>
+      <button class="tab" role="tab" aria-selected="false" data-currency="USD" id="tab-usd" title="Pay in USD">
+        <img src="https://flagcdn.com/w80/us.png" alt="United States flag">
+      </button>
+      <button class="tab" role="tab" aria-selected="false" data-currency="EUR" id="tab-eur" title="Pay in EUR">
+        <img src="https://flagcdn.com/w80/eu.png" alt="European Union flag">
+      </button>
+      <button class="tab" role="tab" aria-selected="false" data-currency="GBP" id="tab-gbp" title="Pay in Pounds Sterling">
+        <img src="https://flagcdn.com/w80/gb.png" alt="United Kingdom flag">
+      </button>
+    </div>
+
+    <!-- Plans -->
+    <section aria-label="Plans">
+      <div class="plans" id="plans" role="radiogroup" aria-labelledby="plans-label">
+        <span id="plans-label" class="visually-hidden">Choose a plan</span>
+
+        <button class="plan is-selected" role="radio" aria-checked="true" data-plan="monthly" id="plan-monthly">
+          <h3 class="plan-heading">
+            <span>Monthly</span>
+            <span class="plan-price" data-price-for="monthly">$3.99 CAD</span>
+          </h3>
+          <ul>
+            <li>Recurring every month — cancel anytime.</li>
+            <li>Ideal for short-term or flexible access.</li>
+            <li>Access to all premium features instantly.</li>
+          </ul>
+        </button>
+
+        <button class="plan" role="radio" aria-checked="false" data-plan="yearly" id="plan-yearly">
+          <h3 class="plan-heading">
+            <span>Yearly</span>
+            <span class="plan-price" data-price-for="yearly">$34.99 CAD</span>
+          </h3>
+          <ul>
+            <li>Save up to 20% versus monthly billing.</li>
+            <li>One payment covers a full year.</li>
+            <li>Best option for regular users.</li>
+          </ul>
+        </button>
+
+        <button class="plan" role="radio" aria-checked="false" data-plan="onetime" id="plan-onetime">
+          <h3 class="plan-heading--offer">
+            <span>Limited Time Offer</span>
+            <span class="plan-price" data-price-for="onetime">$79.99 CAD</span>
+            <span class="offer-plan-name">Three Year Plan</span>
+          </h3>
+          <ul>
+            <li>Single non-recurring payment.</li>
+            <li>Includes three years of access.</li>
+            <li>Best deal for the avid user.</li>
+          </ul>
+        </button>
+      </div>
+
+      <div class="muted-note" style="display:none">
+        Tip: you can rewrite each plan’s bullet points anytime — the Stripe links won’t break.
+      </div>
+    </section>
+
+    <!-- Single CTA -->
+    <div class="cta-wrap">
+      <a id="checkoutBtn" class="cta disabled" href="#" target="_blank" rel="noopener">Continue to checkout</a>
+    </div>
+    <!-- Manage Subscription Button -->
+    <div style="display:flex; justify-content:center; margin:30px 0;">
+      <a href="https://billing.stripe.com/p/login/4gMbJ23KUclna4Dcc15Vu00"
+        target="_blank" rel="noopener"
+        class="cta"
+        onmouseover="this.style.filter='brightness(1.06)';this.style.transform='translateY(-1px)'"
+        onmouseout="this.style.filter='';this.style.transform=''">
+        Manage Subscription
+      </a>
+    </div>
+  </div>
+
+  <script>
+    const STRIPE_LINKS = {
+      CAD:{monthly:"https://buy.stripe.com/4gMbJ23KUclna4Dcc15Vu00",
+           yearly:"https://buy.stripe.com/3cI9AU4OY4SVekT4Jz5Vu01",
+           onetime:"https://buy.stripe.com/4gM3cw6X6clnb8Hek95Vu02"},
+      USD:{monthly:"https://buy.stripe.com/14A9AUdlu99b2Cb2Br5Vu03",
+           yearly:"https://buy.stripe.com/7sYaEY4OYfxz2Cbek95Vu04",
+           onetime:"https://buy.stripe.com/bJedRa1CMadf5Onek95Vu05"},
+      EUR:{monthly:"https://buy.stripe.com/5kQeVe95eetv0u37VL5Vu09",
+           yearly:"https://buy.stripe.com/cNi5kEa9i1GJ1y7dg55Vu0a",
+           onetime:"https://buy.stripe.com/fZudRa3KUetv1y77VL5Vu0b"},
+      GBP:{monthly:"https://buy.stripe.com/aFacN66X6adf6Sr6RH5Vu06",
+           yearly:"https://buy.stripe.com/14A9AUdlu99bgt1cc15Vu07",
+           onetime:"https://buy.stripe.com/fZu00k3KUclndgP8ZP5Vu08"}
+    };
+
+    /* 2026-05-15 JB - Plan price display update: pricing follows the selected country/currency. */
+    const PLAN_PRICES = {
+      CAD:{monthly:"3.99", yearly:"34.99", onetime:"79.99"},
+      USD:{monthly:"2.99", yearly:"24.99", onetime:"56.99"},
+      EUR:{monthly:"2.59", yearly:"21.90", onetime:"49.99"},
+      GBP:{monthly:"2.29", yearly:"18.90", onetime:"43.99"}
+    };
+
+    const CURRENCY_SYMBOLS = {
+      CAD:"$",
+      USD:"$",
+      EUR:"€",
+      GBP:"£"
+    };
+
+    let selectedCurrency = "CAD";
+    let selectedPlan = "monthly";
+    const currencyTabs = document.querySelectorAll('.tab[role="tab"]');
+    const planButtons   = document.querySelectorAll('.plan[role="radio"]');
+    const checkoutBtn   = document.getElementById('checkoutBtn');
+
+    function setSelectedCurrency(btn){
+      currencyTabs.forEach(b=>{
+        const isSelected = b===btn;
+        b.classList.toggle('is-selected', isSelected);
+        b.setAttribute('aria-selected', String(isSelected));
+      });
+      selectedCurrency = btn.dataset.currency;
+      updatePlanPrices();
+      updateCTA();
+    }
+
+    function setSelectedPlan(btn){
+      planButtons.forEach(b=>{
+        const isSelected = b===btn;
+        b.classList.toggle('is-selected', isSelected);
+        b.setAttribute('aria-checked', String(isSelected));
+      });
+      selectedPlan = btn.dataset.plan;
+      updateCTA();
+    }
+
+    function formatPlanPrice(currency, plan){
+      const priceMap = PLAN_PRICES[currency] || {};
+      const amount = priceMap[plan];
+      const symbol = CURRENCY_SYMBOLS[currency] || "";
+      return amount ? `${symbol}${amount} ${currency}` : "";
+    }
+
+    function updatePlanPrices(){
+      document.querySelectorAll('[data-price-for]').forEach(priceEl=>{
+        priceEl.textContent = formatPlanPrice(selectedCurrency, priceEl.dataset.priceFor);
+      });
+    }
+
+    function updateCTA(){
+      const currencyMap = STRIPE_LINKS[selectedCurrency] || {};
+      const url = currencyMap[selectedPlan];
+      if (url){
+        checkoutBtn.href = url;
+        checkoutBtn.classList.remove('disabled');
+        checkoutBtn.textContent = "Continue to checkout";
+        checkoutBtn.setAttribute("target","_blank");
+        checkoutBtn.setAttribute("rel","noopener");
+        checkoutBtn.removeAttribute("aria-disabled");
+      } else {
+        checkoutBtn.href = "#";
+        checkoutBtn.classList.add('disabled');
+        checkoutBtn.textContent = "Not available for this selection";
+        checkoutBtn.setAttribute("aria-disabled","true");
+        checkoutBtn.removeAttribute("target");
+        checkoutBtn.removeAttribute("rel");
+      }
+    }
+
+    currencyTabs.forEach(btn=>{
+      btn.addEventListener('click',()=>setSelectedCurrency(btn));
+      btn.addEventListener('keydown',e=>{
+        const order = Array.from(currencyTabs);
+        const i = order.indexOf(btn);
+        if(e.key==='ArrowRight'){ e.preventDefault(); order[(i+1)%order.length].focus(); }
+        if(e.key==='ArrowLeft'){ e.preventDefault(); order[(i-1+order.length)%order.length].focus(); }
+        if(e.key==='Enter' || e.key===' '){ e.preventDefault(); setSelectedCurrency(btn); }
+      });
+    });
+
+    planButtons.forEach(btn=>{
+      btn.addEventListener('click',()=>setSelectedPlan(btn));
+      btn.addEventListener('keydown',e=>{
+        const order = Array.from(planButtons);
+        const i = order.indexOf(btn);
+        if(e.key==='ArrowRight' || e.key==='ArrowDown'){ e.preventDefault(); order[(i+1)%order.length].focus(); }
+        if(e.key==='ArrowLeft'  || e.key==='ArrowUp'){   e.preventDefault(); order[(i-1+order.length)%order.length].focus(); }
+        if(e.key==='Enter' || e.key===' '){ e.preventDefault(); setSelectedPlan(btn); }
+      });
+    });
+
+    updatePlanPrices();
+    updateCTA();
+  </script>
+</body>
+</html>

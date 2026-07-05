@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="en" class="sjcalc-standalone sjb-helpers-off" data-sjcalc-shell="true">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+<title>Sourjoe Calculator Tools</title>
+<link href="./sjRabbitHoleLink.css?v=20260612_calcPass5_shell1" rel="stylesheet"/>
+<link href="./sjLearnStyles.css?v=20260610_aboutDisclaimer1" rel="stylesheet"/>
+<link href="./sjMathStyles.css?v=20260610_allTocCompactCalc1" rel="stylesheet"/>
+<link href="./sjBubbles.css?v=20260608_pass3c_strongHelpDots" rel="stylesheet"/>
+<link href="./sjCalculatorShell.css?v=20260616_publicPreviewBottom1" rel="stylesheet"/>
+</head>
+<body class="sjcalc-standalone-body">
+<div id="sjcalcBlocked" class="sjcalc-blocked" hidden>
+  <h1>Sourjoe Calculator Tools</h1>
+  <p>This calculator session can only be opened from an approved Sourjoe surface.</p>
+  <p>Approved launch surfaces are sourjoe.com, app.sourjoe.com, stage.sourjoe.com, book.sourjoe.com, sourjoe.w3spaces.com, bookqa.sourjoe.com, and sjqa.w3spaces.com.</p>
+</div>
+
+<main id="sjcalcSession" class="sjcalc-session" aria-label="Sourjoe Calculator Tools">
+  <div class="sjcalc-shell-bar" role="banner">
+    <div class="sjcalc-shell-bar-inner">
+      <div class="sjcalc-shell-logo">
+        <img alt="Sourjoe logo" src="https://sjmedia0.w3spaces.com/sjICONS/logoSOURJOETRANSPARENT_Cropped_31Aug21.png"/>
+        <span>Sourjoe Calculator Tools</span>
+      </div>
+      <div class="sjcalc-shell-actions">
+        <button type="button" class="sjcalc-shell-x" data-sjcalc-exit aria-label="Exit Calculator Tools" title="Exit Calculator Tools">X</button>
+      </div>
+    </div>
+  </div>
+
+  <section id="sjcalcTocCard" class="sjcalc-shell-card sjcalc-shell-toc" aria-label="Calculator List" hidden>
+    <h1 class="sjcalc-shell-title">Calculator List</h1>
+    <p class="sjcalc-shell-note">Choose a calculator, explore the Rabbit Hole content, and run baking scenarios. Use the X button to exit this calculator session and return to your previous Sourjoe page location.</p>
+    <div class="sjcalc-shell-list">
+<button type="button" data-sjcalc-open="unitConvertor">Unit Conversion Calculator</button>
+<button type="button" data-sjcalc-open="bakersMathCalculator">Baker's Math Calculator</button>
+<button type="button" data-sjcalc-open="leavenCalculator">Leaven Calculator</button>
+<button type="button" data-sjcalc-open="breadHydrationCalculator">Bread Recipe Hydration Calculator</button>
+<button type="button" data-sjcalc-open="riseTimeCalculator">Rise Time Calculator</button>
+<button type="button" data-sjcalc-open="riseFactorCalculator">Rise Factor Calculator</button>
+<button type="button" data-sjcalc-open="ddtCalculator">Desired Dough Temperature (DDT) Calculator</button>
+<button type="button" data-sjcalc-open="desiredWaterTemperatureCalculator">Desired Water Temperature Calculator</button>
+    </div>
+  </section>
+
+  <section id="sjcalcWorkspace" class="sjcalc-workspace" aria-label="Selected calculator" hidden>
+<div class="content-section content-section-style sjcalc-drawer-managed sjcalc-shell-section" data-sjcalc-drawer-section="true" data-sjcalc-shell-title="Unit Conversion Calculator" id="unitConvertor">
+<div class="content-section-title">
+<div class="center-title-container">
+<div behaviour-sjb="controlled" class="left-box moreButton sjb-moreCombo" data-group="expandable" data-sjb="bubbleSectionMore" id="unitConvertorButton" onclick="toggleMore('unitConvertorButton', 'moreunitConvertorMsg', 'unitConvertor');">
+                  More ▾
+</div>
+<div class="center-box">
+                Unit Convertor
+             </div>
+<div class="right-box content-title-right">
+<a>
+<img alt="subMenuIcon" class="right-box content-title-menu" onclick="return sjCalcShellShowList(event);" src="https://sjmedia0.w3spaces.com/sjICONS/iconBlueSubMenu.png"/>
+</a>
+</div>
+</div>
+</div>
+<div class="content-section-verbiage">
+<div class="sj-math sj-uc" id="BakersMathCalc">
+<form autocomplete="off" class="sj-uc-form">
+<!---  =========================== Choose Ingredient Header container ============================
+                          Container has three sections: one 5% of total width, the next 90% and the last 5%.
+                          The first 5% sized section holds the question mark for pop-up info.
+                          The middle section holds the name of the section/container.
+                          The last 5% sized section could have an image, question mark or info icon or nothing.
+
+                          🧩 07Feb26 - Removed the “Hi” placeholder text but kept the left/right flex slots.
+                  ============================================================================================== -->
+<!-- Choose Ingredient General Title container  -->
+<div class="sj-uc-titleRow">
+<div class="sj-uc-titleSlot">
+<!-- 🧩 07Feb26 - Placeholder for future Help/Info icon (LEFT) -->
+</div>
+<div class="sj-uc-titleMid">
+<span class="sj-uc-titleText">Choose Ingredient:</span>
+</div>
+<div class="sj-uc-titleSlot">
+<!-- 🧩 07Feb26 - Placeholder for future Help/Info icon (RIGHT) -->
+</div>
+</div> <!--  End of Generic Title container -->
+<!-- Choose Ingredient Two-parameter Data Input container  -->
+<div class="sj-uc-row">
+<div class="sj-uc-cell">
+<select class="sj-uc-select" id="Ingredient" name="CupsSpoonsDisplay" onchange="handleChooseIngredient();">
+<option value="125">CUSTOM</option>
+<option value="127">BREAD FLOUR</option>
+<option selected="" value="125">AP FLOUR</option>
+<option value="102">RYE FLOUR</option>
+<option value="227">WATER</option>
+<option value="277">SALT</option>
+<option value="224">LEAVEN</option>
+</select>
+</div>
+<div class="sj-uc-cell">
+<input class="sj-uc-input sj-uc-input--xPerCup" id="xPerCup" inputmode="decimal" min="1" onchange="handleGramsPerCup();" onfocus="this.select();" onkeyup="handleGramsPerCup();" type="number" value="125"/>
+<span class="sj-uc-unit" id="xPerCupUnit">g/Cup</span>
+</div>
+</div> <!---  =========================== End of Choose Ingredient container ============================ -->
+<!-- Enter Amount of Ingredient General Title container  -->
+<div class="sj-uc-titleRow">
+<div class="sj-uc-titleSlot">
+<!-- 🧩 07Feb26 - Placeholder for future Help/Info icon (LEFT) -->
+</div>
+<div class="sj-uc-titleMid">
+<span class="sj-uc-titleText">Enter Amount:</span>
+</div>
+<div class="sj-uc-titleSlot">
+<!-- 🧩 07Feb26 - Placeholder for future Help/Info icon (RIGHT) -->
+</div>
+</div> <!--  End of Enter Ingredient Amount container -->
+<div class="sj-uc-panel" id="MetricRow">
+<!-- Title portion for Metric Inputs -->
+<div class="sj-uc-panelTitle sj-uc-grid2">
+<div>Kilograms</div>
+<div>Grams</div>
+</div>
+<!-- Input portion for Metric Inputs -->
+<div class="sj-uc-panelFields sj-uc-grid2">
+<div class="sj-uc-field">
+<input class="sj-uc-input" id="kilos" inputmode="decimal" min="0" name="InputAmounts" onchange="handleKilos();" onfocus="this.select();" onkeyup="handleKilos();" type="number" value="0"/>
+</div>
+<div class="sj-uc-field">
+<input class="sj-uc-input" id="grams" inputmode="decimal" min="0" name="InputAmounts" onchange="handleGrams();" onfocus="this.select();" onkeyup="handleGrams();" type="number" value="500"/>
+</div>
+</div>
+<div class="sj-uc-summary">
+<span id="metricSummary">0.50</span> Kilograms
+                          </div>
+</div> <!---  End Metric Row  -->
+<div class="sj-uc-panel" id="ImperialRow">
+<!-- Title portion for Imperial Inputs -->
+<div class="sj-uc-panelTitle sj-uc-grid2">
+<div>Pounds</div>
+<div>Ounces</div>
+</div>
+<!-- Input portion for Imperial Inputs -->
+<div class="sj-uc-panelFields sj-uc-grid2">
+<div class="sj-uc-field">
+<input class="sj-uc-input" id="pounds" inputmode="decimal" min="0" name="InputAmounts" onchange="handlePounds();" onfocus="this.select();" onkeyup="handlePounds();" type="number" value="1"/>
+</div>
+<div class="sj-uc-field">
+<input class="sj-uc-input" id="ounces" inputmode="decimal" min="0" onchange="handleOunces();" onfocus="this.select();" onkeyup="handleOunces();" step="0.1" type="number" value="1.6"/>
+</div>
+</div>
+<div class="sj-uc-summary">
+<span id="imperialSummary">1.13</span> Pounds
+                          </div>
+</div> <!---  End Imperial Row  -->
+<!---  =========================== Start of Volume Entries ============================ -->
+<div class="sj-uc-panel">
+<!-- Title portion for Volume Inputs (kept for reference; hidden by CSS so labels never drift on wrap) -->
+<div class="sj-uc-panelTitle sj-uc-grid3 sj-uc-panelTitle--volume">
+<div>Cups</div>
+<div>Tablespoons</div>
+<div>Teaspoons</div>
+</div>
+<!-- Volume Input Container (each label is paired with its own box so wrap is always correct) -->
+<div class="sj-uc-volumeFields">
+<div class="sj-uc-volField">
+<div class="sj-uc-volLabel">Cups</div>
+<div class="sj-uc-volBox">
+<span>
+<input class="sj-uc-inputGreen" id="CupsInput" inputmode="decimal" max="99" min="0" onchange="handleCups();" onfocus="this.select();" onkeyup="handleCups();" type="number" value="4"/>
+</span>
+<span>
+<select class="sj-uc-selectGreen" id="cupsFrac" onchange="handleCups();" onkeyup="handleCups();">
+<option value="0.5000">½</option>
+<option value="0.3333">⅓</option>
+<option value="0.2500">¼</option>
+<option selected="" value="0">--</option>
+</select>
+</span>
+</div>
+</div>
+<div class="sj-uc-volField">
+<div class="sj-uc-volLabel">Tablespoons</div>
+<div class="sj-uc-volBox">
+<span>
+<input class="inputMaxWidth sj-uc-inputGreen" id="tbspInput" inputmode="decimal" max="99" min="0" onchange="handleTbsp();" onfocus="this.select();" onkeyup="handleTbsp();" type="number" value="0"/>
+</span>
+<span>
+<select class="sj-uc-selectGreen" id="tbspFrac" onchange="handleTbsp();" onkeyup="handleTbsp();">
+<option value="0.5000">½</option>
+<option selected="" value="0">--</option>
+</select>
+</span>
+</div>
+</div>
+<div class="sj-uc-volField">
+<div class="sj-uc-volLabel">Teaspoons</div>
+<div class="sj-uc-volBox">
+<span>
+<input class="inputMaxWidth sj-uc-inputGreen" id="tspInput" inputmode="decimal" max="99" min="0" onchange="handleTsp();" onfocus="this.select();" onkeyup="handleTsp();" type="number" value="0"/>
+</span>
+<span>
+<select class="sj-uc-selectGreen" id="tspFrac" name="InputAmounts" onchange="handleTsp();" onkeyup="handleTsp();">
+<option value="0.5000">½</option>
+<option value="0.2500">¼</option>
+<option value="0.1250">⅛</option>
+<option selected="" value="0">--</option>
+</select>
+</span>
+</div>
+</div>
+</div> <!---  ==================== End Volume Inputs Container ========================== -->
+</div> <!---  =========================== End of Volume Entries ============================ -->
+<div class="sj-uc-menu" id="MenuBar">
+<div>
+<input class="sj-uc-btn" id="Reset" onclick="sjInitValues(); RefreshDisplay();" type="button" value="RESET"/>
+</div>
+<div>
+<input class="sj-uc-btn" id="RefreshButtonDisplay" onclick="RefreshDisplay();" type="button" value="OPTIMIZE"/>
+</div>
+<div class="sj-uc-residual" id="residual">
+                                  Accuracy: 0.5 grams (0.1 % of Amount)
+                          </div>
+</div> <!--- MenuBar  -->
+<input hidden="" id="resetForm" type="reset" value="Shit"/>
+<input hidden="" id="gramsP" name="InputAmounts" type="number" value="500.000"/><br/>
+<input hidden="" id="ouncesP" name="InputAmounts" type="number" value="1.600"/>
+<!-- 🧩 07Feb26 - Debug readout suppressed by CSS (.sj-uc-debug) -->
+<p class="sj-uc-debug" id="test"></p>
+</form>
+</div> <!--- END BakersMathCalc -->
+<div class="content-section-moreMsg" id="moreunitConvertorMsg" style="display: none">
+<p>
+            More Factoids to come...
+          </p>
+<!-- =========================================================================================
+               🐇 23Jan26 - Rabbit Hole placeholder (auto-added to every Section)
+               ========================================================================================= -->
+<div !important="" class="sjRabbitHole-wrap" hidden="">
+<span behaviour-sjb="controlled" class="sjb-helpDot" data-sjb="bubbleRabbit"><strong>?</strong></span>
+<div aria-controls="RH-unitConv-01-panel" aria-expanded="false" aria-label="More" class="sjRabbitHole-button" data-group="expandable" id="RH-unitConv-01-btn" onclick="toggleRabbitHole('RH-unitConv-01-btn','RH-unitConv-01-panel');" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault(); this.click();}" role="button" tabindex="0">
+<!-- NOTE: Keep this "More..." text (it's hidden by CSS).
+                   Your Search logic relies on seeing this label to auto-expand content during Search. -->
+              More...
+            </div>
+<div class="sjRabbitHole-panel sjcalc-rabbit-panel" id="RH-unitConv-01-panel" style="display:none;">
+<!-- ✅ 2026-06-09 🧮 [SJ-CALC-PASS4C-UNIT-RH-REFERENCE-01]
+     Replace Unit Convertor placeholder with a practical baking conversion reference.
+     Keep this content static and readable; calculator logic remains in sjMathScripts.js. -->
+<div class="sjcalc-rh-reference">
+<h3>Reference</h3>
+<p class="sjcalc-rh-note">
+    Baking is most repeatable by weight, but recipes still mix cups, spoons, ounces, grams, millilitres, oven temperatures, and butter sticks. Use these as practical North American baking references. Ingredient cup weights are approximate because flour type, grind, packing, brand, and humidity all matter.
+  </p>
+<div class="sjcalc-rh-reference-grid">
+<section class="sjcalc-rh-card">
+<h4>U.S. Volume Relationships</h4>
+<table class="sjcalc-rh-table">
+<tbody>
+<tr><th scope="row">1 cup</th><td>16 Tbsp = 48 tsp = 8 fl oz = about 240 mL</td></tr>
+<tr><th scope="row">3/4 cup</th><td>12 Tbsp = 36 tsp = 6 fl oz = about 180 mL</td></tr>
+<tr><th scope="row">2/3 cup</th><td>10 Tbsp + 2 tsp = about 160 mL</td></tr>
+<tr><th scope="row">1/2 cup</th><td>8 Tbsp = 24 tsp = 4 fl oz = about 120 mL</td></tr>
+<tr><th scope="row">1/3 cup</th><td>5 Tbsp + 1 tsp = about 80 mL</td></tr>
+<tr><th scope="row">1/4 cup</th><td>4 Tbsp = 12 tsp = 2 fl oz = about 60 mL</td></tr>
+<tr><th scope="row">1/8 cup</th><td>2 Tbsp = 6 tsp = 1 fl oz = about 30 mL</td></tr>
+<tr><th scope="row">1 Tbsp</th><td>3 tsp = 1/2 fl oz = about 15 mL</td></tr>
+<tr><th scope="row">1 tsp</th><td>about 5 mL</td></tr>
+<tr><th scope="row">1/2 tsp</th><td>about 2.5 mL</td></tr>
+<tr><th scope="row">1/4 tsp</th><td>about 1.25 mL</td></tr>
+</tbody>
+</table>
+</section>
+<section class="sjcalc-rh-card">
+<h4>Metric / Imperial Weight</h4>
+<table class="sjcalc-rh-table">
+<tbody>
+<tr><th scope="row">1 kilogram</th><td>1,000 g = about 2.205 lb</td></tr>
+<tr><th scope="row">1 pound</th><td>16 oz = about 454 g</td></tr>
+<tr><th scope="row">1 ounce</th><td>about 28.35 g</td></tr>
+<tr><th scope="row">1 gram</th><td>about 0.035 oz</td></tr>
+<tr><th scope="row">100 g</th><td>about 3.53 oz</td></tr>
+<tr><th scope="row">500 g</th><td>about 1.10 lb</td></tr>
+<tr><th scope="row">1 litre water</th><td>about 1 kg</td></tr>
+<tr><th scope="row">1 mL water</th><td>about 1 g</td></tr>
+</tbody>
+</table>
+</section>
+<section class="sjcalc-rh-card">
+<h4>Liquid Volume</h4>
+<table class="sjcalc-rh-table">
+<tbody>
+<tr><th scope="row">1 fluid ounce</th><td>about 30 mL</td></tr>
+<tr><th scope="row">1 cup liquid</th><td>about 240 mL</td></tr>
+<tr><th scope="row">1 pint</th><td>2 cups = 16 fl oz = about 480 mL</td></tr>
+<tr><th scope="row">1 quart</th><td>4 cups = 32 fl oz = about 950 mL</td></tr>
+<tr><th scope="row">1 gallon</th><td>16 cups = 128 fl oz = about 3.84 L</td></tr>
+<tr><th scope="row">1 cup water</th><td>about 227 g in many baking charts</td></tr>
+<tr><th scope="row">1 Tbsp water</th><td>about 14 to 15 g</td></tr>
+<tr><th scope="row">1 tsp water</th><td>about 5 g</td></tr>
+</tbody>
+</table>
+</section>
+<section class="sjcalc-rh-card">
+<h4>Butter</h4>
+<table class="sjcalc-rh-table">
+<tbody>
+<tr><th scope="row">1 stick</th><td>1/2 cup = 8 Tbsp = about 113 to 115 g = 4 oz</td></tr>
+<tr><th scope="row">2 sticks</th><td>1 cup = 16 Tbsp = about 227 g = 8 oz</td></tr>
+<tr><th scope="row">4 sticks</th><td>2 cups = 32 Tbsp = about 454 g = 1 lb</td></tr>
+<tr><th scope="row">1 Tbsp butter</th><td>about 14 g = 1/2 oz</td></tr>
+<tr><th scope="row">1/4 cup butter</th><td>4 Tbsp = about 57 to 58 g = 2 oz</td></tr>
+<tr><th scope="row">1/3 cup butter</th><td>5 Tbsp + 1 tsp = about 76 g</td></tr>
+<tr><th scope="row">2/3 cup butter</th><td>10 Tbsp + 2 tsp = about 151 g</td></tr>
+</tbody>
+</table>
+</section>
+</div>
+<section class="sjcalc-rh-card sjcalc-rh-card-wide">
+<h4>Common Baking Ingredient Weights</h4>
+<table class="sjcalc-rh-table sjcalc-rh-table-three">
+<thead>
+<tr><th scope="col">Ingredient</th><th scope="col">Volume</th><th scope="col">Approx. weight</th></tr>
+</thead>
+<tbody>
+<tr><td>Water</td><td>1 cup</td><td>227 g / 8 oz</td></tr>
+<tr><td>Milk / buttermilk / yogurt / sour cream</td><td>1 cup</td><td>about 227 g</td></tr>
+<tr><td>Sourdough starter / leaven</td><td>1 cup</td><td>about 227 to 241 g</td></tr>
+<tr><td>All-purpose flour</td><td>1 cup</td><td>about 120 g</td></tr>
+<tr><td>Bread flour</td><td>1 cup</td><td>about 120 g</td></tr>
+<tr><td>Whole wheat flour</td><td>1 cup</td><td>about 113 g</td></tr>
+<tr><td>Medium / white rye flour</td><td>1 cup</td><td>about 106 g</td></tr>
+<tr><td>Spelt flour</td><td>1 cup</td><td>about 99 g</td></tr>
+<tr><td>Semolina flour</td><td>1 cup</td><td>about 163 g</td></tr>
+<tr><td>Almond flour</td><td>1 cup</td><td>about 96 g</td></tr>
+<tr><td>Coconut flour</td><td>1 cup</td><td>about 128 g</td></tr>
+<tr><td>Granulated sugar</td><td>1 cup</td><td>about 198 g</td></tr>
+<tr><td>Brown sugar, packed</td><td>1 cup</td><td>about 213 g</td></tr>
+<tr><td>Confectioners' sugar, unsifted</td><td>1 cup</td><td>about 113 g</td></tr>
+<tr><td>Honey</td><td>1 Tbsp</td><td>about 21 g</td></tr>
+<tr><td>Molasses</td><td>1/4 cup</td><td>about 85 g</td></tr>
+<tr><td>Table salt</td><td>1 Tbsp</td><td>about 18 g</td></tr>
+<tr><td>Kosher salt, Morton</td><td>1 Tbsp</td><td>about 16 g</td></tr>
+<tr><td>Kosher salt, Diamond Crystal</td><td>1 Tbsp</td><td>about 8 g</td></tr>
+<tr><td>Instant yeast</td><td>2 1/4 tsp</td><td>about 7 g</td></tr>
+<tr><td>Baking powder</td><td>1 tsp</td><td>about 4 g</td></tr>
+<tr><td>Baking soda</td><td>1/2 tsp</td><td>about 3 g</td></tr>
+<tr><td>Vegetable oil</td><td>1 cup</td><td>about 198 g</td></tr>
+</tbody>
+</table>
+</section>
+<section class="sjcalc-rh-card sjcalc-rh-card-wide">
+<h4>Common Oven Temperature Landmarks</h4>
+<table class="sjcalc-rh-table sjcalc-rh-temp-table">
+<tbody>
+<tr><th scope="row">300°F</th><td>about 150°C</td><th scope="row">375°F</th><td>about 190°C</td></tr>
+<tr><th scope="row">325°F</th><td>about 165°C</td><th scope="row">400°F</th><td>about 205°C</td></tr>
+<tr><th scope="row">350°F</th><td>about 175°C</td><th scope="row">425°F</th><td>about 220°C</td></tr>
+<tr><th scope="row">450°F</th><td>about 230°C</td><th scope="row">500°F</th><td>about 260°C</td></tr>
+</tbody>
+</table>
+</section>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="content-section content-section-style sjcalc-drawer-managed sjcalc-shell-section" data-sjcalc-drawer-section="true" data-sjcalc-shell-title="Baker's Math Calculator" id="bakersMathCalculator">
+<div class="content-section-title">
+<div class="center-title-container">
+<div behaviour-sjb="controlled" class="left-box moreButton sjb-moreCombo" data-group="expandable" data-sjb="bubbleSectionMore" id="bakersMathCalculatorButton" onclick="toggleMore('bakersMathCalculatorButton', 'morebakersMathCalculatorMsg', 'bakersMathCalculator');">
+                  More ▾
+</div>
+<div class="center-box">
+<span behaviour-sjb="controlled" class="sjb-helpDot sjp-sjb-before-title" data-sjb="bubbleSectionTitle"><strong>?</strong></span>
+                Baker's Math Calculator
+             </div>
+<div class="right-box content-title-right">
+<a>
+<img alt="subMenuIcon" class="right-box content-title-menu" onclick="return sjCalcShellShowList(event);" src="https://sjmedia0.w3spaces.com/sjICONS/iconBlueSubMenu.png"/>
+</a>
+<span behaviour-sjb="controlled" class="sjb-helpDot sjp-sjb-after-toc-icon" data-sjb="bubbleSectionTOC"><strong>?</strong></span>
+</div>
+</div>
+</div>
+<div class="content-section-verbiage">
+<div class="sjcalc sjcalc-bm" data-sjcalc="bakersMath" id="sjcalc-bakersMath">
+<p class="sjcalc-intro"><span behaviour-sjb="enabled" class="sjb-helpDot sjb-helpDot--tiny sjcalc-help sjcalc-intro-help" data-sjb="sjCalcHelpIntroBM" tabindex="0"><strong>?</strong></span> Enter any two baker's-math values and choose which third value SourJoe should calculate.</p>
+<div class="sjcalc-units"><div class="sjcalc-unitRow" data-sjcalc-unit-row="mass">
+<span class="sjcalc-unitLabel">Mass Units:</span>
+<label><input checked="" data-sj-unit-kind="mass" name="sjbm-mass" type="radio" value="metric"/> Metric</label>
+<label><input data-sj-unit-kind="mass" name="sjbm-mass" type="radio" value="imperial"/> Imperial</label>
+</div></div>
+<div class="sjcalc-controlRow"><label><span behaviour-sjb="enabled" class="sjb-helpDot sjb-helpDot--tiny sjcalc-help" data-sjb="sjCalcHelpCalculateField" tabindex="0"><strong>?</strong></span> Calculate this field:</label><select id="sjbm_calc"><option selected="" value="percent">Baker's Percentage</option><option value="ingredient">Ingredient Amount</option><option value="flour">Recipe Flour Amount</option></select></div>
+<table class="sjcalc-table"><thead><tr><th>Parameter</th><th>Value</th></tr></thead><tbody><tr><td><span class="sjcalc-labelText"><span behaviour-sjb="enabled" class="sjb-helpDot sjb-helpDot--tiny sjcalc-help" data-sjb="sjCalcHelpRecipeFlour" tabindex="0"><strong>?</strong></span> Recipe Flour Amount</span></td><td><div class="sjcalc-valueStack"><input class="sjcalc-input sjcalc-num" data-sj-kind="mass" id="sjbm_flour" inputmode="decimal" step="0.1" type="number" value="500"><div class="sjcalc-alt" data-sj-alt-for="sjbm_flour"></div></input></div></td></tr>
+<tr><td><span class="sjcalc-labelText"><span behaviour-sjb="enabled" class="sjb-helpDot sjb-helpDot--tiny sjcalc-help" data-sjb="sjCalcHelpIngredientAmount" tabindex="0"><strong>?</strong></span> Ingredient Amount</span></td><td><div class="sjcalc-valueStack"><input class="sjcalc-input sjcalc-num" data-sj-kind="mass" id="sjbm_ingredient" inputmode="decimal" step="0.1" type="number" value="100"><div class="sjcalc-alt" data-sj-alt-for="sjbm_ingredient"></div></input></div></td></tr>
+<tr><td><span class="sjcalc-labelText"><span behaviour-sjb="enabled" class="sjb-helpDot sjb-helpDot--tiny sjcalc-help" data-sjb="sjCalcHelpBakersPercent" tabindex="0"><strong>?</strong></span> Baker's Percentage</span></td><td><div class="sjcalc-valueStack"><input class="sjcalc-input sjcalc-num" id="sjbm_percent" inputmode="decimal" readonly="" step="0.1" type="number" value="20"/><div class="sjcalc-alt" data-sj-alt-for="sjbm_percent"></div></div><span class="sjcalc-unitInline">%</span></td></tr></tbody></table>
+<div class="sjcalc-actions"><button class="sjcalc-btn" id="sjbm_reset" type="button">Reset</button></div>
+<div class="sjcalc-resultBox" id="sjbm_result"></div>
+<div class="sjcalc-summaryPanel" id="sjbm_summary"></div>
+</div>
+<div class="content-section-moreMsg" id="morebakersMathCalculatorMsg" style="display: none">
+<div class="sjcalc-rabbit-shell">
+<span behaviour-sjb="controlled" class="sjb-helpDot sjp-sjb-before-rabbit" data-sjb="bubbleRabbit"><strong>?</strong></span>
+<div aria-controls="RH-calc-bakersMath-panel" aria-expanded="false" aria-label="Rabbit Hole" class="sjRabbitHole-button" data-group="expandable" id="RH-calc-bakersMath-btn" onclick="toggleRabbitHole('RH-calc-bakersMath-btn','RH-calc-bakersMath-panel');" onkeydown="if(event.key==='Enter'||event.key===' ' ){event.preventDefault(); this.click();}" role="button" tabindex="0">More...</div>
+<div class="sjRabbitHole-panel sjcalc-rabbit-panel" id="RH-calc-bakersMath-panel" style="display:none;">
+<h4>Baker's Percentage Guide</h4>
+<p>Baker's math expresses every ingredient relative to recipe flour. Flour is 100%; water, salt, leaven, seeds, and inclusions are percentages of that flour basis.</p>
+<div class="sjcalc-formula">Baker's % = ingredient amount ÷ recipe flour amount × 100</div>
+<h4>Common Baker's Percentage Guide</h4>
+<div class="sjcalc-guide-grid">
+<div class="sjcalc-guide-item"><strong>Water:</strong><br/>60–85% typical bread range. Higher hydration usually means a looser dough and more open crumb potential.</div>
+<div class="sjcalc-guide-item"><strong>Salt:</strong><br/>1.8–2.2% common lean-bread range. Salt affects flavour, gluten strength, and fermentation speed.</div>
+<div class="sjcalc-guide-item"><strong>Leaven:</strong><br/>10–30% often used, depending on schedule, starter strength, and desired acidity.</div>
+<div class="sjcalc-guide-item"><strong>Oil / Fat:</strong><br/>0–10% depending on style. Fat tenderizes crumb and can soften crust.</div>
+<div class="sjcalc-guide-item"><strong>Sugar / Honey:</strong><br/>0–10%+ depending on enrichment. Sweeteners feed browning and tenderness.</div>
+<div class="sjcalc-guide-item"><strong>Seeds / Inclusions:</strong><br/>5–30%+ depending on style. Soakers may be needed so inclusions do not rob water from the dough.</div>
+</div>
+<h4>Developer Notes / Model Logic</h4>
+<div class="sjcalc-formula">percent = ingredientG ÷ flourG × 100
+ingredientG = flourG × percent ÷ 100
+flourG = ingredientG ÷ (percent ÷ 100)
+
+grams = ounces × 28.349523125
+ounces = grams ÷ 28.349523125</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="content-section content-section-style sjcalc-drawer-managed sjcalc-shell-section" data-sjcalc-drawer-section="true" data-sjcalc-shell-title="Leaven Calculator" id="leavenCalculator">
+<div class="content-section-title">
+<div class="center-title-container">
+<div behaviour-sjb="controlled" class="left-box moreButton sjb-moreCombo" data-group="expandable" data-sjb="bubbleSectionMore" id="leavenCalculatorButton" onclick="toggleMore('leavenCalculatorButton', 'moreleavenCalculatorMsg', 'leavenCalculator');">
+                  More ▾
+</div>
+<div class="center-box">
+<span behaviour-sjb="controlled" class="sjb-helpDot sjp-sjb-before-title" data-sjb="bubbleSectionTitle"><strong>?</strong></span>
+                Leaven Calculator
+             </div>
+<div class="right-box content-title-right">
+<a>
+<img alt="subMenuIcon" class="right-box content-title-menu" onclick="return sjCalcShellShowList(event);" src="https://sjmedia0.w3spaces.com/sjICONS/iconBlueSubMenu.png"/>
+</a>
+<span behaviour-sjb="controlled" class="sjb-helpDot sjp-sjb-after-toc-icon" data-sjb="bubbleSectionTOC"><strong>?</strong></span>
+</div>
+</div>
+</div>
+<div class="content-section-verbiage">
+<div class="sjcalc sjcalc-lev" data-sjcalc="leaven" id="sjcalc-leaven">
+<p class="sjcalc-intro"><span behaviour-sjb="enabled" class="sjb-helpDot sjb-helpDot--tiny sjcalc-help sjcalc-intro-help" data-sjb="sjCalcHelpIntroLeaven" tabindex="0"><strong>?</strong></span> Calculate how much flour and water to add to a seed starter to build a target leaven.</p>
+<div class="sjcalc-units"><div class="sjcalc-unitRow" data-sjcalc-unit-row="mass">
+<span class="sjcalc-unitLabel">Mass Units:</span>
+<label><input checked="" data-sj-unit-kind="mass" name="sjlev-mass" type="radio" value="metric"/> Metric</label>
+<label><input data-sj-unit-kind="mass" name="sjlev-mass" type="radio" value="imperial"/> Imperial</label>
+</div></div>
+<table class="sjcalc-table"><thead><tr><th>Parameter</th><th>Value</th></tr></thead><tbody><tr><td><span class="sjcalc-labelText"><span behaviour-sjb="enabled" class="sjb-helpDot sjb-helpDot--tiny sjcalc-help" data-sjb="sjCalcHelpTargetLeaven" tabindex="0"><strong>?</strong></span> Target Leaven Amount</span></td><td><div class="sjcalc-valueStack"><input class="sjcalc-input sjcalc-num" data-sj-kind="mass" id="sjlev_total" inputmode="decimal" step="0.1" type="number" value="300"><div class="sjcalc-alt" data-sj-alt-for="sjlev_total"></div></input></div></td></tr>
+<tr><td><span class="sjcalc-labelText"><span behaviour-sjb="enabled" class="sjb-helpDot sjb-helpDot--tiny sjcalc-help" data-sjb="sjCalcHelpLeavenHydration" tabindex="0"><strong>?</strong></span> Target Leaven Hydration</span></td><td><div class="sjcalc-valueStack"><input class="sjcalc-input sjcalc-num" id="sjlev_hydration" inputmode="decimal" step="0.1" type="number" value="100"><div class="sjcalc-alt" data-sj-alt-for="sjlev_hydration"></div></input></div><span class="sjcalc-unitInline">%</span></td></tr>
+<tr><td><span class="sjcalc-labelText"><span behaviour-sjb="enabled" class="sjb-helpDot sjb-helpDot--tiny sjcalc-help" data-sjb="sjCalcHelpSeedStarter" tabindex="0"><strong>?</strong></span> Seed Starter Amount</span></td><td><div class="sjcalc-valueStack"><input class="sjcalc-input sjcalc-num" data-sj-kind="mass" id="sjlev_seed" inputmode="decimal" step="0.1" type="number" value="30"/><div class="sjcalc-alt" data-sj-alt-for="sjlev_seed"></div></div></td></tr>
+<tr><td><span class="sjcalc-labelText"><span behaviour-sjb="enabled" class="sjb-helpDot sjb-helpDot--tiny sjcalc-help" data-sjb="sjCalcHelpSeedHydration" tabindex="0"><strong>?</strong></span> Seed Starter Hydration</span></td><td><div class="sjcalc-valueStack"><input class="sjcalc-input sjcalc-num" id="sjlev_seedHydration" inputmode="decimal" step="0.1" type="number" value="100"/><div class="sjcalc-alt" data-sj-alt-for="sjlev_seedHydration"></div></div><span class="sjcalc-unitInline">%</span></td></tr>
+<tr><td><span class="sjcalc-labelText"><span behaviour-sjb="enabled" class="sjb-helpDot sjb-helpDot--tiny sjcalc-help" data-sjb="sjCalcHelpWaterToAdd" tabindex="0"><strong>?</strong></span> Water to Add</span></td><td><div class="sjcalc-valueStack"><span class="sjcalc-output" data-sj-out-kind="mass" id="sjlev_water">--</span><div class="sjcalc-alt" data-sj-alt-for="sjlev_water"></div></div></td></tr>
+<tr><td><span class="sjcalc-labelText"><span behaviour-sjb="enabled" class="sjb-helpDot sjb-helpDot--tiny sjcalc-help" data-sjb="sjCalcHelpFlourToAdd" tabindex="0"><strong>?</strong></span> Flour to Add</span></td><td><div class="sjcalc-valueStack"><span class="sjcalc-output" data-sj-out-kind="mass" id="sjlev_flour">--</span><div class="sjcalc-alt" data-sj-alt-for="sjlev_flour"></div></div></td></tr></tbody></table>
+<div class="sjcalc-actions"><button class="sjcalc-btn" id="sjlev_reset" type="button">Reset</button></div>
+<div class="sjcalc-resultBox" id="sjlev_result"></div>
+<div class="sjcalc-summaryPanel" id="sjlev_summary"></div>
+</div>
+<div class="content-section-moreMsg" id="moreleavenCalculatorMsg" style="display: none">
+<div class="sjcalc-rabbit-shell">
+<span behaviour-sjb="controlled" class="sjb-helpDot sjp-sjb-before-rabbit" data-sjb="bubbleRabbit"><strong>?</strong></span>
+<div aria-controls="RH-calc-leaven-panel" aria-expanded="false" aria-label="Rabbit Hole" class="sjRabbitHole-button" data-group="expandable" id="RH-calc-leaven-btn" onclick="toggleRabbitHole('RH-calc-leaven-btn','RH-calc-leaven-panel');" onkeydown="if(event.key==='Enter'||event.key===' ' ){event.preventDefault(); this.click();}" role="button" tabindex="0">More...</div>
+<div class="sjRabbitHole-panel sjcalc-rabbit-panel" id="RH-calc-leaven-panel" style="display:none;">
+<h4>Formula Notes</h4>
+<div class="sjcalc-formula">seedFlour = seedStarter ÷ (1 + seedHydration/100)
+seedWater = seedStarter - seedFlour
+
+targetFlour = targetLeaven ÷ (1 + targetHydration/100)
+targetWater = targetLeaven - targetFlour
+
+flourToAdd = targetFlour - seedFlour
+waterToAdd = targetWater - seedWater</div>
+<h4>Leaven Hydration Guide</h4>
+<table class="sjcalc-rabbit-table">
+<thead><tr><th>Leaven Style</th><th>Typical Hydration</th><th>Common Use / Behaviour</th></tr></thead>
+<tbody>
+<tr><td>Stiff leaven / stiff levain</td><td>50–65%</td><td>Firm, dough-like build. Often used when the baker wants slower ripening, more strength, or a different acid balance. Good for breads where a less-liquid preferment is easier to fold into formula math.</td></tr>
+<tr><td>Lievito madre style</td><td>About 45–50%</td><td>Very firm culture associated with enriched Italian baking traditions. Requires more maintenance and more deliberate mixing than a loose starter.</td></tr>
+<tr><td>Medium leaven</td><td>70–85%</td><td>A compromise build: easier to mix than a stiff leaven, but less soupy than 100%. Useful when dough strength and timing need a middle ground.</td></tr>
+<tr><td>Liquid leaven</td><td>100%</td><td>Equal flour and water by weight. Common, easy to maintain, easy to mix into dough, and straightforward for baker's-percentage math.</td></tr>
+<tr><td>High-hydration leaven</td><td>110–125%+</td><td>Loose, batter-like build. Can ripen quickly and can contribute extensibility, but needs closer timing because food is consumed faster.</td></tr>
+</tbody>
+</table>
+<p class="sjcalc-mini-note"><strong>SourJoe note:</strong> hydration is not “better” or “worse” by itself. It changes handling, ripening schedule, acidity profile, and how easily the leaven blends into the final dough.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="content-section content-section-style sjcalc-drawer-managed sjcalc-shell-section" data-sjcalc-drawer-section="true" data-sjcalc-shell-title="Bread Recipe Hydration Calculator" id="breadHydrationCalculator">
+<div class="content-section-title">
+<div class="center-title-container">
+<div behaviour-sjb="controlled" class="left-box moreButton sjb-moreCombo" data-group="expandable" data-sjb="bubbleSectionMore" id="breadHydrationCalculatorButton" onclick="toggleMore('breadHydrationCalculatorButton', 'morebreadHydrationCalculatorMsg', 'breadHydrationCalculator');">
+                  More ▾
+</div>
+<div class="center-box">
+<span behaviour-sjb="controlled" class="sjb-helpDot sjp-sjb-before-title" data-sjb="bubbleSectionTitle"><strong>?</strong></span>
+                Bread Recipe Hydration Calculator
+             </div>
+<div class="right-box content-title-right">
+<a>
+<img alt="subMenuIcon" class="right-box content-title-menu" onclick="return sjCalcShellShowList(event);" src="https://sjmedia0.w3spaces.com/sjICONS/iconBlueSubMenu.png"/>
+</a>
+<span behaviour-sjb="controlled" class="sjb-helpDot sjp-sjb-after-toc-icon" data-sjb="bubbleSectionTOC"><strong>?</strong></span>
+</div>
+</div>
+</div>
+<div class="content-section-verbiage">
+<div class="sjcalc sjcalc-hyd" data-sjcalc="hydration" id="sjcalc-hydration">
+<p class="sjcalc-intro"><span behaviour-sjb="enabled" class="sjb-helpDot sjb-helpDot--tiny sjcalc-help sjcalc-intro-help" data-sjb="sjCalcHelpIntroHydration" tabindex="0"><strong>?</strong></span> Calculate total bread recipe hydration, including water, other liquids, and leaven contribution.</p>
+<div class="sjcalc-units"><div class="sjcalc-unitRow" data-sjcalc-unit-row="mass">
+<span class="sjcalc-unitLabel">Mass Units:</span>
+<label><input checked="" data-sj-unit-kind="mass" name="sjhyd-mass" type="radio" value="metric"/> Metric</label>
+<label><input data-sj-unit-kind="mass" name="sjhyd-mass" type="radio" value="imperial"/> Imperial</label>
+</div></div>
+<table class="sjcalc-table"><thead><tr><th>Parameter</th><th>Value</th></tr></thead><tbody><tr><td><span class="sjcalc-labelText"><span behaviour-sjb="enabled" class="sjb-helpDot sjb-helpDot--tiny sjcalc-help" data-sjb="sjCalcHelpRecipeWater" tabindex="0"><strong>?</strong></span> Recipe Water</span></td><td><div class="sjcalc-valueStack"><input class="sjcalc-input sjcalc-num" data-sj-kind="mass" id="sjhyd_water" inputmode="decimal" step="0.1" type="number" value="700"><div class="sjcalc-alt" data-sj-alt-for="sjhyd_water"></div></input></div></td></tr>
+<tr><td><span class="sjcalc-labelText"><span behaviour-sjb="enabled" class="sjb-helpDot sjb-helpDot--tiny sjcalc-help" data-sjb="sjCalcHelpOtherLiquids" tabindex="0"><strong>?</strong></span> Other Liquids</span></td><td><div class="sjcalc-valueStack"><input class="sjcalc-input sjcalc-num" data-sj-kind="mass" id="sjhyd_other" inputmode="decimal" step="0.1" type="number" value="0"><div class="sjcalc-alt" data-sj-alt-for="sjhyd_other"></div></input></div></td></tr>
+<tr><td><span class="sjcalc-labelText"><span behaviour-sjb="enabled" class="sjb-helpDot sjb-helpDot--tiny sjcalc-help" data-sjb="sjCalcHelpRecipeFlour" tabindex="0"><strong>?</strong></span> Recipe Flour</span></td><td><div class="sjcalc-valueStack"><input class="sjcalc-input sjcalc-num" data-sj-kind="mass" id="sjhyd_flour" inputmode="decimal" step="0.1" type="number" value="900"/><div class="sjcalc-alt" data-sj-alt-for="sjhyd_flour"></div></div></td></tr>
+<tr><td><span class="sjcalc-labelText"><span behaviour-sjb="enabled" class="sjb-helpDot sjb-helpDot--tiny sjcalc-help" data-sjb="sjCalcHelpLeavenAmount" tabindex="0"><strong>?</strong></span> Leaven Amount</span></td><td><div class="sjcalc-valueStack"><input class="sjcalc-input sjcalc-num" data-sj-kind="mass" id="sjhyd_leaven" inputmode="decimal" step="0.1" type="number" value="200"/><div class="sjcalc-alt" data-sj-alt-for="sjhyd_leaven"></div></div></td></tr>
+<tr><td><span class="sjcalc-labelText"><span behaviour-sjb="enabled" class="sjb-helpDot sjb-helpDot--tiny sjcalc-help" data-sjb="sjCalcHelpLeavenHydration" tabindex="0"><strong>?</strong></span> Leaven Hydration</span></td><td><div class="sjcalc-valueStack"><input class="sjcalc-input sjcalc-num" id="sjhyd_leavenHydration" inputmode="decimal" step="0.1" type="number" value="100"/><div class="sjcalc-alt" data-sj-alt-for="sjhyd_leavenHydration"></div></div><span class="sjcalc-unitInline">%</span></td></tr>
+<tr><td><span class="sjcalc-labelText"><span behaviour-sjb="enabled" class="sjb-helpDot sjb-helpDot--tiny sjcalc-help" data-sjb="sjCalcHelpBreadHydration" tabindex="0"><strong>?</strong></span> Bread Recipe Hydration</span></td><td><div class="sjcalc-valueStack"><span class="sjcalc-output" id="sjhyd_hydration">--</span><div class="sjcalc-alt" data-sj-alt-for="sjhyd_hydration"></div></div><span class="sjcalc-unitInline">%</span></td></tr></tbody></table>
+<div class="sjcalc-actions"><button class="sjcalc-btn" id="sjhyd_reset" type="button">Reset</button></div>
+<div class="sjcalc-resultBox" id="sjhyd_result"></div>
+<div class="sjcalc-summaryPanel" id="sjhyd_summary"></div>
+</div>
+<div class="content-section-moreMsg" id="morebreadHydrationCalculatorMsg" style="display: none">
+<div class="sjcalc-rabbit-shell">
+<span behaviour-sjb="controlled" class="sjb-helpDot sjp-sjb-before-rabbit" data-sjb="bubbleRabbit"><strong>?</strong></span>
+<div aria-controls="RH-calc-hydration-panel" aria-expanded="false" aria-label="Rabbit Hole" class="sjRabbitHole-button" data-group="expandable" id="RH-calc-hydration-btn" onclick="toggleRabbitHole('RH-calc-hydration-btn','RH-calc-hydration-panel');" onkeydown="if(event.key==='Enter'||event.key===' ' ){event.preventDefault(); this.click();}" role="button" tabindex="0">More...</div>
+<div class="sjRabbitHole-panel sjcalc-rabbit-panel" id="RH-calc-hydration-panel" style="display:none;">
+<h4>Formula Notes</h4>
+<div class="sjcalc-formula">leavenFlour = leavenAmount ÷ (1 + leavenHydration/100)
+leavenWater = leavenAmount - leavenFlour
+
+totalFormulaFlour = recipeFlour + leavenFlour
+totalFormulaWater = recipeWater + otherLiquids + leavenWater
+
+formulaHydration = totalFormulaWater ÷ totalFormulaFlour × 100</div>
+<h4>Typical Hydration Ranges for Common Doughs</h4>
+<table class="sjcalc-rabbit-table">
+<thead><tr><th>Bread / Dough Style</th><th>Typical Hydration</th><th>Leaven / Starter Pattern</th><th>Handling and Crumb Notes</th></tr></thead>
+<tbody>
+<tr><td>Tartine-style country loaf</td><td>80%+</td><td>Often a 100% hydration leaven, commonly built from a flour mix similar to the final dough.</td><td>Wet, extensible dough with large, irregular alveoli when fermentation and shaping are well controlled.</td></tr>
+<tr><td>Rustic country sourdough</td><td>70–82%</td><td>Usually 80–100% hydration leaven.</td><td>Moderately open crumb; whole-grain flour often asks for more water and a gentler hand.</td></tr>
+<tr><td>Baguette / long lean loaf</td><td>65–75%</td><td>Can use liquid levain, poolish, or mixed preferment styles.</td><td>Balanced extensibility and strength; open but more controlled crumb than very wet country loaves.</td></tr>
+<tr><td>Bagels</td><td>55–65%</td><td>Often commercial yeast or stiff sourdough build; sourdough versions usually stay relatively firm.</td><td>Stiff dough, tight crumb, and chewy bite. Low hydration is part of the classic bagel personality.</td></tr>
+<tr><td>Pizza</td><td>58–70%+ depending on style</td><td>Direct dough, poolish, biga, or sourdough levain can all be used.</td><td>Lower hydration favours easy handling and crispness; higher hydration can give a lighter, more open rim.</td></tr>
+</tbody>
+</table>
+<p class="sjcalc-mini-note"><strong>Important:</strong> hydration ranges are starting points. Flour strength, whole-grain percentage, mixing intensity, fermentation time, and handling skill decide whether a given hydration feels easy or chaotic.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="content-section content-section-style sjcalc-drawer-managed sjcalc-shell-section" data-sjcalc-drawer-section="true" data-sjcalc-shell-title="Rise Time Calculator" id="riseTimeCalculator">
+<div class="content-section-title">
+<div class="center-title-container">
+<div behaviour-sjb="controlled" class="left-box moreButton sjb-moreCombo" data-group="expandable" data-sjb="bubbleSectionMore" id="riseTimeCalculatorButton" onclick="toggleMore('riseTimeCalculatorButton', 'moreriseTimeCalculatorMsg', 'riseTimeCalculator');">
+                  More ▾
+</div>
+<div class="center-box">
+<span behaviour-sjb="controlled" class="sjb-helpDot sjp-sjb-before-title" data-sjb="bubbleSectionTitle"><strong>?</strong></span>
+                Rise Time Calculator
+             </div>
+<div class="right-box content-title-right">
+<a>
+<img alt="subMenuIcon" class="right-box content-title-menu" onclick="return sjCalcShellShowList(event);" src="https://sjmedia0.w3spaces.com/sjICONS/iconBlueSubMenu.png"/>
+</a>
+<span behaviour-sjb="controlled" class="sjb-helpDot sjp-sjb-after-toc-icon" data-sjb="bubbleSectionTOC"><strong>?</strong></span>
+</div>
+</div>
+</div>
+<div class="content-section-verbiage">
+<div class="sjcalc sjcalc-rt" data-sjcalc="riseTime" id="sjcalc-riseTime">
+<p class="sjcalc-intro"><span behaviour-sjb="enabled" class="sjb-helpDot sjb-helpDot--tiny sjcalc-help sjcalc-intro-help" data-sjb="sjCalcHelpIntroRiseTime" tabindex="0"><strong>?</strong></span> Estimate bulk rise, proof, and total rise time from dough temperature, inoculation, hydration, and salt.</p>
+<div class="sjcalc-units"><div class="sjcalc-unitRow" data-sjcalc-unit-row="temp">
+<span class="sjcalc-unitLabel">Temperature Units:</span>
+<label><input checked="" data-sj-unit-kind="temp" name="sjrt-temp" type="radio" value="C"/> Metric</label>
+<label><input data-sj-unit-kind="temp" name="sjrt-temp" type="radio" value="F"/> Imperial</label>
+</div></div>
+<table class="sjcalc-table"><thead><tr><th>Parameter</th><th>Value</th></tr></thead><tbody><tr><td><span class="sjcalc-labelText"><span behaviour-sjb="enabled" class="sjb-helpDot sjb-helpDot--tiny sjcalc-help" data-sjb="sjCalcHelpDoughTemp" tabindex="0"><strong>?</strong></span> Dough Temperature</span></td><td><div class="sjcalc-valueStack"><input class="sjcalc-input sjcalc-num" data-sj-kind="temp" id="sjrt_temp" inputmode="decimal" step="0.1" type="number" value="23"><div class="sjcalc-alt" data-sj-alt-for="sjrt_temp"></div></input></div></td></tr>
+<tr><td><span class="sjcalc-labelText"><span behaviour-sjb="enabled" class="sjb-helpDot sjb-helpDot--tiny sjcalc-help" data-sjb="sjCalcHelpInoculation" tabindex="0"><strong>?</strong></span> Inoculation</span></td><td><div class="sjcalc-valueStack"><input class="sjcalc-input sjcalc-num" id="sjrt_inoc" inputmode="decimal" step="0.1" type="number" value="9.3"><div class="sjcalc-alt" data-sj-alt-for="sjrt_inoc"></div></input></div><span class="sjcalc-unitInline">%</span></td></tr>
+<tr><td><span class="sjcalc-labelText"><span behaviour-sjb="enabled" class="sjb-helpDot sjb-helpDot--tiny sjcalc-help" data-sjb="sjCalcHelpBreadHydration" tabindex="0"><strong>?</strong></span> Dough Hydration</span></td><td><div class="sjcalc-valueStack"><input class="sjcalc-input sjcalc-num" id="sjrt_hydration" inputmode="decimal" step="0.1" type="number" value="65"/><div class="sjcalc-alt" data-sj-alt-for="sjrt_hydration"></div></div><span class="sjcalc-unitInline">%</span></td></tr>
+<tr><td><span class="sjcalc-labelText"><span behaviour-sjb="enabled" class="sjb-helpDot sjb-helpDot--tiny sjcalc-help" data-sjb="sjCalcHelpSaltPct" tabindex="0"><strong>?</strong></span> Salt</span></td><td><div class="sjcalc-valueStack"><input class="sjcalc-input sjcalc-num" id="sjrt_salt" inputmode="decimal" step="0.1" type="number" value="2"/><div class="sjcalc-alt" data-sj-alt-for="sjrt_salt"></div></div><span class="sjcalc-unitInline">%</span></td></tr>
+<tr><td><span class="sjcalc-labelText"><span behaviour-sjb="enabled" class="sjb-helpDot sjb-helpDot--tiny sjcalc-help" data-sjb="sjCalcHelpBulkTime" tabindex="0"><strong>?</strong></span> Bulk Time</span></td><td><span class="sjcalc-output" id="sjrt_bulk">--</span></td></tr>
+<tr><td><span class="sjcalc-labelText"><span behaviour-sjb="enabled" class="sjb-helpDot sjb-helpDot--tiny sjcalc-help" data-sjb="sjCalcHelpProofTime" tabindex="0"><strong>?</strong></span> Proof Time</span></td><td><span class="sjcalc-output" id="sjrt_proof">--</span></td></tr>
+<tr><td><span class="sjcalc-labelText"><span behaviour-sjb="enabled" class="sjb-helpDot sjb-helpDot--tiny sjcalc-help" data-sjb="sjCalcHelpTotalRiseTime" tabindex="0"><strong>?</strong></span> Total Rise Time</span></td><td><span class="sjcalc-output" id="sjrt_total">--</span></td></tr></tbody></table>
+<div class="sjcalc-actions"><button class="sjcalc-btn" id="sjrt_benchmark" type="button">Load Reference Example</button><button class="sjcalc-btn sjcalc-btn-secondary" id="sjrt_reset" type="button">Reset</button></div>
+<div class="sjcalc-resultBox" id="sjrt_result"></div>
+<div class="sjcalc-summaryPanel" id="sjrt_summary"></div>
+</div>
+<div class="content-section-moreMsg" id="moreriseTimeCalculatorMsg" style="display: none">
+<div class="sjcalc-rabbit-shell">
+<span behaviour-sjb="controlled" class="sjb-helpDot sjp-sjb-before-rabbit" data-sjb="bubbleRabbit"><strong>?</strong></span>
+<div aria-controls="RH-calc-riseTime-panel" aria-expanded="false" aria-label="Rabbit Hole" class="sjRabbitHole-button" data-group="expandable" id="RH-calc-riseTime-btn" onclick="toggleRabbitHole('RH-calc-riseTime-btn','RH-calc-riseTime-panel');" onkeydown="if(event.key==='Enter'||event.key===' ' ){event.preventDefault(); this.click();}" role="button" tabindex="0">More...</div>
+<div class="sjRabbitHole-panel sjcalc-rabbit-panel" id="RH-calc-riseTime-panel" style="display:none;">
+<h4>Advanced Model Constants</h4>
+<p>This first-pass empirical model exposes its constants so the calculator can be tuned later without hiding the logic. The default reference point is 23°C, 9.3% inoculation, 65% hydration, and 2% salt.</p>
+<div class="sjcalc-advanced-grid">
+<label class="sjcalc-advanced-field">Reference Temperature °C<input class="sjcalc-input sjcalc-num" id="sjrt_refTempC" step="0.1" type="number" value="20"/></label>
+<label class="sjcalc-advanced-field">Reference Inoculation %<input class="sjcalc-input sjcalc-num" id="sjrt_refInoculation" step="0.1" type="number" value="20"/></label>
+<label class="sjcalc-advanced-field">Reference Hydration %<input class="sjcalc-input sjcalc-num" id="sjrt_refHydration" step="0.1" type="number" value="65"/></label>
+<label class="sjcalc-advanced-field">Reference Salt %<input class="sjcalc-input sjcalc-num" id="sjrt_refSalt" step="0.1" type="number" value="2"/></label>
+<label class="sjcalc-advanced-field">Q10 Temperature Factor<input class="sjcalc-input sjcalc-num" id="sjrt_q10" step="0.01" type="number" value="2"/></label>
+<label class="sjcalc-advanced-field">Reference Bulk Hours<input class="sjcalc-input sjcalc-num" id="sjrt_bulkBaseHours" step="0.01" type="number" value="3.75"/></label>
+<label class="sjcalc-advanced-field">Reference Proof Hours<input class="sjcalc-input sjcalc-num" id="sjrt_proofBaseHours" step="0.01" type="number" value="1.30"/></label>
+<label class="sjcalc-advanced-field">Bulk Inoculation Exponent<input class="sjcalc-input sjcalc-num" id="sjrt_bulkInocExp" step="0.01" type="number" value="1.00"/></label>
+<label class="sjcalc-advanced-field">Proof Inoculation Exponent<input class="sjcalc-input sjcalc-num" id="sjrt_proofInocExp" step="0.01" type="number" value="1.00"/></label>
+<label class="sjcalc-advanced-field">Salt Coefficient<input class="sjcalc-input sjcalc-num" id="sjrt_saltCoeff" step="0.001" type="number" value="0.054"/></label>
+<label class="sjcalc-advanced-field">Hydration Coefficient<input class="sjcalc-input sjcalc-num" id="sjrt_hydrationCoeff" step="0.001" type="number" value="0.005"/></label>
+</div>
+<h4>Current Formula</h4>
+<div class="sjcalc-formula">TemperatureRate = Q10 ^ ((DoughTempC - ReferenceTempC) / 10)
+
+BulkInoculationRate = (InoculationPct / ReferenceInoculationPct) ^ BulkInoculationExponent
+ProofInoculationRate = (InoculationPct / ReferenceInoculationPct) ^ ProofInoculationExponent
+
+SaltRate = 1 - SaltCoefficient × (SaltPct - ReferenceSaltPct)
+HydrationRate = 1 + HydrationCoefficient × (HydrationPct - ReferenceHydrationPct)
+
+BulkHours = ReferenceBulkHours ÷ (TemperatureRate × BulkInoculationRate × SaltRate × HydrationRate)
+ProofHours = ReferenceProofHours ÷ (TemperatureRate × ProofInoculationRate × SaltRate × HydrationRate)
+TotalHours = BulkHours + ProofHours</div>
+<p class="sjcalc-mini-note"><strong>Model caution:</strong> this is not a fermentation law. It is an adjustable field model. Starter strength, flour mix, dough handling, and the baker's chosen “done” point can move the real times.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="content-section content-section-style sjcalc-drawer-managed sjcalc-shell-section" data-sjcalc-drawer-section="true" data-sjcalc-shell-title="Rise Factor Calculator" id="riseFactorCalculator">
+<div class="content-section-title">
+<div class="center-title-container">
+<div behaviour-sjb="controlled" class="left-box moreButton sjb-moreCombo" data-group="expandable" data-sjb="bubbleSectionMore" id="riseFactorCalculatorButton" onclick="toggleMore('riseFactorCalculatorButton', 'moreriseFactorCalculatorMsg', 'riseFactorCalculator');">
+                  More ▾
+</div>
+<div class="center-box">
+<span behaviour-sjb="controlled" class="sjb-helpDot sjp-sjb-before-title" data-sjb="bubbleSectionTitle"><strong>?</strong></span>
+                Rise Factor Calculator
+             </div>
+<div class="right-box content-title-right">
+<a>
+<img alt="subMenuIcon" class="right-box content-title-menu" onclick="return sjCalcShellShowList(event);" src="https://sjmedia0.w3spaces.com/sjICONS/iconBlueSubMenu.png"/>
+</a>
+<span behaviour-sjb="controlled" class="sjb-helpDot sjp-sjb-after-toc-icon" data-sjb="bubbleSectionTOC"><strong>?</strong></span>
+</div>
+</div>
+</div>
+<div class="content-section-verbiage">
+<div class="sjcalc sjcalc-rf" data-sjcalc="riseFactor" id="sjcalc-riseFactor">
+<p class="sjcalc-intro"><span behaviour-sjb="enabled" class="sjb-helpDot sjb-helpDot--tiny sjcalc-help sjcalc-intro-help" data-sjb="sjCalcHelpIntroRiseFactor" tabindex="0"><strong>?</strong></span> Estimate baked-and-cooled loaf volume, specific volume, density, and rise score from measured loaf dimensions.</p>
+<div class="sjcalc-units"><div class="sjcalc-unitRow" data-sjcalc-unit-row="mass">
+<span class="sjcalc-unitLabel">Mass Units:</span>
+<label><input checked="" data-sj-unit-kind="mass" name="sjrf-mass" type="radio" value="metric"/> Metric</label>
+<label><input data-sj-unit-kind="mass" name="sjrf-mass" type="radio" value="imperial"/> Imperial</label>
+</div></div>
+<div class="sjcalc-controlRow"><label><span behaviour-sjb="enabled" class="sjb-helpDot sjb-helpDot--tiny sjcalc-help" data-sjb="sjCalcHelpLoafShape" tabindex="0"><strong>?</strong></span> Loaf Shape:</label><select id="sjrf_shape"><option selected="" value="boule">Boule</option><option value="batard">Batard</option></select></div>
+<table class="sjcalc-table"><thead><tr><th>Parameter</th><th>Value</th></tr></thead><tbody><tr><td><span class="sjcalc-labelText"><span behaviour-sjb="enabled" class="sjb-helpDot sjb-helpDot--tiny sjcalc-help" data-sjb="sjCalcHelpLoafWeight" tabindex="0"><strong>?</strong></span> Weight</span></td><td><div class="sjcalc-valueStack"><input class="sjcalc-input sjcalc-num" data-sj-kind="mass" id="sjrf_weight" inputmode="decimal" step="0.1" type="number" value="1000"><div class="sjcalc-alt" data-sj-alt-for="sjrf_weight"></div></input></div></td></tr>
+<tr><td><span class="sjcalc-labelText"><span behaviour-sjb="enabled" class="sjb-helpDot sjb-helpDot--tiny sjcalc-help" data-sjb="sjCalcHelpLoafDiameter" tabindex="0"><strong>?</strong></span> Diameter</span></td><td><div class="sjcalc-valueStack"><input class="sjcalc-input sjcalc-num" data-sj-kind="length" id="sjrf_diameter" inputmode="decimal" step="0.1" type="number" value="30"><div class="sjcalc-alt" data-sj-alt-for="sjrf_diameter"></div></input></div></td></tr>
+<tr><td><span class="sjcalc-labelText"><span behaviour-sjb="enabled" class="sjb-helpDot sjb-helpDot--tiny sjcalc-help" data-sjb="sjCalcHelpLoafLength" tabindex="0"><strong>?</strong></span> Length</span></td><td><div class="sjcalc-valueStack"><input class="sjcalc-input sjcalc-num" data-sj-kind="length" id="sjrf_length" inputmode="decimal" step="0.1" type="number" value="20"><div class="sjcalc-alt" data-sj-alt-for="sjrf_length"></div></input></div></td></tr>
+<tr><td><span class="sjcalc-labelText"><span behaviour-sjb="enabled" class="sjb-helpDot sjb-helpDot--tiny sjcalc-help" data-sjb="sjCalcHelpLoafWidth" tabindex="0"><strong>?</strong></span> Width</span></td><td><div class="sjcalc-valueStack"><input class="sjcalc-input sjcalc-num" data-sj-kind="length" id="sjrf_width" inputmode="decimal" step="0.1" type="number" value="20"><div class="sjcalc-alt" data-sj-alt-for="sjrf_width"></div></input></div></td></tr>
+<tr><td><span class="sjcalc-labelText"><span behaviour-sjb="enabled" class="sjb-helpDot sjb-helpDot--tiny sjcalc-help" data-sjb="sjCalcHelpLoafHeight" tabindex="0"><strong>?</strong></span> Height</span></td><td><div class="sjcalc-valueStack"><input class="sjcalc-input sjcalc-num" data-sj-kind="length" id="sjrf_height" inputmode="decimal" step="0.1" type="number" value="10"><div class="sjcalc-alt" data-sj-alt-for="sjrf_height"></div></input></div></td></tr>
+<tr><td><span class="sjcalc-labelText"><span behaviour-sjb="enabled" class="sjb-helpDot sjb-helpDot--tiny sjcalc-help" data-sjb="sjCalcHelpLoafVolume" tabindex="0"><strong>?</strong></span> Volume</span></td><td><span class="sjcalc-output" id="sjrf_volume">--</span><span class="sjcalc-unitInline"> cm³</span></td></tr>
+<tr><td><span class="sjcalc-labelText"><span behaviour-sjb="enabled" class="sjb-helpDot sjb-helpDot--tiny sjcalc-help" data-sjb="sjCalcHelpSpecificVolume" tabindex="0"><strong>?</strong></span> Scientific Rise Factor</span></td><td><span class="sjcalc-output" id="sjrf_sv">--</span><span class="sjcalc-unitInline"> cm³/g</span></td></tr>
+<tr><td><span class="sjcalc-labelText"><span behaviour-sjb="enabled" class="sjb-helpDot sjb-helpDot--tiny sjcalc-help" data-sjb="sjCalcHelpDensity" tabindex="0"><strong>?</strong></span> Density</span></td><td><span class="sjcalc-output" id="sjrf_density">--</span><span class="sjcalc-unitInline"> g/cm³</span></td></tr></tbody></table>
+<div class="sjcalc-actions"><button class="sjcalc-btn" id="sjrf_boule" type="button">Load Boule</button><button class="sjcalc-btn sjcalc-btn-secondary" id="sjrf_batard" type="button">Load Batard</button></div>
+<div class="sjcalc-resultBox" id="sjrf_result"></div>
+<div class="sjcalc-summaryPanel" id="sjrf_summary"></div>
+</div>
+<div class="content-section-moreMsg" id="moreriseFactorCalculatorMsg" style="display: none">
+<div class="sjcalc-rabbit-shell">
+<span behaviour-sjb="controlled" class="sjb-helpDot sjp-sjb-before-rabbit" data-sjb="bubbleRabbit"><strong>?</strong></span>
+<div aria-controls="RH-calc-riseFactor-panel" aria-expanded="false" aria-label="Rabbit Hole" class="sjRabbitHole-button" data-group="expandable" id="RH-calc-riseFactor-btn" onclick="toggleRabbitHole('RH-calc-riseFactor-btn','RH-calc-riseFactor-panel');" onkeydown="if(event.key==='Enter'||event.key===' ' ){event.preventDefault(); this.click();}" role="button" tabindex="0">More...</div>
+<div class="sjRabbitHole-panel sjcalc-rabbit-panel" id="RH-calc-riseFactor-panel" style="display:none;">
+<h4>Formula Notes</h4>
+<div class="sjcalc-formula">Boule spherical cap:
+V = (π × H / 6) × (3r² + H²)
+
+Batard elliptical spherical cap:
+V = (π × H / 6) × (3ab + H²)
+
+Scientific Rise Factor = Specific Volume = V ÷ weight     // cm³/g
+Density = weight ÷ V                                      // g/cm³
+Scaled Display Score = 10 × Specific Volume               // dimensionless display score</div>
+<p>Measurements should be taken after the loaf is baked and fully cooled.</p>
+<h4>Model Comparison</h4>
+<table class="sjcalc-rabbit-table">
+<thead><tr><th>Model Type</th><th>What It Assumes</th><th>Best Use</th><th>Caution</th></tr></thead>
+<tbody>
+<tr><td>Spherical cap boule</td><td>A round loaf is treated as a domed cap, not a full cylinder.</td><td>Most realistic simple model for a round, domed boule.</td><td>Underestimates odd shapes and overhangs.</td></tr>
+<tr><td>Elliptical cap batard</td><td>A long loaf is treated as an elliptical domed cap.</td><td>Better than a box or cylinder for batards with rounded shoulders.</td><td>Still an approximation; batard ends vary a lot.</td></tr>
+<tr><td>Cylinder / elliptical cylinder</td><td>The loaf fills its full footprint at full height.</td><td>Useful as an upper-bound comparison.</td><td>Usually overstates volume because real loaves dome and taper.</td></tr>
+<tr><td>Density</td><td>Weight divided by estimated volume.</td><td>Good cross-check against the rise-factor number.</td><td>Depends directly on the chosen volume model.</td></tr>
+</tbody>
+</table>
+<h4>Current Simple-Model Comparison</h4>
+<div class="sjcalc-summaryPanel" id="sjrf_compare"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="content-section content-section-style sjcalc-drawer-managed sjcalc-shell-section" data-sjcalc-drawer-section="true" data-sjcalc-shell-title="Desired Dough Temperature (DDT) Calculator" id="ddtCalculator">
+<div class="content-section-title">
+<div class="center-title-container">
+<div behaviour-sjb="controlled" class="left-box moreButton sjb-moreCombo" data-group="expandable" data-sjb="bubbleSectionMore" id="ddtCalculatorButton" onclick="toggleMore('ddtCalculatorButton', 'moreddtCalculatorMsg', 'ddtCalculator');">
+                  More ▾
+</div>
+<div class="center-box">
+<span behaviour-sjb="controlled" class="sjb-helpDot sjp-sjb-before-title" data-sjb="bubbleSectionTitle"><strong>?</strong></span>
+                Desired Dough Temperature (DDT) Calculator
+             </div>
+<div class="right-box content-title-right">
+<a>
+<img alt="subMenuIcon" class="right-box content-title-menu" onclick="return sjCalcShellShowList(event);" src="https://sjmedia0.w3spaces.com/sjICONS/iconBlueSubMenu.png"/>
+</a>
+<span behaviour-sjb="controlled" class="sjb-helpDot sjp-sjb-after-toc-icon" data-sjb="bubbleSectionTOC"><strong>?</strong></span>
+</div>
+</div>
+</div>
+<div class="content-section-verbiage">
+<div class="sjcalc sjcalc-ddt" data-sjcalc="ddt" id="sjcalc-ddt">
+<p class="sjcalc-intro"><span behaviour-sjb="enabled" class="sjb-helpDot sjb-helpDot--tiny sjcalc-help sjcalc-intro-help" data-sjb="sjCalcHelpIntroDDT" tabindex="0"><strong>?</strong></span> Calculate the water temperature needed to reach a desired dough temperature after mixing.</p>
+<div class="sjcalc-units"><div class="sjcalc-unitRow" data-sjcalc-unit-row="mass">
+<span class="sjcalc-unitLabel">Mass Units:</span>
+<label><input checked="" data-sj-unit-kind="mass" name="sjddt-mass" type="radio" value="metric"/> Metric</label>
+<label><input data-sj-unit-kind="mass" name="sjddt-mass" type="radio" value="imperial"/> Imperial</label>
+</div><div class="sjcalc-unitRow" data-sjcalc-unit-row="temp">
+<span class="sjcalc-unitLabel">Temperature Units:</span>
+<label><input data-sj-unit-kind="temp" name="sjddt-temp" type="radio" value="C"/> Metric</label>
+<label><input checked="" data-sj-unit-kind="temp" name="sjddt-temp" type="radio" value="F"/> Imperial</label>
+</div></div>
+<div class="sjcalc-grid2">
+<div class="sjcalc-controlRow"><label><span behaviour-sjb="enabled" class="sjb-helpDot sjb-helpDot--tiny sjcalc-help" data-sjb="sjCalcHelpTargetDoughTemp" tabindex="0"><strong>?</strong></span> Target Dough Temperature:</label><div class="sjcalc-valueStack"><input class="sjcalc-input sjcalc-num" data-sj-kind="temp" id="sjddt_target" inputmode="decimal" step="0.1" type="number" value="78"><div class="sjcalc-alt" data-sj-alt-for="sjddt_target"></div></input></div></div>
+<div class="sjcalc-controlRow"><label><span behaviour-sjb="enabled" class="sjb-helpDot sjb-helpDot--tiny sjcalc-help" data-sjb="sjCalcHelpRoomTemp" tabindex="0"><strong>?</strong></span> Room Temperature:</label><div class="sjcalc-valueStack"><input class="sjcalc-input sjcalc-num" data-sj-kind="temp" id="sjddt_room" inputmode="decimal" step="0.1" type="number" value="72"><div class="sjcalc-alt" data-sj-alt-for="sjddt_room"></div></input></div></div>
+<div class="sjcalc-controlRow"><label><span behaviour-sjb="enabled" class="sjb-helpDot sjb-helpDot--tiny sjcalc-help" data-sjb="sjCalcHelpMixMethod" tabindex="0"><strong>?</strong></span> Mixing Method:</label><select id="sjddt_mix"><option value="1.0">Stretch &amp; Fold</option><option value="0.5">Coil Fold</option><option value="3.5">Slap &amp; Fold</option><option value="2.5">Laminate Fold</option><option value="2.5">Classic Knead</option><option selected="" value="4">Stand Mixer</option><option value="custom">Custom</option></select></div>
+<div class="sjcalc-controlRow"><label><span behaviour-sjb="enabled" class="sjb-helpDot sjb-helpDot--tiny sjcalc-help" data-sjb="sjCalcHelpMixHeat" tabindex="0"><strong>?</strong></span> Mix Heat / Friction Factor:</label><div class="sjcalc-valueStack"><input class="sjcalc-input sjcalc-num" data-sj-kind="delta" id="sjddt_mixHeat" inputmode="decimal" step="0.1" type="number" value="4"><div class="sjcalc-alt" data-sj-alt-for="sjddt_mixHeat"></div></input></div></div>
+<div class="sjcalc-controlRow"><label><span behaviour-sjb="enabled" class="sjb-helpDot sjb-helpDot--tiny sjcalc-help" data-sjb="sjCalcHelpLeavenHydration" tabindex="0"><strong>?</strong></span> Leaven Hydration:</label><div class="sjcalc-valueStack"><input class="sjcalc-input sjcalc-num" id="sjddt_leavenHydration" inputmode="decimal" step="0.1" type="number" value="100"><div class="sjcalc-alt" data-sj-alt-for="sjddt_leavenHydration"></div></input></div><span class="sjcalc-unitInline">%</span></div>
+<div class="sjcalc-controlRow"><label><span behaviour-sjb="enabled" class="sjb-helpDot sjb-helpDot--tiny sjcalc-help" data-sjb="sjCalcHelpOtherLiquid" tabindex="0"><strong>?</strong></span> Other Liquids Hydration Contribution:</label><div class="sjcalc-valueStack"><input class="sjcalc-input sjcalc-num" id="sjddt_otherLiquidPct" inputmode="decimal" step="0.1" type="number" value="100"><div class="sjcalc-alt" data-sj-alt-for="sjddt_otherLiquidPct"></div></input></div><span class="sjcalc-unitInline">%</span></div>
+</div>
+<table class="sjcalc-table sjcalc-wideTable"><thead><tr><th>Ingredient</th><th>Amount</th><th>Temperature</th><th>Baker's %</th></tr></thead><tbody>
+<tr><td><span behaviour-sjb="enabled" class="sjb-helpDot sjb-helpDot--tiny sjcalc-help" data-sjb="sjCalcHelpLeavenAmount" tabindex="0"><strong>?</strong></span> Leaven</td><td><div class="sjcalc-valueStack"><input class="sjcalc-input sjcalc-num" data-sj-kind="mass" id="sjddt_leavenMass" inputmode="decimal" step="0.1" type="number" value="100"><div class="sjcalc-alt" data-sj-alt-for="sjddt_leavenMass"></div></input></div></td><td><div class="sjcalc-valueStack"><input class="sjcalc-input sjcalc-num" data-sj-kind="temp" id="sjddt_leavenTemp" inputmode="decimal" step="0.1" type="number" value="75"><div class="sjcalc-alt" data-sj-alt-for="sjddt_leavenTemp"></div></input></div></td><td id="sjddt_levPct">--</td></tr>
+<tr><td><span behaviour-sjb="enabled" class="sjb-helpDot sjb-helpDot--tiny sjcalc-help" data-sjb="sjCalcHelpRecipeFlour" tabindex="0"><strong>?</strong></span> Flour 1</td><td><div class="sjcalc-valueStack"><input class="sjcalc-input sjcalc-num" data-sj-kind="mass" id="sjddt_flour1" inputmode="decimal" step="0.1" type="number" value="400"><div class="sjcalc-alt" data-sj-alt-for="sjddt_flour1"></div></input></div></td><td><div class="sjcalc-valueStack"><input class="sjcalc-input sjcalc-num" data-sj-kind="temp" id="sjddt_flour1Temp" inputmode="decimal" step="0.1" type="number" value="72"><div class="sjcalc-alt" data-sj-alt-for="sjddt_flour1Temp"></div></input></div></td><td id="sjddt_f1Pct">--</td></tr>
+<tr><td><span behaviour-sjb="enabled" class="sjb-helpDot sjb-helpDot--tiny sjcalc-help" data-sjb="sjCalcHelpRecipeFlour" tabindex="0"><strong>?</strong></span> Flour 2</td><td><div class="sjcalc-valueStack"><input class="sjcalc-input sjcalc-num" data-sj-kind="mass" id="sjddt_flour2" inputmode="decimal" step="0.1" type="number" value="100"><div class="sjcalc-alt" data-sj-alt-for="sjddt_flour2"></div></input></div></td><td><div class="sjcalc-valueStack"><input class="sjcalc-input sjcalc-num" data-sj-kind="temp" id="sjddt_flour2Temp" inputmode="decimal" step="0.1" type="number" value="40"><div class="sjcalc-alt" data-sj-alt-for="sjddt_flour2Temp"></div></input></div></td><td id="sjddt_f2Pct">--</td></tr>
+<tr><td><span behaviour-sjb="enabled" class="sjb-helpDot sjb-helpDot--tiny sjcalc-help" data-sjb="sjCalcHelpSaltPct" tabindex="0"><strong>?</strong></span> Salt</td><td><div class="sjcalc-valueStack"><input class="sjcalc-input sjcalc-num" data-sj-kind="mass" id="sjddt_salt" inputmode="decimal" step="0.1" type="number" value="11"><div class="sjcalc-alt" data-sj-alt-for="sjddt_salt"></div></input></div></td><td><div class="sjcalc-valueStack"><input class="sjcalc-input sjcalc-num" data-sj-kind="temp" id="sjddt_saltTemp" inputmode="decimal" step="0.1" type="number" value="72"/><div class="sjcalc-alt" data-sj-alt-for="sjddt_saltTemp"></div></div></td><td id="sjddt_saltPct">--</td></tr>
+<tr><td><span behaviour-sjb="enabled" class="sjb-helpDot sjb-helpDot--tiny sjcalc-help" data-sjb="sjCalcHelpOtherLiquid" tabindex="0"><strong>?</strong></span> Other Liquids / Other</td><td><div class="sjcalc-valueStack"><input class="sjcalc-input sjcalc-num" data-sj-kind="mass" id="sjddt_other" inputmode="decimal" step="0.1" type="number" value="0"/><div class="sjcalc-alt" data-sj-alt-for="sjddt_other"></div></div></td><td><div class="sjcalc-valueStack"><input class="sjcalc-input sjcalc-num" data-sj-kind="temp" id="sjddt_otherTemp" inputmode="decimal" step="0.1" type="number" value="72"/><div class="sjcalc-alt" data-sj-alt-for="sjddt_otherTemp"></div></div></td><td id="sjddt_otherPct">--</td></tr>
+<tr><td><span behaviour-sjb="enabled" class="sjb-helpDot sjb-helpDot--tiny sjcalc-help" data-sjb="sjCalcHelpRecipeWater" tabindex="0"><strong>?</strong></span> Water</td><td><div class="sjcalc-valueStack"><input class="sjcalc-input sjcalc-num" data-sj-kind="mass" id="sjddt_water" inputmode="decimal" step="0.1" type="number" value="350"/><div class="sjcalc-alt" data-sj-alt-for="sjddt_water"></div></div></td><td><div class="sjcalc-valueStack"><span class="sjcalc-output" data-sj-out-kind="temp" id="sjddt_waterTemp">--</span><div class="sjcalc-alt" data-sj-alt-for="sjddt_waterTemp"></div></div></td><td id="sjddt_waterPct">--</td></tr>
+</tbody></table>
+<div class="sjcalc-actions"><button class="sjcalc-btn" id="sjddt_roomAll" type="button">Set Ingredient Temps to Room</button><button class="sjcalc-btn sjcalc-btn-secondary" id="sjddt_reset" type="button">Reset</button></div>
+<div class="sjcalc-resultBox" id="sjddt_result"></div>
+<div class="sjcalc-summaryPanel" id="sjddt_summary"></div>
+</div>
+<div class="content-section-moreMsg" id="moreddtCalculatorMsg" style="display: none">
+<div class="sjcalc-rabbit-shell">
+<span behaviour-sjb="controlled" class="sjb-helpDot sjp-sjb-before-rabbit" data-sjb="bubbleRabbit"><strong>?</strong></span>
+<div aria-controls="RH-calc-ddt-panel" aria-expanded="false" aria-label="Rabbit Hole" class="sjRabbitHole-button" data-group="expandable" id="RH-calc-ddt-btn" onclick="toggleRabbitHole('RH-calc-ddt-btn','RH-calc-ddt-panel');" onkeydown="if(event.key==='Enter'||event.key===' ' ){event.preventDefault(); this.click();}" role="button" tabindex="0">More...</div>
+<div class="sjRabbitHole-panel sjcalc-rabbit-panel" id="RH-calc-ddt-panel" style="display:none;">
+<h4>Formula Notes / Developer Logic</h4><div class="sjcalc-formula">TargetPremixTemp = TargetDoughTemp - MixHeat
+WaterTemp = (TargetPremixTemp × TotalHeatCapacity - NonWaterHeat) ÷ WaterHeatCapacity</div><p>The calculator uses approximate heat capacities: water 4.184 J/g°C, flour 1.80 J/g°C, salt 0.86 J/g°C. Leaven is split into flour and water using its hydration.</p><h4>Mixing Method Defaults</h4><ul><li>Stretch &amp; Fold: 1.0</li><li>Coil Fold: 0.5</li><li>Slap &amp; Fold: 3.5</li><li>Laminate Fold: 2.5</li><li>Classic Knead: 2.5</li><li>Stand Mixer: 4.0</li><li>Custom: user-entered value</li></ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="content-section content-section-style sjcalc-drawer-managed sjcalc-shell-section" data-sjcalc-drawer-section="true" data-sjcalc-shell-title="Desired Water Temperature Calculator" id="desiredWaterTemperatureCalculator">
+<div class="content-section-title">
+<div class="center-title-container">
+<div behaviour-sjb="controlled" class="left-box moreButton sjb-moreCombo" data-group="expandable" data-sjb="bubbleSectionMore" id="desiredWaterTemperatureCalculatorButton" onclick="toggleMore('desiredWaterTemperatureCalculatorButton', 'moredesiredWaterTemperatureCalculatorMsg', 'desiredWaterTemperatureCalculator');">
+                  More ▾
+</div>
+<div class="center-box">
+<span behaviour-sjb="controlled" class="sjb-helpDot sjp-sjb-before-title" data-sjb="bubbleSectionTitle"><strong>?</strong></span>
+                Desired Water Temperature Calculator
+             </div>
+<div class="right-box content-title-right">
+<a>
+<img alt="subMenuIcon" class="right-box content-title-menu" onclick="return sjCalcShellShowList(event);" src="https://sjmedia0.w3spaces.com/sjICONS/iconBlueSubMenu.png"/>
+</a>
+<span behaviour-sjb="controlled" class="sjb-helpDot sjp-sjb-after-toc-icon" data-sjb="bubbleSectionTOC"><strong>?</strong></span>
+</div>
+</div>
+</div>
+<div class="content-section-verbiage">
+<div class="sjcalc sjcalc-dwt" data-sjcalc="dwt" id="sjcalc-dwt">
+<p class="sjcalc-intro"><span behaviour-sjb="enabled" class="sjb-helpDot sjb-helpDot--tiny sjcalc-help sjcalc-intro-help" data-sjb="sjCalcHelpIntroDWT" tabindex="0"><strong>?</strong></span> Calculate how much boiling water and regular water to mix to get a desired water amount at a desired temperature.</p>
+<div class="sjcalc-units"><div class="sjcalc-unitRow" data-sjcalc-unit-row="mass">
+<span class="sjcalc-unitLabel">Mass Units:</span>
+<label><input checked="" data-sj-unit-kind="mass" name="sjdwt-mass" type="radio" value="metric"/> Metric</label>
+<label><input data-sj-unit-kind="mass" name="sjdwt-mass" type="radio" value="imperial"/> Imperial</label>
+</div><div class="sjcalc-unitRow" data-sjcalc-unit-row="temp">
+<span class="sjcalc-unitLabel">Temperature Units:</span>
+<label><input checked="" data-sj-unit-kind="temp" name="sjdwt-temp" type="radio" value="C"/> °C</label>
+<label><input data-sj-unit-kind="temp" name="sjdwt-temp" type="radio" value="F"/> °F</label>
+</div></div>
+<table class="sjcalc-table"><thead><tr><th>Parameter</th><th>Value</th></tr></thead><tbody>
+<tr><td><span class="sjcalc-labelText"><span behaviour-sjb="enabled" class="sjb-helpDot sjb-helpDot--tiny sjcalc-help" data-sjb="sjCalcHelpDWTTargetMass" tabindex="0"><strong>?</strong></span> Desired Water Amount</span></td><td><div class="sjcalc-valueStack"><input class="sjcalc-input sjcalc-num" data-sj-kind="mass" id="sjdwt_total" inputmode="decimal" step="0.1" type="number" value="350"><div class="sjcalc-alt" data-sj-alt-for="sjdwt_total"></div></input></div></td></tr>
+<tr><td><span class="sjcalc-labelText"><span behaviour-sjb="enabled" class="sjb-helpDot sjb-helpDot--tiny sjcalc-help" data-sjb="sjCalcHelpDWTTargetTemp" tabindex="0"><strong>?</strong></span> Desired Water Temperature</span></td><td><div class="sjcalc-valueStack"><input class="sjcalc-input sjcalc-num" data-sj-kind="temp" id="sjdwt_targetTemp" inputmode="decimal" step="0.1" type="number" value="35"><div class="sjcalc-alt" data-sj-alt-for="sjdwt_targetTemp"></div></input></div></td></tr>
+<tr><td><span class="sjcalc-labelText"><span behaviour-sjb="enabled" class="sjb-helpDot sjb-helpDot--tiny sjcalc-help" data-sjb="sjCalcHelpDWTHotTemp" tabindex="0"><strong>?</strong></span> Boiling / Hot Water Temperature</span></td><td><div class="sjcalc-valueStack"><input class="sjcalc-input sjcalc-num" data-sj-kind="temp" id="sjdwt_hotTemp" inputmode="decimal" step="0.1" type="number" value="100"><div class="sjcalc-alt" data-sj-alt-for="sjdwt_hotTemp"></div></input></div></td></tr>
+<tr><td><span class="sjcalc-labelText"><span behaviour-sjb="enabled" class="sjb-helpDot sjb-helpDot--tiny sjcalc-help" data-sjb="sjCalcHelpDWTRegularTemp" tabindex="0"><strong>?</strong></span> Regular Water Temperature</span></td><td><div class="sjcalc-valueStack"><input class="sjcalc-input sjcalc-num" data-sj-kind="temp" id="sjdwt_regularTemp" inputmode="decimal" step="0.1" type="number" value="20"><div class="sjcalc-alt" data-sj-alt-for="sjdwt_regularTemp"></div></input></div></td></tr>
+<tr><td><span class="sjcalc-labelText"><span behaviour-sjb="enabled" class="sjb-helpDot sjb-helpDot--tiny sjcalc-help" data-sjb="sjCalcHelpDWTHotMass" tabindex="0"><strong>?</strong></span> Boiling / Hot Water to Use</span></td><td><div class="sjcalc-valueStack"><span class="sjcalc-output" data-sj-out-kind="mass" id="sjdwt_hotMass">--</span><div class="sjcalc-alt" data-sj-alt-for="sjdwt_hotMass"></div></div></td></tr>
+<tr><td><span class="sjcalc-labelText"><span behaviour-sjb="enabled" class="sjb-helpDot sjb-helpDot--tiny sjcalc-help" data-sjb="sjCalcHelpDWTRegularMass" tabindex="0"><strong>?</strong></span> Regular Water to Use</span></td><td><div class="sjcalc-valueStack"><span class="sjcalc-output" data-sj-out-kind="mass" id="sjdwt_regularMass">--</span><div class="sjcalc-alt" data-sj-alt-for="sjdwt_regularMass"></div></div></td></tr>
+</tbody></table>
+<div class="sjcalc-actions"><button class="sjcalc-btn sjcalc-btn-secondary" id="sjdwt_reset" type="button">Reset</button></div>
+<div class="sjcalc-resultBox" id="sjdwt_result"></div>
+<div class="sjcalc-summaryPanel" id="sjdwt_summary"></div>
+</div>
+<div class="content-section-moreMsg" id="moredesiredWaterTemperatureCalculatorMsg" style="display: none">
+<div class="sjcalc-rabbit-shell">
+<span behaviour-sjb="controlled" class="sjb-helpDot sjp-sjb-before-rabbit" data-sjb="bubbleRabbit"><strong>?</strong></span>
+<div aria-controls="RH-calc-dwt-panel" aria-expanded="false" aria-label="Rabbit Hole" class="sjRabbitHole-button" data-group="expandable" id="RH-calc-dwt-btn" onclick="toggleRabbitHole('RH-calc-dwt-btn','RH-calc-dwt-panel');" onkeydown="if(event.key==='Enter'||event.key===' ' ){event.preventDefault(); this.click();}" role="button" tabindex="0">More...</div>
+<div class="sjRabbitHole-panel sjcalc-rabbit-panel" id="RH-calc-dwt-panel" style="display:none;">
+<h4>Water Mixing Formula</h4>
+<p>This calculator assumes the two water portions have the same heat capacity and that heat loss to the cup, bowl, air, thermometer, and spoon is small.</p>
+<div class="sjcalc-formula">hotMass = totalMass × (targetTemp - regularTemp) ÷ (hotTemp - regularTemp)
+regularMass = totalMass - hotMass
+
+mixedTemp = (hotMass × hotTemp + regularMass × regularTemp) ÷ totalMass</div>
+<h4>Boiling Water Is Not Always 100°C / 212°F</h4>
+<p>At higher elevation, water boils below 100°C / 212°F. That is why the hot-water temperature is editable. Bakers at altitude can enter their local boiling temperature instead of pretending every kitchen is at sea level.</p>
+<h4>Practical Baking Notes</h4>
+<ul>
+<li>Warm the measuring cup or mixing bowl when precision matters; cold vessels steal heat.</li>
+<li>Measure by weight, not volume, for repeatable dough temperature work.</li>
+<li>Stir the mixed water before measuring final temperature.</li>
+<li>If the target temperature is outside the hot/regular water range, the calculator will warn you because the mix cannot reach it with only those two waters.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+  </section>
+</main>
+
+<!-- ✅ 2026-06-15 🧭 [SJ-ENV-LOAD-01] Load environment helper before calculator shell. -->
+<script src="./sjEnvironment.js?v=20260627_phase0_p0path1"></script>
+<script src="./sjRabbitHoleLink.js?v=20260608_rhTopPin2e"></script>
+<script src="./sjMathScripts.js?v=20260612_calcPass5_shell1"></script>
+<script src="./sjBubbles.js?v=20260602_pass15_lineSafeHelpers"></script>
+<script src="./sjCalculatorShell.js?v=20260630g"></script>
+</body>
+</html>

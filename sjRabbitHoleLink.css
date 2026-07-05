@@ -1,0 +1,315 @@
+/* ==================================================================================================
+   sjRabbitHoleLink.css
+   ✅ 2026-03-23 🧩 [SJ-RHL-CSS-01] Portable link-opened Rabbit Hole visuals
+
+   DESIGN GOAL
+   - Portable enough for future apps
+   - Familiar enough to feel like the working SourJoe Glossary / Rabbit Hole treatment
+   - Minimal assumptions: the module styles only its own .sjrhl-* classes
+   ================================================================================================== */
+
+:root {
+  --sjrhl-halo: 10px;
+  --sjrhl-halo2: calc(var(--sjrhl-halo) * 2);
+  --sjrhl-border: #75ba75;
+  --sjrhl-accent: #2980b9;
+  --sjrhl-bg: rgba(255, 255, 255, 0.96);
+  --sjrhl-bg-solid: rgba(255, 255, 255, 0.99);
+  --sjrhl-shadow:
+    0 0 0 var(--sjrhl-halo) rgba(117, 186, 117, 0.18),
+    0 3px 12px rgba(117, 186, 117, 0.22);
+  --sjrhl-overlay-z: 1990;
+  --sjrhl-open-z: 2002; /* ✅ 29Jun26e above drawer z-index 2001 */
+}
+
+/* --------------------------------------------------------------------------------------------------
+   ✅ 2026-03-23 🧩 [SJ-RHL-CSS-02] Overlay / veil
+   -------------------------------------------------------------------------------------------------- */
+.sjrhl-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(169, 169, 169, 0.70);
+  z-index: var(--sjrhl-overlay-z);
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.25s ease, visibility 0s 0.25s;
+}
+
+.sjrhl-overlay.visible {
+  visibility: visible;
+  opacity: 1;
+  transition: opacity 0.25s ease;
+}
+
+/* ✅ 2026-03-25 🧩 [SJ-RHL-CSS-02B] Lock background scroll while the veil is active
+   - Prevent accidental swipes on the transparent veil from moving the page underneath.
+   - The open Rabbit Hole panel keeps its own internal scroll. */
+html.sjrhl-scrollLock,
+body.sjrhl-scrollLockBody {
+  overflow: hidden !important;
+  overscroll-behavior: none;
+}
+
+body.sjrhl-scrollLockBody {
+  width: 100%;
+}
+
+/* --------------------------------------------------------------------------------------------------
+   ✅ 2026-03-23 🧩 [SJ-RHL-CSS-03] Group + item base
+   -------------------------------------------------------------------------------------------------- */
+.sjrhl-group {
+  position: relative;
+}
+
+.sjrhl-item {
+  position: relative;
+}
+
+.sjrhl-item.sjrhl-open {
+  position: relative;
+}
+
+/* ✅ 2026-03-24 🧩 [SJ-RHL-CSS-09] Only envelope owners get lifted as a whole
+   - In plain mode, lifting the whole item also lifts the rabbit icon above the veil.
+   - We want the PANEL above the veil, but the trigger/icon to remain behind it. */
+.sjrhl-item--envelope.sjrhl-open {
+  z-index: var(--sjrhl-open-z);
+}
+
+.sjrhl-trigger,
+.sjrhl-linkBtn {
+  display: inline;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: #1d4ed8;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  font: inherit;
+}
+
+.sjrhl-trigger:hover,
+.sjrhl-linkBtn:hover {
+  color: #1e40af;
+}
+
+.sjrhl-trigger:focus-visible,
+.sjrhl-linkBtn:focus-visible {
+  outline: 2px solid rgba(30, 64, 175, 0.55);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* --------------------------------------------------------------------------------------------------
+   ✅ 2026-03-23 🧩 [SJ-RHL-CSS-04] Base panel treatment
+   - Mirrors the existing Rabbit Hole card look.
+   -------------------------------------------------------------------------------------------------- */
+.sjrhl-panel {
+  display: block;
+  margin: 10px var(--sjrhl-halo) 0 var(--sjrhl-halo);
+  width: calc(100% - var(--sjrhl-halo2));
+  max-width: 100%;
+  box-sizing: border-box;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid var(--sjrhl-border);
+  background: var(--sjrhl-bg);
+  box-shadow: var(--sjrhl-shadow);
+  white-space: normal;
+}
+
+.sjrhl-panel[hidden] {
+  display: none !important;
+}
+
+.sjrhl-panel.sjrhl-open {
+  /* ✅ 23Mar26 🧩 [SJ-RHL-CSS-04B] Force open panels visible even inside host apps
+     that already define .sjRabbitHole-panel { display:none; }.
+     The pilot in sjLearn inherits that legacy rule, so the module must explicitly
+     re-show opened panels instead of assuming the hidden attribute is the only hider. */
+  display: block !important;
+  position: relative;
+  background: var(--sjrhl-bg-solid) !important;
+  background-color: rgba(255, 255, 255, 0.98) !important;
+  z-index: calc(var(--sjrhl-open-z) + 4) !important;
+}
+
+
+/* ✅ 24Mar26 🧩 [SJ-RHL-CSS-10] Search-open panels must behave like normal flowing content
+   - Search should be able to reveal Rabbit Hole text without lifting the panel above sticky/fixed headers.
+   - The overlay is already suppressed during Search, so these panels do not need high z-index treatment. */
+.sjrhl-panel.sjrhl-open.sjrhl-open--search {
+  z-index: 1 !important;
+}
+
+/* ✅ 24Mar26 🧩 [SJ-RHL-CSS-11] Click-open panels can be frozen in place above the veil
+   - The JS measures the already-correct opened position, then pins the panel there.
+   - The panel gets its own scrollbar when content exceeds the viewport. */
+.sjrhl-panel.sjrhl-open.sjrhl-panel--pinned {
+  z-index: calc(var(--sjrhl-open-z) + 4) !important;
+  overscroll-behavior: contain;
+}
+
+
+/* ✅ 2026-06-08 🧩 [SJ-RHL-CSS-12]
+   Top-pinned Rabbit Hole panels include their own sticky close X.
+   This keeps close reachable even when the panel covers the original rabbit icon. */
+.sjrhl-panel .sj-rabbit-panel-x,
+.sjRabbitHole-panel .sj-rabbit-panel-x {
+  position: sticky;
+  top: 0;
+  float: right;
+  z-index: 2;
+  width: 34px;
+  height: 34px;
+  margin: -4px -4px 8px 10px;
+  border: 2px solid #086dfc;
+  border-radius: 999px;
+  background: #fff;
+  color: #086dfc;
+  font-size: 20px;
+  font-weight: bold;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: 0 1px 5px rgba(0,0,0,.18);
+}
+
+.sjrhl-panel .sj-rabbit-panel-x:hover,
+.sjrhl-panel .sj-rabbit-panel-x:focus-visible,
+.sjRabbitHole-panel .sj-rabbit-panel-x:hover,
+.sjRabbitHole-panel .sj-rabbit-panel-x:focus-visible {
+  background: #e6f3ff;
+  outline: none;
+}
+
+.sjrhl-panel p {
+  margin: 0 0 10px 0;
+}
+
+.sjrhl-panel p:last-child,
+.sjrhl-panel ul:last-child,
+.sjrhl-panel ol:last-child {
+  margin-bottom: 0;
+}
+
+.sjrhl-panel ul,
+.sjrhl-panel ol {
+  margin-top: 6px;
+  padding-left: 18px;
+}
+
+/* --------------------------------------------------------------------------------------------------
+   ✅ 2026-03-23 🧩 [SJ-RHL-CSS-05] Envelope mode
+   - The owning item becomes the Rabbit Hole card.
+   - The inner panel flattens so the term line + panel feel like one box.
+   -------------------------------------------------------------------------------------------------- */
+.sjrhl-item--envelope.sjrhl-open {
+  margin: 8px var(--sjrhl-halo) 14px var(--sjrhl-halo);
+  width: calc(100% - var(--sjrhl-halo2));
+  max-width: 100%;
+  box-sizing: border-box;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid var(--sjrhl-border);
+  border-left: 3px solid var(--sjrhl-accent);
+  background: var(--sjrhl-bg-solid);
+  box-shadow: var(--sjrhl-shadow);
+  white-space: normal;
+}
+
+.sjrhl-item--envelope.sjrhl-open > .sjrhl-panel--flatten-in-envelope {
+  margin: 10px 0 0 0 !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  padding: 0 !important;
+  border: none !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+}
+
+/* --------------------------------------------------------------------------------------------------
+   ✅ 2026-03-23 🧩 [SJ-RHL-CSS-06] Plain mode helper
+   -------------------------------------------------------------------------------------------------- */
+.sjrhl-panel--plain {
+  border-left: 3px solid var(--sjrhl-accent);
+}
+
+/* --------------------------------------------------------------------------------------------------
+   ✅ 2026-03-23 🧩 [SJ-RHL-CSS-07] Usage-page-friendly helpers
+   - Safe to leave in the module because they are opt-in .sjrhl-* classes.
+   -------------------------------------------------------------------------------------------------- */
+.sjrhl-lead {
+  margin: 0 0 8px 0;
+}
+
+.sjrhl-muted {
+  color: #475569;
+}
+
+.sjrhl-closeRow {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 12px;
+}
+
+.sjrhl-closeBtn {
+  border: 1px solid #94a3b8;
+  border-radius: 999px;
+  background: #fff;
+  padding: 6px 12px;
+  cursor: pointer;
+  font: inherit;
+}
+
+.sjrhl-closeBtn:hover {
+  background: #f8fafc;
+}
+
+.sjrhl-closeBtn:focus-visible {
+  outline: 2px solid rgba(15, 23, 42, 0.35);
+  outline-offset: 2px;
+}
+
+/* --------------------------------------------------------------------------------------------------
+   ✅ 2026-03-25 🧩 [SJ-RHL-CSS-08A] Responsive width helper
+   - Let panels breathe wider on phones and tablets without changing large-screen desktop behavior.
+   -------------------------------------------------------------------------------------------------- */
+@media (max-width: 1100px) {
+  .sjrhl-panel {
+    margin-left: 6px;
+    margin-right: 6px;
+    width: calc(100% - 12px);
+  }
+
+  .sjrhl-item--envelope.sjrhl-open {
+    margin-left: 6px;
+    margin-right: 6px;
+    width: calc(100% - 12px);
+  }
+}
+
+/* ✅ 2026-03-25 🧩 [SJ-RHL-CSS-08B] Compact pinned panels live inside a section frame
+   - The JS computes exact top/left/width/height on phones/tablets.
+   - Keep the panel box model stable and the internal scroll smooth. */
+.sjrhl-panel.sjrhl-panel--compactPinned {
+  box-sizing: border-box;
+  overscroll-behavior: contain;
+}
+
+
+
+/* ✅ 2026-06-08 🧩 [SJ-RHL-CSS-13]
+   Mobile/tablet safety for top-pinned Rabbit Hole panels.  JS supplies exact geometry;
+   CSS prevents horizontal bleed and keeps the close X slightly below the panel edge. */
+.sjrhl-panel.sjrhl-open.sjrhl-panel--pinned {
+  max-width: calc(100vw - 16px) !important;
+  overflow-x: hidden !important;
+  scrollbar-gutter: stable;
+}
+
+.sjrhl-panel .sj-rabbit-panel-x,
+.sjRabbitHole-panel .sj-rabbit-panel-x {
+  top: 6px;
+}

@@ -1,0 +1,1240 @@
+/*
+  Sourjoe | Pass 2A - Public Mode Foundation
+  03 July 2026
+
+  Scope deliberately limited to mode identification and future public-only hooks.
+  No timers, expiry treatments, preview welcome replacement, search changes,
+  Rabbit Hole changes, or calculator behavior appear in this file.
+*/
+
+/* Explicit route marker: sjLearn.html?mode=public */
+html.sj-public-mode,
+body.sj-public-mode {
+  --sj-public-mode-active: 1;
+}
+
+/*
+  Reserved visibility hooks for later Public Mode passes.
+  These selectors are inert in Pass 2A because no live Book markup uses them yet.
+  Keeping the contract here prevents later feature code from needing to infer mode
+  from a URL or duplicate gate logic.
+*/
+html:not(.sj-public-mode) .sj-public-only {
+  display: none !important;
+}
+
+html.sj-public-mode .sj-book-only {
+  display: none !important;
+}
+
+/* =================================================================================================
+   ✅ 2026-07-03 🧭 [SJ-PUBLIC-MODE-PASS2B-EXPIRY-01]
+   Pass 2B — one timed Public entity proof.
+   The Essential Ingredients conversion state is intentionally in-flow: its normal body is replaced
+   below the existing Section title bar, so expiry never produces a redirect or a full-screen veil.
+   ================================================================================================= */
+html.sj-public-mode #essentialsIngredients.sjp-public-entity-expired > :not(.content-section-title):not(.sjp-public-entity-expiry-panel),
+html.sj-public-mode #essentialsIngredients.sjp-public-total-expired > :not(.content-section-title):not(.sjp-public-entity-expiry-panel) {
+  display: none !important;
+}
+
+html.sj-public-mode #essentialsIngredients .sjp-public-entity-expiry-panel {
+  display: none;
+  width: min(100% - 28px, 820px);
+  box-sizing: border-box;
+  margin: clamp(26px, 5vw, 54px) auto clamp(40px, 7vw, 78px);
+  padding: clamp(24px, 4.5vw, 44px);
+  text-align: center;
+  background: #fff9c3;
+  border: 3px solid #d6b01d;
+  border-radius: 18px;
+  box-shadow: inset 0 0 0 4px rgba(255, 255, 255, 0.38), 0 6px 16px rgba(0, 0, 0, 0.14);
+  color: #3d3300;
+}
+
+html.sj-public-mode #essentialsIngredients.sjp-public-entity-expired .sjp-public-entity-expiry-panel,
+html.sj-public-mode #essentialsIngredients.sjp-public-total-expired .sjp-public-entity-expiry-panel {
+  display: block;
+}
+
+.sjp-public-expiry-panel__eyebrow {
+  margin: 0 0 10px;
+  color: #5f5100;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+}
+
+.sjp-public-expiry-panel__title {
+  margin: 0 auto 14px;
+  max-width: 650px;
+  color: #273c22;
+  font-size: clamp(1.36rem, 2.5vw, 2rem);
+  line-height: 1.18;
+}
+
+.sjp-public-expiry-panel__body {
+  max-width: 620px;
+  margin: 0 auto;
+  color: #3d3300;
+  font-size: clamp(0.98rem, 1.8vw, 1.12rem);
+  line-height: 1.5;
+}
+
+.sjp-public-expiry-panel__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  justify-content: center;
+  gap: 12px;
+  margin: 26px auto 18px;
+}
+
+.sjp-public-expiry-panel__button,
+.sjp-public-expiry-panel__button:visited {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 43px;
+  box-sizing: border-box;
+  padding: 10px 18px;
+  border: 2px solid rgba(52, 83, 44, 0.55);
+  border-radius: 8px;
+  background: #ffffff;
+  color: #273c22;
+  font-size: 0.84rem;
+  font-weight: 800;
+  letter-spacing: 0.07em;
+  line-height: 1.1;
+  text-decoration: none;
+}
+
+.sjp-public-expiry-panel__button:hover,
+.sjp-public-expiry-panel__button:focus-visible {
+  background: #e9f0df;
+  color: #1f321b;
+}
+
+.sjp-public-expiry-panel__button--primary,
+.sjp-public-expiry-panel__button--primary:visited {
+  background: #34532c;
+  color: #ffffff;
+  border-color: #34532c;
+}
+
+.sjp-public-expiry-panel__button--primary:hover,
+.sjp-public-expiry-panel__button--primary:focus-visible {
+  background: #273f21;
+  color: #ffffff;
+}
+
+.sjp-public-expiry-panel__return {
+  padding: 5px 2px;
+  border: 0;
+  border-bottom: 1px solid currentColor;
+  background: transparent;
+  color: #5f5100;
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+}
+
+.sjp-public-expiry-panel__return:hover,
+.sjp-public-expiry-panel__return:focus-visible {
+  color: #273c22;
+}
+
+@media (max-width: 520px) {
+  html.sj-public-mode #essentialsIngredients .sjp-public-entity-expiry-panel {
+    width: calc(100% - 20px);
+    margin-top: 22px;
+    margin-bottom: 42px;
+    padding: 24px 18px;
+  }
+
+  .sjp-public-expiry-panel__actions {
+    flex-direction: column;
+    width: min(100%, 300px);
+  }
+
+  .sjp-public-expiry-panel__button,
+  .sjp-public-expiry-panel__button:visited {
+    width: 100%;
+  }
+}
+
+
+/* =================================================================================================
+   ✅ 2026-07-04 🧭 [SJ-PUBLIC-MODE-PASS2C-NORMAL-FLOW-INTRO-01]
+   Pass 2C revision: Public orientation is a normal document panel above the real Book Welcome panel.
+   It has no overlay, scroll lock, modal focus trap, or timer behavior.
+   ================================================================================================= */
+html.sj-public-mode .sjp-public-mode-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 9px;
+  padding: 3px 6px 2px;
+  border: 1px solid rgba(255, 255, 255, 0.62);
+  border-radius: 999px;
+  color: #ffffff;
+  font-size: 0.50em;
+  font-weight: 900;
+  letter-spacing: 0.11em;
+  line-height: 1;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+html.sj-public-mode #search:disabled {
+  cursor: not-allowed;
+  opacity: 0.56;
+}
+
+html.sj-public-mode #search:disabled::placeholder {
+  color: currentColor;
+  opacity: 0.86;
+}
+
+html.sj-public-mode .sjp-public-introduction {
+  width: min(calc(100% - 28px), 940px);
+  box-sizing: border-box;
+  margin: clamp(20px, 3.5vw, 42px) auto clamp(18px, 3vw, 34px);
+  padding: clamp(24px, 4vw, 42px);
+  color: #263a22;
+  background: #fff9c3;
+  border: 3px solid #d6b01d;
+  border-radius: 18px;
+  box-shadow: inset 0 0 0 4px rgba(255, 255, 255, 0.42), 0 6px 16px rgba(0, 0, 0, 0.14);
+}
+
+html.sj-public-mode .sjp-public-introduction__inner {
+  width: min(100%, 860px);
+  margin: 0 auto;
+}
+
+html.sj-public-mode .sjp-public-introduction__eyebrow {
+  margin: 0 0 9px;
+  color: #5f5100;
+  text-align: center;
+  font-size: clamp(0.70rem, 0.63rem + 0.22vw, 0.82rem);
+  font-weight: 900;
+  letter-spacing: 0.13em;
+}
+
+html.sj-public-mode .sjp-public-introduction h1 {
+  margin: 0 auto 16px;
+  color: #273c22;
+  text-align: center;
+  font-size: clamp(1.52rem, 1.08rem + 1.48vw, 2.22rem);
+  line-height: 1.16;
+}
+
+html.sj-public-mode .sjp-public-introduction__lede {
+  max-width: 760px;
+  margin: 0 auto 12px;
+  color: #3d3300;
+  text-align: center;
+  font-size: clamp(0.98rem, 0.84rem + 0.46vw, 1.12rem);
+  line-height: 1.5;
+}
+
+html.sj-public-mode .sjp-public-introduction__topics {
+  display: grid;
+  gap: 12px;
+  margin: clamp(22px, 3.4vw, 30px) auto 0;
+}
+
+html.sj-public-mode .sjp-public-introduction__topic {
+  overflow: hidden;
+  border: 1px solid rgba(90, 78, 0, 0.44);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.72);
+}
+
+html.sj-public-mode .sjp-public-introduction__topic summary {
+  display: grid;
+  grid-template-columns: 31px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+  min-height: 52px;
+  padding: 10px 16px;
+  color: #273c22;
+  cursor: pointer;
+  font-size: clamp(0.94rem, 0.84rem + 0.32vw, 1.08rem);
+  font-weight: 850;
+  line-height: 1.25;
+  list-style: none;
+}
+
+html.sj-public-mode .sjp-public-introduction__topic summary::-webkit-details-marker { display: none; }
+
+html.sj-public-mode .sjp-public-introduction__topic summary::after {
+  content: '+';
+  grid-column: 3;
+  justify-self: end;
+  color: #5f5100;
+  font-size: 1.3em;
+  font-weight: 800;
+  line-height: 1;
+}
+
+html.sj-public-mode .sjp-public-introduction__topic[open] summary {
+  border-bottom: 1px solid rgba(90, 78, 0, 0.22);
+  background: rgba(255, 248, 183, 0.65);
+}
+
+html.sj-public-mode .sjp-public-introduction__topic[open] summary::after { content: '−'; }
+
+html.sj-public-mode .sjp-public-introduction__topic summary:hover,
+html.sj-public-mode .sjp-public-introduction__topic summary:focus-visible {
+  outline: 3px solid rgba(116, 94, 0, 0.30);
+  outline-offset: -3px;
+}
+
+html.sj-public-mode .sjp-public-introduction__number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  color: #ffffff;
+  background: #34532c;
+  border-radius: 50%;
+  font-size: 0.84rem;
+  font-weight: 900;
+  line-height: 1;
+}
+
+html.sj-public-mode .sjp-public-introduction__topic-body {
+  padding: 16px clamp(16px, 3vw, 26px) 20px;
+  color: #3d3300;
+  font-size: clamp(0.94rem, 0.84rem + 0.30vw, 1.05rem);
+  line-height: 1.52;
+}
+
+html.sj-public-mode .sjp-public-introduction__topic-body p {
+  margin: 0 0 13px;
+}
+
+html.sj-public-mode .sjp-public-introduction__topic-body p:last-child { margin-bottom: 0; }
+
+html.sj-public-mode .sjp-public-introduction__video {
+  position: relative;
+  width: min(100%, 640px);
+  aspect-ratio: 16 / 9;
+  margin: 0 auto 18px;
+  overflow: hidden;
+  border: 2px solid rgba(90, 78, 0, 0.48);
+  border-radius: 10px;
+  background: #1d241d;
+}
+
+html.sj-public-mode .sjp-public-introduction__video iframe {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+html.sj-public-mode .sjp-public-introduction__topic-body--features {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(18px, 4vw, 36px);
+}
+
+html.sj-public-mode .sjp-public-introduction__topic-body--features h2 {
+  margin: 0 0 7px;
+  color: #273c22;
+  font-size: 1.02em;
+  line-height: 1.3;
+}
+
+html.sj-public-mode .sjp-public-introduction__topic-body--features ul {
+  margin: 0;
+  padding-left: 1.15em;
+}
+
+html.sj-public-mode .sjp-public-introduction__topic-body--features li + li { margin-top: 7px; }
+
+html.sj-public-mode .sjp-public-introduction__actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin: clamp(24px, 4vw, 34px) auto 12px;
+}
+
+html.sj-public-mode .sjp-public-introduction__button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: min(100%, 320px);
+  min-height: 50px;
+  padding: 12px 20px;
+  border: 2px solid #34532c;
+  border-radius: 999px;
+  background: #34532c;
+  color: #ffffff;
+  cursor: pointer;
+  font: inherit;
+  font-size: clamp(0.84rem, 0.76rem + 0.30vw, 0.98rem);
+  font-weight: 900;
+  letter-spacing: 0.05em;
+  line-height: 1.1;
+}
+
+html.sj-public-mode .sjp-public-introduction__button:hover,
+html.sj-public-mode .sjp-public-introduction__button:focus-visible {
+  background: #273f21;
+  outline: 3px solid rgba(116, 94, 0, 0.32);
+  outline-offset: 3px;
+}
+
+html.sj-public-mode .sjp-public-introduction__text-button,
+html.sj-public-mode .sjp-public-introduction__member-note a {
+  color: #5f5100;
+  font: inherit;
+  font-size: 0.80rem;
+  font-weight: 800;
+  letter-spacing: 0.045em;
+  line-height: 1.3;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+html.sj-public-mode .sjp-public-introduction__text-button {
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+html.sj-public-mode .sjp-public-introduction__text-button:hover,
+html.sj-public-mode .sjp-public-introduction__text-button:focus-visible,
+html.sj-public-mode .sjp-public-introduction__member-note a:hover,
+html.sj-public-mode .sjp-public-introduction__member-note a:focus-visible {
+  color: #273c22;
+  outline: 3px solid rgba(116, 94, 0, 0.30);
+  outline-offset: 3px;
+}
+
+html.sj-public-mode .sjp-public-introduction__member-note {
+  margin: 0;
+  color: #3d3300;
+  text-align: center;
+  font-size: 0.86rem;
+  line-height: 1.45;
+}
+
+/* The existing Book Welcome carries a former public-site announcement that is not relevant inside
+   a normal-flow public visit. The member Book remains unchanged. */
+html.sj-public-mode #lead-box .sjl-welcome-whats-new p:nth-of-type(2) { display: none; }
+
+@media (max-width: 620px) {
+  html.sj-public-mode .sjp-public-mode-badge { display: none; }
+
+  html.sj-public-mode .sjp-public-introduction {
+    width: calc(100% - 20px);
+    padding: 23px 16px;
+    border-radius: 14px;
+  }
+
+  html.sj-public-mode .sjp-public-introduction__topic summary { padding-inline: 13px; }
+
+  html.sj-public-mode .sjp-public-introduction__topic-body--features {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+}
+
+/* =================================================================================================
+   ✅ 2026-07-04 🧭 [SJ-PUBLIC-PASS2C-HEADER-CONVERSION-PRESENTATION-01]
+   Pass 2C presentation refinement. All selectors are explicit Public Mode hooks.
+   They style static display slots and conversion panels only; no selector changes timing behavior.
+   ================================================================================================= */
+html.sj-public-mode .back-to-recipes-link .sjp-public-preview-top-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 22px;
+  box-sizing: border-box;
+  padding: 3px 7px 2px;
+  border: 1px solid rgba(255,255,255,0.76);
+  border-radius: 5px;
+  color: #ffffff;
+  font-size: clamp(0.54rem, 0.46rem + 0.22vw, 0.67rem);
+  font-weight: 900;
+  letter-spacing: 0.085em;
+  line-height: 1.05;
+  white-space: nowrap;
+}
+
+html.sj-public-mode .back-to-recipes-link:hover .sjp-public-preview-top-link,
+html.sj-public-mode .back-to-recipes-link:focus-visible .sjp-public-preview-top-link {
+  border-color: #ffffff;
+  background: rgba(255,255,255,0.12);
+}
+
+/* The Public timer uses the title/search centre rail; the member search field is deliberately hidden. */
+html.sj-public-mode .sjp-public-search-slot { display: none !important; }
+
+html.sj-public-mode .sjp-public-total-timer {
+  display: inline-flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 5px;
+  width: 100%;
+  margin: 1px 0 0 !important;
+  color: #fff9c3;
+  font-size: clamp(0.47rem, 0.40rem + 0.20vw, 0.60rem);
+  font-weight: 800;
+  letter-spacing: 0.07em;
+  line-height: 1.12;
+  white-space: nowrap;
+}
+
+html.sj-public-mode .sjp-public-total-timer[hidden] { display: none !important; }
+
+html.sj-public-mode .sjp-public-timer__value {
+  color: #ffffff;
+  font-size: 1.20em;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.06em;
+}
+
+html.sj-public-mode .sjp-public-timer__state {
+  min-width: 4.6em;
+  color: rgba(255,255,255,0.78);
+  font-size: 0.86em;
+  text-align: left;
+}
+
+html.sj-public-mode .sjp-public-total-timer.sjp-public-timer--live .sjp-public-timer__state { color: #cbe7c3; }
+html.sj-public-mode .sjp-public-total-timer.sjp-public-timer--paused .sjp-public-timer__state { color: #fff0a7; }
+html.sj-public-mode .sjp-public-total-timer.sjp-public-timer--complete .sjp-public-timer__state { color: #ffc3b5; }
+
+html.sj-public-mode #binocularSearch[aria-disabled="true"] {
+  opacity: 0.42;
+  cursor: not-allowed;
+}
+
+/* Essential Ingredients gets a small second title line only while the section is live/expired. */
+html.sj-public-mode #essentialsIngredients .content-section-title .center-box {
+  flex-wrap: wrap;
+  align-content: center;
+  column-gap: 6px;
+  row-gap: 1px;
+}
+
+html.sj-public-mode #essentialsIngredients .sjp-public-entity-title-text {
+  display: inline-block;
+}
+
+html.sj-public-mode #essentialsIngredients .sjp-public-entity-timer {
+  display: flex;
+  flex: 0 0 100%;
+  align-items: baseline;
+  justify-content: center;
+  gap: 5px;
+  color: #506a43;
+  font-size: clamp(0.46rem, 0.38rem + 0.24vw, 0.63rem);
+  font-weight: 900;
+  letter-spacing: 0.065em;
+  line-height: 1.05;
+  white-space: nowrap;
+}
+
+html.sj-public-mode #essentialsIngredients .sjp-public-entity-timer[hidden] { display: none !important; }
+html.sj-public-mode #essentialsIngredients .sjp-public-entity-timer .sjp-public-timer__value {
+  color: #273c22;
+  font-size: 1.15em;
+}
+
+html.sj-public-mode #essentialsIngredients .sjp-public-entity-timer.sjp-public-timer--complete {
+  color: #7a3b2b;
+}
+
+/* Public normal-flow Welcome: Sign In and Sign Up flank the original social links above the eyebrow. */
+html.sj-public-mode .sjp-public-introduction__topbar {
+  display: grid;
+  grid-template-columns: minmax(82px, 1fr) auto minmax(82px, 1fr);
+  align-items: center;
+  gap: clamp(8px, 2vw, 18px);
+  margin: 0 auto clamp(11px, 2vw, 17px);
+}
+
+html.sj-public-mode .sjp-public-introduction__auth,
+html.sj-public-mode .sjp-public-introduction__auth:visited {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 31px;
+  box-sizing: border-box;
+  padding: 7px 12px 6px;
+  border: 1.5px solid #34532c;
+  border-radius: 7px;
+  color: #273c22;
+  background: rgba(255,255,255,0.84);
+  font-size: clamp(0.60rem, 0.52rem + 0.20vw, 0.72rem);
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  line-height: 1;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+html.sj-public-mode .sjp-public-introduction__auth--signin { justify-self: start; }
+html.sj-public-mode .sjp-public-introduction__auth--signup,
+html.sj-public-mode .sjp-public-introduction__auth--signup:visited {
+  justify-self: end;
+  color: #ffffff;
+  background: #34532c;
+}
+
+html.sj-public-mode .sjp-public-introduction__auth:hover,
+html.sj-public-mode .sjp-public-introduction__auth:focus-visible {
+  outline: 3px solid rgba(116, 94, 0, 0.30);
+  outline-offset: 3px;
+  background: #e9f0df;
+}
+
+html.sj-public-mode .sjp-public-introduction__auth--signup:hover,
+html.sj-public-mode .sjp-public-introduction__auth--signup:focus-visible {
+  color: #ffffff;
+  background: #273f21;
+}
+
+html.sj-public-mode .sjp-public-introduction__socials {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(4px, 0.8vw, 8px);
+}
+
+html.sj-public-mode .sjp-public-introduction__social-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: clamp(24px, 2.3vw, 30px);
+  height: clamp(24px, 2.3vw, 30px);
+  border-radius: 50%;
+  text-decoration: none;
+}
+
+html.sj-public-mode .sjp-public-introduction__brand-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+html.sj-public-mode .sjp-public-introduction__social-link:hover,
+html.sj-public-mode .sjp-public-introduction__social-link:focus-visible {
+  transform: translateY(-1px);
+  outline: 2px solid rgba(52,83,44,0.60);
+  outline-offset: 2px;
+}
+
+html.sj-public-mode .sjp-public-introduction__social-link--email .sjp-email-bg { fill: #34532c; }
+html.sj-public-mode .sjp-public-introduction__social-link--email .sjp-email-envelope { fill: #ffffff; }
+html.sj-public-mode .sjp-public-introduction__social-link--email .sjp-email-flap { fill: none; stroke: #34532c; stroke-width: 1.65; stroke-linecap: round; stroke-linejoin: round; }
+html.sj-public-mode .sjp-public-introduction__social-link--youtube .sjp-youtube-bg { fill: #e62117; }
+html.sj-public-mode .sjp-public-introduction__social-link--youtube .sjp-youtube-play { fill: #ffffff; }
+html.sj-public-mode .sjp-public-introduction__social-link--instagram .sjp-instagram-bg { fill: url(#sjpPublicIntroInstagramGradient); }
+html.sj-public-mode .sjp-public-introduction__social-link--instagram .sjp-instagram-camera,
+html.sj-public-mode .sjp-public-introduction__social-link--instagram .sjp-instagram-lens { fill: none; stroke: #ffffff; stroke-width: 2.2; }
+html.sj-public-mode .sjp-public-introduction__social-link--instagram .sjp-instagram-dot { fill: #ffffff; }
+html.sj-public-mode .sjp-public-introduction__social-link--facebook .sjp-facebook-bg { fill: #1877f2; }
+html.sj-public-mode .sjp-public-introduction__social-link--facebook .sjp-facebook-f { fill: #ffffff; }
+
+/* The old public Plans conversion offer becomes the final public-only Book panel. */
+html.sj-public-mode .sjp-public-plans {
+  width: min(calc(100% - 28px), 940px);
+  box-sizing: border-box;
+  margin: clamp(24px, 4vw, 46px) auto clamp(42px, 7vw, 82px);
+  border-color: #d6b01d;
+}
+
+html.sj-public-mode .sjp-public-plans .content-section-title {
+  color: #273c22;
+  background: #fff9c3;
+  border-bottom-color: #d6b01d;
+}
+
+html.sj-public-mode .sjp-public-plans .content-section-verbiage {
+  padding: clamp(21px, 4vw, 38px);
+  background: #fffdf0;
+}
+
+html.sj-public-mode .sjp-public-plans__inner { width: min(100%, 860px); margin: 0 auto; }
+
+html.sj-public-mode .sjp-public-plans__lede {
+  max-width: 680px;
+  margin: 0 auto clamp(20px, 3vw, 28px);
+  color: #3d3300;
+  text-align: center;
+  font-size: clamp(0.98rem, 0.84rem + 0.42vw, 1.10rem);
+  line-height: 1.48;
+}
+
+html.sj-public-mode .sjp-public-plans__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(16px, 3vw, 28px);
+}
+
+html.sj-public-mode .sjp-public-plans__card {
+  display: flex;
+  flex-direction: column;
+  padding: clamp(19px, 3vw, 28px);
+  border: 1px solid rgba(52,83,44,0.36);
+  border-radius: 13px;
+  background: rgba(233,240,223,0.72);
+  color: #273c22;
+}
+
+html.sj-public-mode .sjp-public-plans__card--subscribe { background: rgba(255,249,195,0.68); }
+
+html.sj-public-mode .sjp-public-plans__card h2 {
+  margin: 0 0 12px;
+  color: #273c22;
+  text-align: center;
+  font-size: clamp(1.14rem, 0.96rem + 0.55vw, 1.42rem);
+  line-height: 1.2;
+}
+
+html.sj-public-mode .sjp-public-plans__card ul {
+  flex: 1 1 auto;
+  margin: 0 0 22px;
+  padding-left: 1.12em;
+  color: #3d3300;
+  line-height: 1.48;
+}
+
+html.sj-public-mode .sjp-public-plans__card li + li { margin-top: 9px; }
+
+html.sj-public-mode .sjp-public-plans__card a:not(.sjp-public-plans__button) {
+  color: #34532c;
+  text-underline-offset: 2px;
+}
+
+html.sj-public-mode .sjp-public-plans__button,
+html.sj-public-mode .sjp-public-plans__button:visited {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 43px;
+  padding: 10px 17px;
+  border: 2px solid #34532c;
+  border-radius: 7px;
+  color: #ffffff;
+  background: #34532c;
+  font-size: 0.80rem;
+  font-weight: 900;
+  letter-spacing: 0.07em;
+  line-height: 1;
+  text-decoration: none;
+}
+
+html.sj-public-mode .sjp-public-plans__button--secondary,
+html.sj-public-mode .sjp-public-plans__button--secondary:visited {
+  color: #273c22;
+  background: #ffffff;
+}
+
+html.sj-public-mode .sjp-public-plans__button:hover,
+html.sj-public-mode .sjp-public-plans__button:focus-visible {
+  color: #ffffff;
+  background: #273f21;
+  outline: 3px solid rgba(116, 94, 0, 0.30);
+  outline-offset: 3px;
+}
+
+html.sj-public-mode .sjp-public-plans__button--secondary:hover,
+html.sj-public-mode .sjp-public-plans__button--secondary:focus-visible {
+  color: #ffffff;
+}
+
+@media (max-width: 620px) {
+  html.sj-public-mode .sjp-public-introduction__topbar {
+    grid-template-columns: minmax(69px, 1fr) auto minmax(69px, 1fr);
+    gap: 7px;
+  }
+
+  html.sj-public-mode .sjp-public-introduction__auth,
+  html.sj-public-mode .sjp-public-introduction__auth:visited {
+    min-height: 29px;
+    padding: 6px 7px 5px;
+    font-size: 0.57rem;
+  }
+
+  html.sj-public-mode .sjp-public-introduction__socials { gap: 3px; }
+  html.sj-public-mode .sjp-public-introduction__social-link { width: 23px; height: 23px; }
+
+  html.sj-public-mode .sjp-public-total-timer {
+    gap: 3px;
+    font-size: 0.44rem;
+  }
+
+  html.sj-public-mode #essentialsIngredients .sjp-public-entity-timer {
+    gap: 3px;
+    font-size: 0.42rem;
+  }
+
+  html.sj-public-mode .sjp-public-plans {
+    width: calc(100% - 20px);
+    margin-bottom: 54px;
+  }
+
+  html.sj-public-mode .sjp-public-plans .content-section-verbiage { padding: 20px 15px; }
+  html.sj-public-mode .sjp-public-plans__grid { grid-template-columns: 1fr; }
+}
+
+/* =================================================================================================
+   ✅ 2026-07-04 🧭 [SJ-PUBLIC-MODE-PASS2D-INVENTORY-01]
+   Public Preview inventory: live entities, protected veiled items, and shared-session conversion.
+   ================================================================================================= */
+html.sj-public-mode .sjp-public-policy-host {
+  position: relative;
+}
+
+/* A live entity replaces its readable body with a normal in-flow conversion card after its own limit
+   or after the shared Public Preview expires. Keep the standard title or special close row reachable. */
+html.sj-public-mode .sjp-public-live-entity.sjp-public-entity-expired > :not(.content-section-title):not(.sjsc-special-close-row):not(.sjp-public-entity-expiry-panel),
+html.sj-public-mode .sjp-public-live-entity.sjp-public-total-expired > :not(.content-section-title):not(.sjsc-special-close-row):not(.sjp-public-entity-expiry-panel) {
+  display: none !important;
+}
+
+html.sj-public-mode .sjp-public-veiled-entity.sjp-public-total-expired > :not(.content-section-title):not(.sjsc-special-close-row):not(.sjp-public-entity-expiry-panel),
+html.sj-public-mode .sjp-public-veiled-entity.sjp-public-entity-expired > :not(.content-section-title):not(.sjsc-special-close-row):not(.sjp-public-entity-expiry-panel) {
+  display: none !important;
+}
+
+html.sj-public-mode .sjp-public-entity-expiry-panel {
+  display: none;
+  width: min(100% - 28px, 820px);
+  box-sizing: border-box;
+  margin: clamp(26px, 5vw, 54px) auto clamp(40px, 7vw, 78px);
+  padding: clamp(24px, 4.5vw, 44px);
+  text-align: center;
+  background: #fff9c3;
+  border: 3px solid #d6b01d;
+  border-radius: 18px;
+  box-shadow: inset 0 0 0 4px rgba(255, 255, 255, 0.38), 0 6px 16px rgba(0, 0, 0, 0.14);
+  color: #3d3300;
+}
+
+html.sj-public-mode .sjp-public-entity-expired > .sjp-public-entity-expiry-panel,
+html.sj-public-mode .sjp-public-total-expired > .sjp-public-entity-expiry-panel {
+  display: block;
+}
+
+/* Protected entities remain structurally open, but their usable content is unavailable in the Public route.
+   The section or calculator title and its close control remain available above the veil. */
+html.sj-public-mode .sjp-public-preview-veil {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 45;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  min-height: 190px;
+  padding: clamp(22px, 5vw, 52px) clamp(14px, 3vw, 28px);
+  overflow: hidden;
+  background: rgba(19, 31, 22, 0.86);
+  color: #ffffff;
+  text-align: center;
+  pointer-events: auto;
+}
+
+html.sj-public-mode .sjp-public-preview-veil[hidden] { display: none !important; }
+
+html.sj-public-mode .sjp-public-preview-veil__card {
+  width: min(100%, 650px);
+  box-sizing: border-box;
+  padding: clamp(21px, 4vw, 34px);
+  border: 2px solid rgba(255, 249, 195, 0.78);
+  border-radius: 15px;
+  background: rgba(38, 58, 34, 0.94);
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.34);
+}
+
+html.sj-public-mode .sjp-public-preview-veil__eyebrow {
+  margin: 0 0 9px;
+  color: #fff0a7;
+  font-size: clamp(0.65rem, 0.56rem + 0.20vw, 0.75rem);
+  font-weight: 900;
+  letter-spacing: 0.13em;
+  line-height: 1.15;
+}
+
+html.sj-public-mode .sjp-public-preview-veil__title {
+  margin: 0 auto 12px;
+  color: #ffffff;
+  font-size: clamp(1.14rem, 0.98rem + 0.58vw, 1.54rem);
+  line-height: 1.22;
+}
+
+html.sj-public-mode .sjp-public-preview-veil__body {
+  max-width: 570px;
+  margin: 0 auto;
+  color: rgba(255, 255, 255, 0.93);
+  font-size: clamp(0.92rem, 0.84rem + 0.30vw, 1.04rem);
+  line-height: 1.48;
+}
+
+html.sj-public-mode .sjp-public-preview-veil__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin: 21px auto 0;
+}
+
+html.sj-public-mode .sjp-public-preview-veil__button,
+html.sj-public-mode .sjp-public-preview-veil__button:visited {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 39px;
+  box-sizing: border-box;
+  padding: 9px 14px;
+  border: 1.5px solid rgba(255, 255, 255, 0.88);
+  border-radius: 7px;
+  color: #ffffff;
+  background: transparent;
+  font-size: 0.74rem;
+  font-weight: 900;
+  letter-spacing: 0.065em;
+  line-height: 1.1;
+  text-decoration: none;
+}
+
+html.sj-public-mode .sjp-public-preview-veil__button--primary,
+html.sj-public-mode .sjp-public-preview-veil__button--primary:visited {
+  color: #273c22;
+  border-color: #fff9c3;
+  background: #fff9c3;
+}
+
+html.sj-public-mode .sjp-public-preview-veil__button:hover,
+html.sj-public-mode .sjp-public-preview-veil__button:focus-visible {
+  color: #273c22;
+  background: #e9f0df;
+  outline: 3px solid rgba(255, 249, 195, 0.38);
+  outline-offset: 3px;
+}
+
+/* Live entity header timers use a common, compact second line. */
+html.sj-public-mode .sjp-public-live-entity .content-section-title .center-box {
+  flex-wrap: wrap;
+  align-content: center;
+  column-gap: 6px;
+  row-gap: 1px;
+}
+
+html.sj-public-mode .sjp-public-live-entity .sjp-public-entity-timer {
+  display: flex;
+  flex: 0 0 100%;
+  align-items: baseline;
+  justify-content: center;
+  gap: 5px;
+  color: #506a43;
+  font-size: clamp(0.46rem, 0.38rem + 0.24vw, 0.63rem);
+  font-weight: 900;
+  letter-spacing: 0.065em;
+  line-height: 1.05;
+  white-space: nowrap;
+}
+
+html.sj-public-mode .sjp-public-live-entity .sjp-public-entity-timer[hidden] { display: none !important; }
+html.sj-public-mode .sjp-public-live-entity .sjp-public-entity-timer .sjp-public-timer__value {
+  color: #273c22;
+  font-size: 1.15em;
+}
+
+html.sj-public-mode .sjp-public-entity-timer.sjp-public-timer--complete { color: #7a3b2b; }
+
+/* Recipe Facts has its own specialty title treatment, so its timer follows the Section Controller close row. */
+html.sj-public-mode .sjp-public-entity-timer--special {
+  margin-left: auto;
+  margin-right: 11px;
+  color: #506a43;
+  font-size: clamp(0.49rem, 0.40rem + 0.24vw, 0.66rem);
+  font-weight: 900;
+  letter-spacing: 0.065em;
+  white-space: nowrap;
+}
+
+/* A completed Public session becomes a visible cooldown indicator in the fixed header. */
+html.sj-public-mode .sjp-public-total-timer.sjp-public-timer--cooldown .sjp-public-timer__state { color: #ffc3b5; }
+html.sj-public-mode .sjp-public-total-timer.sjp-public-timer--cooldown .sjp-public-timer__value { color: #fff0a7; }
+
+@media (max-width: 620px) {
+  html.sj-public-mode .sjp-public-live-entity .sjp-public-entity-timer {
+    gap: 3px;
+    font-size: 0.42rem;
+  }
+
+  html.sj-public-mode .sjp-public-entity-timer--special {
+    margin-right: 7px;
+    font-size: 0.42rem;
+  }
+
+  html.sj-public-mode .sjp-public-preview-veil {
+    min-height: 170px;
+    padding: 22px 12px;
+  }
+
+  html.sj-public-mode .sjp-public-preview-veil__actions {
+    flex-direction: column;
+    width: min(100%, 270px);
+  }
+
+  html.sj-public-mode .sjp-public-preview-veil__button,
+  html.sj-public-mode .sjp-public-preview-veil__button:visited {
+    width: 100%;
+  }
+
+  html.sj-public-mode .sjp-public-entity-expiry-panel {
+    width: calc(100% - 20px);
+    margin-top: 22px;
+    margin-bottom: 42px;
+    padding: 24px 18px;
+  }
+}
+
+/* =================================================================================================
+   ✅ 2026-07-04 🧭 [SJ-PUBLIC-MODE-PASS2D1-POLISH-01]
+   Pass 2D.1 QA polish: restore the guided-preview route, identify live items in their native TOCs,
+   make protected previews scrollable under a calm full-content veil, and tighten the public welcome.
+   ================================================================================================= */
+
+/* The Public orientation begins directly below the lower Book header rail. */
+html.sj-public-mode .sjp-public-introduction {
+  margin-top: 0;
+}
+
+/* Give the high-value sign-in and sign-up actions the scale of their former public-page controls. */
+html.sj-public-mode .sjp-public-introduction__topbar {
+  grid-template-columns: minmax(112px, 1fr) auto minmax(112px, 1fr);
+  gap: clamp(12px, 2.2vw, 22px);
+}
+
+html.sj-public-mode .sjp-public-introduction__auth,
+html.sj-public-mode .sjp-public-introduction__auth:visited {
+  min-height: 43px;
+  padding: 10px 18px 9px;
+  border-width: 2px;
+  border-radius: 8px;
+  font-size: clamp(0.68rem, 0.59rem + 0.22vw, 0.80rem);
+  letter-spacing: 0.075em;
+}
+
+/* Deliberately larger and more widely spaced than the initial Pass 2D treatment. */
+html.sj-public-mode .sjp-public-introduction__socials {
+  gap: clamp(9px, 1.45vw, 14px);
+}
+
+html.sj-public-mode .sjp-public-introduction__social-link {
+  width: clamp(31px, 2.9vw, 38px);
+  height: clamp(31px, 2.9vw, 38px);
+}
+
+/* Live items are visibly discoverable in the Chapter and Calculator TOCs without changing routing. */
+html.sj-public-mode button.sjp-public-live-toc-target,
+html.sj-public-mode .sjsc-section-list .sjp-public-live-toc-target {
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  box-sizing: border-box;
+  min-height: 27px;
+  padding: 3px 7px;
+  border: 1px solid #d6b01d !important;
+  border-radius: 4px;
+  background: rgba(255, 249, 195, 0.54);
+  text-decoration: none !important;
+}
+
+html.sj-public-mode #TOC-calculator-content p.sjp-public-live-toc-target {
+  display: flex !important;
+  align-items: center;
+  width: fit-content;
+  max-width: 100%;
+  gap: 7px;
+  box-sizing: border-box;
+  min-height: 27px;
+  margin-top: 8px;
+  margin-bottom: 8px;
+  padding: 3px 7px;
+  border: 1px solid #d6b01d;
+  border-radius: 4px;
+  background: rgba(255, 249, 195, 0.54);
+}
+
+html.sj-public-mode .sjp-public-live-toc-marker {
+  display: inline-block;
+  flex: 0 0 auto;
+  color: #a17d00;
+  font-size: 0.62em;
+  font-weight: 900;
+  letter-spacing: 0.10em;
+  line-height: 1;
+  text-decoration: none !important;
+  vertical-align: middle;
+}
+
+html.sj-public-mode button.sjp-public-live-toc-target:hover,
+html.sj-public-mode button.sjp-public-live-toc-target:focus-visible,
+html.sj-public-mode #TOC-calculator-content p.sjp-public-live-toc-target:hover {
+  border-color: #a17d00 !important;
+  background: rgba(255, 249, 195, 0.86);
+}
+
+/*
+  Protected preview sections remain fully scrollable so a visitor can perceive their depth and shape.
+  The veil is visual-only: it passes pointer events through to the normal document, rather than becoming
+  a large modal-like card that interrupts reading or traps the scroll gesture.
+*/
+html.sj-public-mode .sjp-public-preview-veil {
+  display: block;
+  min-height: 0;
+  padding: 0;
+  overflow: hidden;
+  background: rgba(20, 31, 23, 0.64);
+  -webkit-backdrop-filter: grayscale(0.78) brightness(0.70) blur(0.35px);
+  backdrop-filter: grayscale(0.78) brightness(0.70) blur(0.35px);
+  pointer-events: none;
+}
+
+html.sj-public-mode .sjp-public-preview-veil__notice {
+  position: absolute;
+  top: clamp(13px, 2.8vw, 24px);
+  left: 50%;
+  z-index: 1;
+  box-sizing: border-box;
+  width: max-content;
+  max-width: calc(100% - 28px);
+  margin: 0;
+  padding: 7px 11px 6px;
+  transform: translateX(-50%);
+  border: 1px solid rgba(255, 249, 195, 0.88);
+  border-radius: 999px;
+  color: #fff9c3;
+  background: rgba(20, 31, 23, 0.72);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.20);
+  font-size: clamp(0.57rem, 0.48rem + 0.20vw, 0.69rem);
+  font-weight: 900;
+  letter-spacing: 0.10em;
+  line-height: 1.15;
+  text-align: center;
+  white-space: nowrap;
+}
+
+/* The severe Pass 2D modal/card is no longer emitted; keep this rule as a defensive guard. */
+html.sj-public-mode .sjp-public-preview-veil__card,
+html.sj-public-mode .sjp-public-preview-veil__actions {
+  display: none !important;
+}
+
+@media (max-width: 620px) {
+  html.sj-public-mode .sjp-public-introduction__topbar {
+    grid-template-columns: minmax(61px, 1fr) auto minmax(61px, 1fr);
+    gap: 7px;
+  }
+
+  html.sj-public-mode .sjp-public-introduction__auth,
+  html.sj-public-mode .sjp-public-introduction__auth:visited {
+    min-height: 38px;
+    padding: 8px 8px 7px;
+    font-size: 0.61rem;
+    letter-spacing: 0.055em;
+  }
+
+  html.sj-public-mode .sjp-public-introduction__socials { gap: 5px; }
+  html.sj-public-mode .sjp-public-introduction__social-link { width: 28px; height: 28px; }
+
+  html.sj-public-mode button.sjp-public-live-toc-target,
+  html.sj-public-mode .sjsc-section-list .sjp-public-live-toc-target,
+  html.sj-public-mode #TOC-calculator-content p.sjp-public-live-toc-target {
+    gap: 5px;
+    min-height: 25px;
+    padding: 3px 6px;
+  }
+
+  html.sj-public-mode .sjp-public-preview-veil__notice {
+    max-width: calc(100% - 20px);
+    padding: 6px 9px 5px;
+    font-size: 0.53rem;
+    white-space: normal;
+  }
+}
+
+/* =================================================================================================
+   ✅ 2026-07-04 🧭 [SJ-PUBLIC-MODE-PASS2D2-INTERACTION-01]
+   Final Public Preview polish:
+   - The live Starter image receives the same gold/LIVE inventory signal as native TOC links.
+   - Protected bodies stay visually scrollable under the veil, but are not mouse, touch, or keyboard interactive.
+   - The Section title bar remains deliberately outside the guard so More/Less and Close still work.
+   ================================================================================================= */
+html.sj-public-mode .leaven-gallery-child:has(.sjp-public-live-image-target) {
+  position: relative;
+  padding-top: 15px;
+}
+
+html.sj-public-mode .leaven-gallery-child:has(.sjp-public-live-image-target)::before {
+  content: 'LIVE';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  z-index: 2;
+  padding: 1px 6px 0;
+  transform: translateX(-50%);
+  border: 1px solid #d6b01d;
+  border-radius: 999px;
+  color: #8a6800;
+  background: #fff9c3;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 0.58rem;
+  font-weight: 900;
+  letter-spacing: 0.10em;
+  line-height: 1.25;
+}
+
+html.sj-public-mode .sjsc-culture-image-link.sjp-public-live-image-target {
+  border: 2px solid #d6b01d;
+  border-radius: 7px;
+  background: rgba(255, 249, 195, 0.42);
+  box-shadow: 0 0 0 2px rgba(255, 249, 195, 0.34);
+}
+
+html.sj-public-mode .sjsc-culture-image-link.sjp-public-live-image-target img {
+  border-radius: 5px;
+}
+
+/* The visual veil remains transparent to pointer routing so ordinary page scrolling still works.
+   The actual protected reading body is inert (set by sjPublicMode.js) and pointer-disabled below. */
+html.sj-public-mode .sjp-public-preview-veil {
+  pointer-events: none;
+}
+
+html.sj-public-mode .sjp-public-veiled-entity > :not(.content-section-title):not(.sjsc-special-close-row):not(.sjp-public-preview-veil):not(.sjp-public-entity-expiry-panel) {
+  pointer-events: none;
+  user-select: none;
+}
+
+@media (max-width: 620px) {
+  html.sj-public-mode .leaven-gallery-child:has(.sjp-public-live-image-target) {
+    padding-top: 14px;
+  }
+
+  html.sj-public-mode .leaven-gallery-child:has(.sjp-public-live-image-target)::before {
+    font-size: 0.53rem;
+  }
+}

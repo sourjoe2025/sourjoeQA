@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>sjRabbitHoleLink Usage</title>
+
+  <!--
+    ✅ 2026-03-23 🧩 [SJ-RHL-USAGE-01]
+    Standalone demo for the portable link-opened Rabbit Hole module.
+    Depends only on:
+      1) sjRabbitHoleLink.css
+      2) sjRabbitHoleLink.js
+  -->
+  <link rel="stylesheet" href="./sjRabbitHoleLink.css" />
+  <script src="./sjRabbitHoleLink.js" defer></script>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #f8fafc;
+      color: #0f172a;
+    }
+
+    .demo-globalHeader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      background: #111827;
+      color: #fff;
+      padding: 14px 18px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.16);
+    }
+
+    .demo-page {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 84px 20px 36px 20px;
+    }
+
+    .demo-card {
+      background: #fff;
+      border: 1px solid #cbd5e1;
+      border-radius: 14px;
+      padding: 18px;
+      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+      margin-bottom: 22px;
+    }
+
+    .demo-sectionTitle {
+      position: sticky;
+      top: 52px;
+      z-index: 1001;
+      background: #fff;
+      border: 1px solid #93c5fd;
+      border-radius: 10px;
+      padding: 10px 12px;
+      margin: 0 0 14px 0;
+      box-shadow: 0 2px 8px rgba(37, 99, 235, 0.08);
+    }
+
+    .demo-list {
+      margin: 0;
+      padding-left: 20px;
+    }
+
+    .demo-spacer {
+      height: 24px;
+    }
+
+    .demo-buttonRow {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .demo-btn {
+      border: 1px solid #94a3b8;
+      border-radius: 10px;
+      background: #fff;
+      padding: 10px 14px;
+      cursor: pointer;
+      font: inherit;
+    }
+
+    .demo-code {
+      font-family: Consolas, monospace;
+      background: #f1f5f9;
+      border-radius: 8px;
+      padding: 2px 6px;
+    }
+
+    .demo-box {
+      border: 1px dashed #cbd5e1;
+      border-radius: 12px;
+      padding: 14px;
+      background: #f8fafc;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="demo-globalHeader" data-sjrhl-fixed-header>
+    sjRabbitHoleLink Usage — fixed top bar for scroll-offset demo
+  </div>
+
+  <div class="demo-page">
+    <div class="demo-card">
+      <h1>sjRabbitHoleLink Usage</h1>
+      <p>
+        This page demonstrates a portable Rabbit Hole component modeled on the working Glossary behavior.
+        It does <strong>not</strong> depend on <span class="demo-code">sjLearnScripts.js</span> or <span class="demo-code">sjLearnStyles.css</span>.
+      </p>
+      <p>
+        Keyboard support: tab to a term and press <strong>Enter</strong> or <strong>Space</strong>. Press <strong>Esc</strong> to close open Rabbit Holes.
+      </p>
+    </div>
+
+    <div class="demo-card" data-sjrhl-group="glossary-demo" data-sjrhl-single="true" data-sjrhl-overlay="true" data-sjrhl-scroll="owner" data-sjrhl-gap="8">
+      <div class="demo-sectionTitle" data-sjrhl-fixed-header>
+        1) Glossary-style envelope mode
+      </div>
+
+      <p class="sjrhl-lead sjrhl-muted">
+        This is the closest match to the current Glossary behavior: clickable inline term, one open at a time,
+        grey veil, and the owning row becomes the Rabbit Hole envelope.
+      </p>
+
+      <ul class="demo-list sjrhl-group" data-sjrhl-group="glossary-demo-items" data-sjrhl-single="true" data-sjrhl-overlay="true" data-sjrhl-scroll="owner">
+        <li class="sjrhl-item sjrhl-item--envelope" data-sjrhl-item>
+          <button class="sjrhl-trigger" data-sjrhl-trigger data-sjrhl-target="usage-rh-hydration">Hydration</button>:
+          <span>The amount of water relative to flour, usually expressed as a percentage.</span>
+
+          <div class="sjrhl-panel sjrhl-panel--flatten-in-envelope" data-sjrhl-panel id="usage-rh-hydration" hidden>
+            <p>
+              In bread formulas, 75% hydration means 75 grams of water for every 100 grams of flour.
+              Higher hydration often produces a more open crumb, but the dough also becomes harder to handle.
+            </p>
+            <p>
+              This item demonstrates the “one envelope” effect: the term line and the deeper content below are framed as one Rabbit Hole.
+            </p>
+          </div>
+        </li>
+
+        <li class="sjrhl-item sjrhl-item--envelope" data-sjrhl-item>
+          <button class="sjrhl-trigger" data-sjrhl-trigger data-sjrhl-target="usage-rh-levain">Levain</button>:
+          <span>A preferment built from an active starter and fresh flour/water before mixing the final dough.</span>
+
+          <div class="sjrhl-panel sjrhl-panel--flatten-in-envelope" data-sjrhl-panel id="usage-rh-levain" hidden>
+            <p>
+              Some bakers use <em>starter</em> for the mother culture and <em>levain</em> for the build prepared specifically for a bake.
+            </p>
+            <p>
+              This demo intentionally mirrors the working Glossary interaction pattern rather than inventing a new one.
+            </p>
+          </div>
+        </li>
+
+        <li class="sjrhl-item sjrhl-item--envelope" data-sjrhl-item>
+          <button class="sjrhl-trigger" data-sjrhl-trigger data-sjrhl-target="usage-rh-ovenSpring">Oven Spring</button>:
+          <span>The rapid rise in loaf volume during the first stage of baking.</span>
+
+          <div class="sjrhl-panel sjrhl-panel--flatten-in-envelope" data-sjrhl-panel id="usage-rh-ovenSpring" hidden>
+            <p>
+              Good oven spring usually depends on fermentation strength, shaping tension, scoring, heat, and steam.
+            </p>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <div class="demo-spacer"></div>
+
+    <div class="demo-card sjrhl-group" data-sjrhl-group="plain-demo" data-sjrhl-single="false" data-sjrhl-overlay="true" data-sjrhl-scroll="panel" data-sjrhl-gap="10">
+      <div class="demo-sectionTitle" data-sjrhl-fixed-header>
+        2) Plain linked Rabbit Hole mode
+      </div>
+
+      <p class="sjrhl-lead sjrhl-muted">
+        This mode keeps the trigger outside the Rabbit Hole card look. Each trigger simply opens a standalone panel.
+      </p>
+
+      <div class="demo-box sjrhl-item" data-sjrhl-item>
+        <p>
+          <button class="sjrhl-trigger" data-sjrhl-trigger data-sjrhl-target="usage-rh-essentials">Essentials</button>
+          — open a plain Rabbit Hole card below.
+        </p>
+        <div class="sjrhl-panel sjrhl-panel--plain" data-sjrhl-panel id="usage-rh-essentials" hidden>
+          <p>A plain mode panel is useful when you want a simple linked popup/card rather than a full envelope around the trigger row.</p>
+          <div class="sjrhl-closeRow">
+            <button class="sjrhl-closeBtn" type="button" onclick="window.SJRabbitHoleLink.closeByPanelId('usage-rh-essentials')">Close</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="demo-box sjrhl-item" data-sjrhl-item>
+        <p>
+          <button class="sjrhl-trigger" data-sjrhl-trigger data-sjrhl-target="usage-rh-process">Baker's Process</button>
+          — this one can stay open at the same time because the group allows multiple open panels.
+        </p>
+        <div class="sjrhl-panel sjrhl-panel--plain" data-sjrhl-panel id="usage-rh-process" hidden>
+          <p>
+            In this group, <span class="demo-code">data-sjrhl-single="false"</span> allows multiple open linked Rabbit Holes.
+          </p>
+          <div class="sjrhl-closeRow">
+            <button class="sjrhl-closeBtn" type="button" onclick="window.SJRabbitHoleLink.closeByPanelId('usage-rh-process')">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="demo-spacer"></div>
+
+    <div class="demo-card">
+      <div class="demo-sectionTitle" data-sjrhl-fixed-header>
+        3) Public API examples
+      </div>
+
+      <p>
+        These buttons show the small public API. This is useful for gradual integration later.
+      </p>
+
+      <div class="demo-buttonRow">
+        <button class="demo-btn" type="button" onclick="window.SJRabbitHoleLink.openByPanelId('usage-rh-levain')">Open “Levain”</button>
+        <button class="demo-btn" type="button" onclick="window.SJRabbitHoleLink.closeGroup('glossary-demo-items')">Close glossary demo group</button>
+        <button class="demo-btn" type="button" onclick="window.SJRabbitHoleLink.closeAll()">Close all</button>
+      </div>
+
+      <div class="demo-box">
+        <p><strong>Recommended markup pattern</strong></p>
+<pre style="white-space:pre-wrap; margin:0; font-family:Consolas, monospace; font-size:13px;">
+&lt;div class="sjrhl-group" data-sjrhl-group="example" data-sjrhl-single="true" data-sjrhl-overlay="true"&gt;
+  &lt;div class="sjrhl-item sjrhl-item--envelope" data-sjrhl-item&gt;
+    &lt;button class="sjrhl-trigger" data-sjrhl-trigger data-sjrhl-target="panel-id"&gt;Clickable term&lt;/button&gt;
+    &lt;div class="sjrhl-panel sjrhl-panel--flatten-in-envelope" data-sjrhl-panel id="panel-id" hidden&gt;
+      ... deeper content ...
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</pre>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

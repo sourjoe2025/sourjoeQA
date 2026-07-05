@@ -1,0 +1,589 @@
+/* =================================================================================================
+   ✅ 2026-07-03 🧭 [SJ-SECTION-CONTROLLER-CSS-01]
+   Public-Mode Pivot Pass 1A5 — Essentials one-card proof styling
+
+   The Chapter Intro cards intentionally reuse the pale green treatment established by the START HERE
+   "In the Book" / "In Recipes" cards, while staying isolated to converted chapters.
+   ================================================================================================= */
+
+[data-sj-section-parent][hidden] {
+  display: none !important;
+}
+
+/* -------------------------------------------------------------------------------------------------
+   ESSENTIALS — one-card Chapter Intro proof
+   One pale-green inner card holds the Chapter sketch, introductory copy, and Chapter links.
+   The sketch floats left; the copy wraps alongside it; the link list clears below the copy.
+   The 940px outer Chapter rail remains intact. Only the usable interior is maximized.
+   ------------------------------------------------------------------------------------------------- */
+#essentialsIntro .sjsc-chapter-grid {
+  display: block;
+  width: 100%;
+  max-width: 940px;
+  margin: 8px auto 4px auto;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+#essentialsIntro .sjsc-chapter-card {
+  box-sizing: border-box;
+  min-width: 0;
+  margin: 0;
+  padding: clamp(14px, 1.8vw, 18px);
+  border: 1px solid rgba(88, 174, 93, 0.24);
+  border-radius: 12px;
+  background: rgba(232, 248, 236, 0.30);
+}
+
+#essentialsIntro .sjsc-chapter-card--flow {
+  display: flow-root;
+}
+
+#essentialsIntro .sjsc-chapter-card--flow .sjp-chapter-wrap-img {
+  float: left !important;
+  display: block;
+  width: clamp(132px, 22vw, 230px) !important;
+  max-width: 38% !important;
+  height: auto !important;
+  object-fit: contain;
+  margin: 0 clamp(14px, 2.4vw, 26px) clamp(10px, 1.2vw, 14px) 0 !important;
+}
+
+#essentialsIntro .sjsc-chapter-card--copy p {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+#essentialsIntro .sjsc-chapter-card--links {
+  clear: both;
+  width: 100%;
+  margin-top: clamp(14px, 2vw, 20px);
+  text-align: center;
+}
+
+#essentialsIntro .sjsc-chapter-card-title {
+  margin: 0 0 7px 0;
+  color: darkgreen;
+  font-weight: bold;
+  font-size: larger;
+  text-align: center;
+}
+
+#essentialsIntro .sjsc-section-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+
+#essentialsIntro .sjsc-section-list li {
+  margin: 6px 0;
+  padding: 0;
+  text-align: center;
+}
+
+#essentialsIntro .sjsc-section-link {
+  display: inline;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: blue;
+  cursor: pointer;
+  font: inherit;
+  font-weight: bold;
+  line-height: 1.35;
+  text-align: center;
+  text-decoration: underline;
+}
+
+#essentialsIntro .sjsc-section-link:hover,
+#essentialsIntro .sjsc-section-link:focus-visible {
+  color: mediumblue;
+}
+
+#essentialsIntro .sjsc-section-link:focus-visible,
+.sjsc-close-button:focus-visible {
+  outline: 2px solid mediumblue;
+  outline-offset: 3px;
+}
+
+/* Keep the Chapter/Section outer rail unchanged. Remove only the inherited duplicate
+   horizontal inset from this converted Chapter Intro. Section-panel internals stay untouched. */
+@media only screen and (min-width: 1025px) {
+  #essentialsIntro > .content-section-verbiage {
+    --sjPadX: clamp(8px, 1vw, 12px);
+  }
+
+  #essentialsIntro > .content-section-verbiage > .sjp-chapter-copy-shell {
+    width: 100% !important;
+    max-width: none !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
+  #essentialsIntro .sjsc-chapter-grid {
+    max-width: none;
+  }
+}
+
+/* Medium and small views retain the one-card design but use tighter outer and inner breathing room. */
+@media only screen and (max-width: 1024px) {
+  #essentialsIntro.content-section {
+    margin-top: 10px;
+  }
+
+  #essentialsIntro > .content-section-verbiage {
+    --sjPadX: clamp(8px, 2.4vw, 14px);
+    padding-bottom: 3px;
+  }
+
+  #essentialsIntro > .content-section-verbiage > .sjp-chapter-copy-shell {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
+  #essentialsIntro .sjsc-chapter-grid {
+    margin-top: 6px;
+  }
+
+  #essentialsIntro .sjsc-chapter-card {
+    padding: clamp(11px, 2.5vw, 16px);
+  }
+}
+
+@media only screen and (max-width: 760px) {
+  #essentialsIntro.content-section {
+    margin-top: 8px;
+  }
+
+  #essentialsIntro .sjsc-chapter-grid {
+    margin: 4px auto 2px auto;
+  }
+
+  #essentialsIntro .sjsc-chapter-card--flow .sjp-chapter-wrap-img {
+    width: clamp(98px, 28vw, 145px) !important;
+    max-width: 42% !important;
+    margin-right: 12px !important;
+    margin-bottom: 8px !important;
+  }
+
+  .sjsc-close-button {
+    width: 31px;
+    height: 31px;
+    font-size: 24px;
+  }
+}
+
+/* -------------------------------------------------------------------------------------------------
+   Converted Section Header — semantic close action replaces the old right-hand TOC control.
+   ------------------------------------------------------------------------------------------------- */
+.sjsc-section-close-box {
+  display: flex !important;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.sjsc-close-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  margin: 0;
+  padding: 0 0 2px 0;
+  border: 1.5px solid #75ba75;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.72);
+  color: #356e35;
+  cursor: pointer;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 26px;
+  font-weight: 400;
+  line-height: 1;
+}
+
+.sjsc-close-button:hover {
+  background: #ffffff;
+  color: #174f17;
+}
+
+
+
+/* =================================================================================================
+   ✅ 2026-07-03 🧭 [SJ-SECTION-CONTROLLER-CSS-02]
+   Public-Mode Pivot Pass 1B — Chapter Intro rollout and managed Sections
+
+   Scope:
+   - Retains the 940px outer Chapter/Section rails.
+   - Maximizes only the usable interior of converted Chapter Intros.
+   - Leaves existing Section body styling and More/Less/Rabbit Hole mechanics untouched.
+   ================================================================================================= */
+
+/* Converted Chapter Intros — common one-card presentation. */
+.sjsc-chapter-intro .sjsc-chapter-grid {
+  display: block;
+  width: 100%;
+  max-width: 940px;
+  margin: 8px auto 4px auto;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.sjsc-chapter-intro .sjsc-chapter-card {
+  box-sizing: border-box;
+  min-width: 0;
+  margin: 0;
+  padding: clamp(14px, 1.8vw, 18px);
+  border: 1px solid rgba(88, 174, 93, 0.24);
+  border-radius: 12px;
+  background: rgba(232, 248, 236, 0.30);
+}
+
+.sjsc-chapter-intro .sjsc-chapter-card--flow {
+  display: flow-root;
+}
+
+.sjsc-chapter-intro .sjsc-chapter-card--flow .sjp-chapter-wrap-img {
+  float: left !important;
+  display: block;
+  width: clamp(132px, 22vw, 230px) !important;
+  max-width: 38% !important;
+  height: auto !important;
+  object-fit: contain;
+  margin: 0 clamp(14px, 2.4vw, 26px) clamp(10px, 1.2vw, 14px) 0 !important;
+}
+
+.sjsc-chapter-intro .sjsc-chapter-card--copy p {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.sjsc-chapter-intro .sjsc-chapter-card--copy p + p {
+  margin-top: 1em;
+}
+
+.sjsc-chapter-intro .sjsc-chapter-card--links {
+  clear: both;
+  width: 100%;
+  margin-top: clamp(14px, 2vw, 20px);
+  text-align: center;
+}
+
+.sjsc-chapter-intro .sjsc-chapter-card-title {
+  margin: 0 0 7px 0;
+  color: darkgreen;
+  font-weight: bold;
+  font-size: larger;
+  text-align: center;
+}
+
+.sjsc-chapter-intro .sjsc-section-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+
+.sjsc-chapter-intro .sjsc-section-list li {
+  margin: 6px 0;
+  padding: 0;
+  text-align: center;
+}
+
+.sjsc-chapter-intro .sjsc-section-link {
+  display: inline;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: blue;
+  cursor: pointer;
+  font: inherit;
+  font-weight: bold;
+  line-height: 1.35;
+  text-align: center;
+  text-decoration: underline;
+}
+
+.sjsc-chapter-intro .sjsc-section-link:hover,
+.sjsc-chapter-intro .sjsc-section-link:focus-visible {
+  color: mediumblue;
+}
+
+.sjsc-chapter-intro .sjsc-section-link:focus-visible,
+.sjsc-culture-image-link:focus-visible {
+  outline: 2px solid mediumblue;
+  outline-offset: 3px;
+}
+
+.sjsc-chapter-note p:last-child {
+  margin-bottom: 0;
+  text-align: center;
+}
+
+/* Culture / Starter / Leaven image trio. The images remain the actual Chapter navigation. */
+.sjsc-chapter-intro--culture .sjsc-culture-card {
+  display: block;
+}
+
+.sjsc-chapter-intro--culture .sjsc-culture-gallery {
+  margin: 0;
+}
+
+.sjsc-culture-image-link {
+  display: block;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.sjsc-culture-image-link img {
+  transition: transform 140ms ease;
+}
+
+.sjsc-culture-image-link:hover img {
+  transform: scale(1.015);
+}
+
+.sjsc-chapter-intro--culture .sjsc-culture-copy {
+  margin-top: clamp(12px, 1.8vw, 18px);
+}
+
+.sjsc-chapter-intro--culture .sjsc-culture-copy p {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.sjsc-chapter-intro--culture .sjsc-culture-copy p + p {
+  margin-top: 1em;
+}
+
+/* Recipe Stats intentionally has no image but retains the same Chapter-card rhythm. */
+.sjsc-chapter-intro--no-image .sjsc-chapter-card--no-image {
+  display: block;
+}
+
+/* Retain the 940px Chapter rail; maximize usable internal width only in converted Chapter Intros. */
+/* Reference now follows the same image scale as the accepted Essentials Chapter card. */
+#referenceIntro.sjsc-chapter-intro .sjsc-chapter-card--flow .sjp-chapter-wrap-img {
+  width: clamp(132px, 22vw, 230px) !important;
+  max-width: 38% !important;
+}
+
+@media only screen and (min-width: 1025px) {
+  .sjsc-chapter-intro > .content-section-verbiage {
+    --sjPadX: clamp(8px, 1vw, 12px);
+  }
+
+  .sjsc-chapter-intro > .content-section-verbiage > .sjp-chapter-copy-shell {
+    width: 100% !important;
+    max-width: none !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
+  .sjsc-chapter-intro .sjsc-chapter-grid {
+    max-width: none;
+  }
+}
+
+/* Medium/small: preserve the one-card design with reduced Chapter and card breathing room. */
+@media only screen and (max-width: 1024px) {
+  .sjsc-chapter-intro.content-section {
+    margin-top: 10px;
+  }
+
+  .sjsc-chapter-intro > .content-section-verbiage {
+    --sjPadX: clamp(8px, 2.4vw, 14px);
+    padding-bottom: 3px;
+  }
+
+  .sjsc-chapter-intro > .content-section-verbiage > .sjp-chapter-copy-shell {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
+  .sjsc-chapter-intro .sjsc-chapter-grid {
+    margin-top: 6px;
+  }
+
+  .sjsc-chapter-intro .sjsc-chapter-card {
+    padding: clamp(11px, 2.5vw, 16px);
+  }
+}
+
+@media only screen and (max-width: 760px) {
+  .sjsc-chapter-intro.content-section {
+    margin-top: 8px;
+  }
+
+  .sjsc-chapter-intro .sjsc-chapter-grid {
+    margin: 4px auto 2px auto;
+  }
+
+  .sjsc-chapter-intro .sjsc-chapter-card--flow .sjp-chapter-wrap-img {
+    width: clamp(98px, 28vw, 145px) !important;
+    max-width: 42% !important;
+    margin-right: 12px !important;
+    margin-bottom: 8px !important;
+  }
+}
+
+/* Recipe Facts has a specialty internal UI rather than a normal Section title bar. */
+#recipeFactoids.sjsc-managed-section {
+  position: relative;
+}
+
+#recipeFactoids .sjsc-special-close-row {
+  position: sticky;
+  top: calc(var(--appTop) + 100px);
+  z-index: 101;
+  width: 100%;
+  height: 0;
+  pointer-events: none;
+}
+
+#recipeFactoids .sjsc-special-close-row .sjsc-close-button {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  pointer-events: auto;
+}
+
+@media only screen and (max-width: 760px) {
+  #recipeFactoids .sjsc-special-close-row .sjsc-close-button {
+    top: 5px;
+    right: 5px;
+  }
+}
+
+/* =================================================================================================
+   ✅ 2026-07-03 🧭 [SJ-SECTION-CONTROLLER-CSS-03]
+   Pass 1B2 — wide-screen Chapter-card polish
+   - Standard Chapter link lists no longer wait for the floated illustration to end.
+   - Culture / Starter / Leaven now reads copy → Chapter title → responsive image links.
+   ================================================================================================= */
+@media only screen and (min-width: 1025px) {
+  #essentialsIntro .sjsc-chapter-card--links,
+  .sjsc-chapter-intro--standard .sjsc-chapter-card--links {
+    clear: none;
+    width: auto;
+    margin-top: clamp(12px, 1.5vw, 16px);
+  }
+}
+
+.sjsc-chapter-intro--culture .sjsc-culture-copy {
+  margin-top: 0;
+}
+
+.sjsc-chapter-intro--culture .sjsc-culture-copy + .sjsc-chapter-card-title {
+  margin-top: clamp(14px, 1.8vw, 18px);
+}
+
+.sjsc-chapter-intro--culture .sjsc-chapter-card-title + .sjsc-culture-gallery {
+  margin-top: clamp(10px, 1.4vw, 14px);
+}
+
+/* =================================================================================================
+   ✅ 2026-07-03 🧭 [SJ-SECTION-CONTROLLER-CSS-04]
+   Pass 1B3 — stable standard Chapter-card grid
+   - Replaces the wide-screen float geometry for the ordinary illustrated Chapter Intros.
+   - Keeps the approved single visible inner card, but fixes the image in a left grid zone and keeps
+     the copy plus the complete Chapter link list together in the right grid zone.
+   - Prevents individual links from wrapping around / escaping below the illustration at intermediate widths.
+   ================================================================================================= */
+@media only screen and (min-width: 761px) {
+  #essentialsIntro .sjsc-chapter-card--flow,
+  #referenceIntro .sjsc-chapter-card--flow,
+  .sjsc-chapter-intro--standard .sjsc-chapter-card--flow {
+    display: grid;
+    grid-template-columns: clamp(132px, 22vw, 230px) minmax(0, 1fr);
+    column-gap: clamp(14px, 2.4vw, 26px);
+    row-gap: 0;
+    align-items: start;
+  }
+
+  #essentialsIntro .sjsc-chapter-card--flow .sjp-chapter-wrap-img,
+  #referenceIntro .sjsc-chapter-card--flow .sjp-chapter-wrap-img,
+  .sjsc-chapter-intro--standard .sjsc-chapter-card--flow .sjp-chapter-wrap-img {
+    float: none !important;
+    display: block;
+    grid-column: 1;
+    grid-row: 1 / span 2;
+    width: 100% !important;
+    max-width: 230px !important;
+    height: auto !important;
+    margin: 0 !important;
+    align-self: center;
+    justify-self: center;
+    object-fit: contain;
+  }
+
+  #essentialsIntro .sjsc-chapter-card--copy,
+  #referenceIntro .sjsc-chapter-card--copy,
+  .sjsc-chapter-intro--standard .sjsc-chapter-card--copy {
+    grid-column: 2;
+    grid-row: 1;
+    min-width: 0;
+    align-self: start;
+  }
+
+  #essentialsIntro .sjsc-chapter-card--links,
+  #referenceIntro .sjsc-chapter-card--links,
+  .sjsc-chapter-intro--standard .sjsc-chapter-card--links {
+    clear: none;
+    grid-column: 2;
+    grid-row: 2;
+    width: 100%;
+    margin-top: clamp(12px, 1.5vw, 16px);
+    align-self: start;
+  }
+}
+
+/* Phone portrait and narrow landscape: retain one card, but stack its image, copy, and chapter links
+   in a stable reading order rather than retaining desktop geometry. */
+@media only screen and (max-width: 760px) {
+  #essentialsIntro .sjsc-chapter-card--flow,
+  #referenceIntro .sjsc-chapter-card--flow,
+  .sjsc-chapter-intro--standard .sjsc-chapter-card--flow {
+    display: block;
+  }
+
+  #essentialsIntro .sjsc-chapter-card--flow .sjp-chapter-wrap-img,
+  #referenceIntro .sjsc-chapter-card--flow .sjp-chapter-wrap-img,
+  .sjsc-chapter-intro--standard .sjsc-chapter-card--flow .sjp-chapter-wrap-img {
+    float: none !important;
+    display: block;
+    width: clamp(110px, 38vw, 170px) !important;
+    max-width: 100% !important;
+    height: auto !important;
+    margin: 0 auto clamp(10px, 2.5vw, 14px) auto !important;
+  }
+
+  #essentialsIntro .sjsc-chapter-card--links,
+  #referenceIntro .sjsc-chapter-card--links,
+  .sjsc-chapter-intro--standard .sjsc-chapter-card--links {
+    clear: none;
+    width: 100%;
+    margin-top: clamp(12px, 3vw, 16px);
+  }
+}
+
+/* =================================================================================================
+   ✅ 2026-07-03 🧭 [SJ-SECTION-CONTROLLER-CSS-05]
+   Pass 1B4 — Reference illustration optical-scale correction
+   - The Reference source artwork includes substantially more transparent canvas than the Essentials sketch.
+   - Preserve the shared grid geometry and enlarge only the Reference illustration optically.
+   ================================================================================================= */
+@media only screen and (min-width: 761px) {
+  #referenceIntro .sjsc-chapter-card--flow .sjp-chapter-wrap-img {
+    transform: scale(2.35);
+    transform-origin: center center;
+  }
+}

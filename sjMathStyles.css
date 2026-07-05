@@ -1,0 +1,1109 @@
+/* =========================================================================================
+   sjMathStyles.css
+
+   🧮 07Feb26 - Unit Convertor (Unit Calculator)
+   - Responsive layout (small screens + large screens)
+   - De-inline styling: convert repeated inline styles into scoped classes
+   - Keeps the converter's visual design while allowing it to scale gracefully
+   - Suppresses the debug readout in the bottom-left (p#test)
+   ========================================================================================= */
+
+/*
+  NOTE:
+  - Styles are *scoped* to the Unit Convertor only via the .sj-uc class.
+  - Do NOT move these selectors outside .sj-uc, or you'll risk bleeding styles
+    into other chapters/sections.
+*/
+
+.sj-uc {
+  --sjuc-accent: #3399ff;
+  --sjuc-header-bg: #e6f3ff;
+  --sjuc-border: #e6f3ff;
+  --sjuc-muted: lightgrey;
+  --sjuc-green: green;
+  --sjuc-radius: 3px;
+
+  background-color: white;
+  display: block;
+  margin: 0 auto;
+  width: 100%;
+  max-width: 100%;
+  padding: 4px;
+}
+
+.sj-uc,
+.sj-uc *,
+.sj-uc *::before,
+.sj-uc *::after {
+  box-sizing: border-box;
+}
+
+.sj-uc-form {
+  width: 100%;
+  margin: 0;
+}
+
+/* ---------------------------
+   Section title rows (blue bar)
+   --------------------------- */
+
+.sj-uc-titleRow {
+  background-color: var(--sjuc-header-bg);
+  padding: 3px;
+  min-height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 6px;
+}
+
+.sj-uc-titleSlot {
+  flex: 0 0 10%;
+  min-width: 30px; /* keeps the left/right placeholders stable on tiny screens */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sj-uc-titleMid {
+  flex: 1 1 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sj-uc-titleText {
+  font-size: clamp(12px, 5vw, 24px);
+  font-weight: bold;
+  color: var(--sjuc-accent);
+}
+
+/* ---------------------------
+   General bordered rows
+   --------------------------- */
+
+.sj-uc-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  margin: 1px auto;
+  padding: 3px;
+  border: 1px solid var(--sjuc-border);
+  border-radius: var(--sjuc-radius);
+  gap: 10px;
+}
+
+.sj-uc-cell {
+  flex: 1 1 210px;
+  min-width: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+@media (max-width: 420px) {
+  .sj-uc-cell {
+    flex-basis: 160px;
+    min-width: 150px;
+  }
+}
+
+/* ---------------------------
+   Inputs & selects
+   --------------------------- */
+
+.sj-uc-select {
+  color: var(--sjuc-green);
+  font-weight: bold;
+  text-align: center;
+  width: min(100%, 12rem);
+  height: 30px;
+  border-radius: 5px;
+  border: 1px solid black;
+  background-color: white;
+  font-size: clamp(9px, 2.5vw, 16px);
+}
+
+.sj-uc-input {
+  text-align: center;
+  height: 30px;
+  border-radius: 3px;
+  width: min(100%, 12rem);
+  padding: 3px;
+  font-size: clamp(14px, 2.5vw, 16px);
+}
+
+/* xPerCup special behavior: grey for predefined ingredients, white for CUSTOM */
+.sj-uc-input--xPerCup {
+  background-color: lightgray;
+  border: 1px solid #000;
+}
+
+.sj-uc-input--xPerCup.sj-uc-isCustom {
+  background-color: white;
+}
+
+.sj-uc-unit {
+  font-size: 12px;
+  min-width: 52px;
+  margin-left: 5px;
+}
+
+/* ---------------------------
+   Panel blocks (Metric / Imperial / Volume)
+   --------------------------- */
+
+.sj-uc-panel {
+  text-align: center;
+  margin: 3px;
+  border: 1px solid var(--sjuc-border);
+  border-radius: var(--sjuc-radius);
+  padding: 1px;
+}
+
+.sj-uc-grid2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  align-items: center;
+  justify-items: center;
+}
+
+.sj-uc-grid3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  align-items: center;
+  justify-items: center;
+}
+
+.sj-uc-panelTitle {
+  font-size: 16px;
+  min-height: 25px;
+}
+
+.sj-uc-panelTitle--volume {
+  min-height: 30px;
+  padding: 3px;
+}
+
+.sj-uc-panelFields {
+  padding: 3px;
+  min-height: 40px;
+}
+
+.sj-uc-field {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Panel inputs (kilos/grams/pounds/ounces) were intentionally smaller in the original */
+.sj-uc-panel .sj-uc-input {
+  font-size: 16px;
+  width: min(70%, 140px);
+}
+
+.sj-uc-summary {
+  font-size: 70%;
+  font-weight: bold;
+  color: var(--sjuc-muted);
+  text-align: center;
+  margin: 5px;
+}
+
+/* ---------------------------
+   Volume input row
+   --------------------------- */
+
+.sj-uc-panelTitle--volume {
+  /* 🧩 15Feb26 - Volume labels are now paired with each box (sj-uc-volLabel),
+     so this shared header row is hidden to prevent drift when boxes wrap. */
+  display: none;
+}
+
+.sj-uc-volumeFields {
+  /* 🧩 15Feb26 - Grid keeps each label + box together on every screen size */
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(155px, 1fr));
+  align-items: start;
+  justify-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+  padding: 3px;
+}
+
+.sj-uc-volField {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 6px;
+}
+
+.sj-uc-volLabel {
+  font-size: 16px;
+  min-height: 25px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sj-uc-volBox {
+  width: min(100%, 12.5rem);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  border: 1px solid black;
+  border-radius: 3px;
+  padding: 2px;
+  gap: 6px;
+}
+/* The old HTML had <br> nodes inside a flex container; hide them so wrapping is clean */
+.sj-uc-volumeFields br {
+  display: none;
+}
+
+.sj-uc-inputGreen {
+  color: var(--sjuc-green);
+  font-size: clamp(16px, 5vw, 22px);
+  font-weight: bold;
+  text-align: right;
+  border: none;
+  width: 3.8rem;
+  background: transparent;
+}
+
+.sj-uc-selectGreen {
+  color: var(--sjuc-green);
+  font-size: clamp(16px, 5vw, 22px);
+  font-weight: bold;
+  text-align: left;
+  border: none;
+  background: transparent;
+}
+
+/* ---------------------------
+   Menu bar + buttons
+   --------------------------- */
+
+.sj-uc-menu {
+  font-family: Arial, Helvetica, sans-serif;
+  color: var(--sjuc-accent);
+  border: 1px solid var(--sjuc-border);
+  border-radius: var(--sjuc-radius);
+  background-color: white;
+  margin: 5px;
+  padding: 5px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.sj-uc-btn {
+  display: block;
+  padding: 5px;
+  width: auto;
+  height: 35px;
+  font-weight: bold;
+  margin: 0 auto;
+}
+
+/* Default button visibility (JS will override as needed) */
+#RefreshButtonDisplay {
+  display: none;
+}
+
+.sj-uc-residual {
+  font-size: 70%;
+  font-weight: bold;
+  color: var(--sjuc-muted);
+  text-align: center;
+  margin: 5px;
+}
+
+/* ---------------------------
+   Debug suppression
+   --------------------------- */
+
+.sj-uc-debug {
+  display: none !important;
+}
+
+/* =========================================================================================
+   ✅ 2026-05-14 🧩 [SJ-UC-PASS8C-RESPONSIVE-01]
+   Unit Convertor shared refinement for sjLearn + public preview:
+   - Center the converter in a narrower responsive rail.
+   - Make Choose Ingredient collapse as cleanly as the volume inputs.
+   - Keep Cups / Tablespoons / Teaspoons either three-across or fully stacked, avoiding a 2+1 offset.
+   ========================================================================================= */
+
+#unitConvertor .sj-math.sj-uc {
+  width: min(100%, 760px) !important;
+  max-width: 760px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  padding: clamp(5px, 1.2vw, 10px) !important;
+}
+
+#unitConvertor .sj-uc .sj-uc-row {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  align-items: center !important;
+  justify-items: center !important;
+  gap: clamp(10px, 1.8vw, 16px) !important;
+}
+
+#unitConvertor .sj-uc .sj-uc-cell {
+  width: min(100%, 260px) !important;
+  max-width: 260px !important;
+  min-width: 0 !important;
+  flex: none !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+#unitConvertor .sj-uc .sj-uc-cell:first-child .sj-uc-select {
+  width: 100% !important;
+  max-width: none !important;
+}
+
+#unitConvertor .sj-uc .sj-uc-cell:nth-child(2) {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) 52px !important;
+  align-items: center !important;
+  justify-items: stretch !important;
+  column-gap: 6px !important;
+}
+
+#unitConvertor .sj-uc .sj-uc-cell:nth-child(2) .sj-uc-input--xPerCup {
+  width: 100% !important;
+  max-width: none !important;
+  min-width: 0 !important;
+}
+
+#unitConvertor .sj-uc .sj-uc-cell:nth-child(2) .sj-uc-unit {
+  width: 52px !important;
+  min-width: 0 !important;
+  margin-left: 0 !important;
+  text-align: left !important;
+  white-space: nowrap !important;
+}
+
+#unitConvertor .sj-uc .sj-uc-volumeFields {
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  align-items: start !important;
+  justify-items: center !important;
+  gap: clamp(8px, 1.6vw, 14px) !important;
+}
+
+#unitConvertor .sj-uc .sj-uc-volField {
+  max-width: 215px !important;
+}
+
+#unitConvertor .sj-uc .sj-uc-volBox {
+  width: min(100%, 12.5rem) !important;
+}
+
+@media only screen and (max-width: 650px) {
+  #unitConvertor .sj-math.sj-uc {
+    width: min(100%, 520px) !important;
+    padding: 6px !important;
+  }
+
+  #unitConvertor .sj-uc .sj-uc-row,
+  #unitConvertor .sj-uc .sj-uc-volumeFields {
+    grid-template-columns: 1fr !important;
+  }
+
+  #unitConvertor .sj-uc .sj-uc-cell,
+  #unitConvertor .sj-uc .sj-uc-volField {
+    width: min(100%, 260px) !important;
+    max-width: 260px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+}
+
+
+/* =========================================================================================
+   ✅ 2026-06-06 🧮 [SJ-CALC-SUITE-STYLES-01]
+   Standardized SourJoe calculator suite styles.
+   Scope: .sjcalc only. Unit Convertor .sj-uc styles above remain untouched.
+   ========================================================================================= */
+
+.sjcalc {
+  --sjcalc-blue: #3399ff;
+  --sjcalc-blue-dark: #006fcf;
+  --sjcalc-light: #e6f3ff;
+  --sjcalc-border: #d7d7d7;
+  --sjcalc-text: #001b7a;
+  --sjcalc-muted: #777;
+  --sjcalc-result: #e9f7ec;
+  --sjcalc-warning: #fff3cd;
+  background: #fff;
+  color: var(--sjcalc-text);
+  max-width: 980px;
+  margin: 12px auto;
+  padding: 8px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.sjcalc, .sjcalc *, .sjcalc *::before, .sjcalc *::after { box-sizing: border-box; }
+
+.sjcalc-intro { margin: 0 auto 12px; color: #222; text-align: left; max-width: 880px; }
+
+.sjcalc-units {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px 28px;
+  margin: 8px auto 12px;
+  color: #111;
+}
+
+.sjcalc-unitRow { display: inline-flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 10px 16px; }
+.sjcalc-unitRow label { display: inline-flex; align-items: center; gap: 6px; min-height: 32px; cursor: pointer; }
+.sjcalc-unitRow input[type="radio"] { transform: scale(1.1); }
+.sjcalc-unitLabel { font-weight: bold; color: var(--sjcalc-text); }
+
+.sjcalc-controlRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin: 8px auto 12px;
+  color: var(--sjcalc-text);
+}
+.sjcalc-controlRow label { font-weight: bold; }
+.sjcalc-controlRow select, .sjcalc select { padding: 5px 8px; border: 1px solid #999; border-radius: 3px; background: #fff; }
+
+.sjcalc-grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 6px 12px; align-items: start; }
+
+.sjcalc-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 8px auto 12px;
+  table-layout: fixed;
+}
+.sjcalc-table th {
+  background: var(--sjcalc-blue);
+  color: white;
+  border: 1px solid var(--sjcalc-border);
+  padding: 8px;
+  text-align: center;
+  font-weight: bold;
+}
+.sjcalc-table td {
+  border: 1px solid var(--sjcalc-border);
+  padding: 7px;
+  text-align: center;
+  vertical-align: middle;
+}
+.sjcalc-table tbody tr:nth-child(even) { background: var(--sjcalc-light); }
+.sjcalc-table tbody tr:nth-child(odd) { background: #fff; }
+.sjcalc-wideTable { min-width: 760px; }
+.sjcalc-wideTable th, .sjcalc-wideTable td { width: auto; }
+
+.sjcalc-labelText { display: inline-flex; align-items: center; justify-content: center; gap: 5px; font-weight: bold; color: var(--sjcalc-text); }
+.sjcalc-help { vertical-align: middle; margin-right: 3px; }
+
+.sjcalc-valueStack { display: inline-flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; min-width: 92px; }
+.sjcalc-input {
+  width: 88px;
+  max-width: 100%;
+  padding: 5px;
+  text-align: center;
+  border: 1px solid #888;
+  border-radius: 3px;
+  font-size: 16px;
+  background: white;
+}
+.sjcalc-input[readonly] { background: #f0f0f0; border-style: dashed; color: #555; }
+.sjcalc-alt { min-height: 1em; color: var(--sjcalc-muted); font-size: 12px; font-weight: bold; text-align: center; }
+.sjcalc-output { color: var(--sjcalc-text); font-weight: bold; font-size: 17px; }
+.sjcalc-unitInline { margin-left: 4px; color: #111; }
+
+.sjcalc-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin: 10px auto; }
+.sjcalc-btn { padding: 7px 11px; border: 2px solid #777; border-radius: 4px; background: var(--sjcalc-blue); color: #fff; font-weight: bold; cursor: pointer; }
+.sjcalc-btn-secondary { background: #666; }
+
+.sjcalc-resultBox {
+  background: var(--sjcalc-result);
+  border: 1px solid #a7cfae;
+  border-radius: 8px;
+  padding: 10px;
+  margin: 10px auto;
+  color: #123;
+  text-align: left;
+}
+.sjcalc-summaryPanel {
+  background: #f8fafc;
+  border: 1px solid var(--sjcalc-border);
+  border-radius: 8px;
+  padding: 10px;
+  margin: 10px auto;
+  color: #123;
+  text-align: left;
+}
+.sjcalc-summaryPanel table { width: 100%; border-collapse: collapse; }
+.sjcalc-summaryPanel th, .sjcalc-summaryPanel td { border: 1px solid var(--sjcalc-border); padding: 5px; }
+.sjcalc-summaryPanel th { background: var(--sjcalc-light); color: var(--sjcalc-text); }
+.sjcalc-warning { background: var(--sjcalc-warning); border: 1px solid #e0b94b; border-radius: 8px; padding: 8px; margin: 8px 0; }
+.sjcalc-formula { white-space: pre-wrap; font-family: Consolas, Monaco, monospace; background: #f2f2f2; color: #222; border-radius: 6px; padding: 8px; margin: 8px 0; overflow-x: auto; }
+
+.sjcalc-rabbit-shell { display: flex; flex-direction: column; align-items: center; justify-content: center; margin: 14px auto; }
+.sjcalc-rabbit-panel { width: min(920px, 100%); text-align: left; }
+
+.sjcalc-rf [data-sj-alt-for="sjrf_length"],
+.sjcalc-rf [data-sj-alt-for="sjrf_width"] { min-height: 1em; }
+.sjcalc-rf.sjcalc-shape-boule #sjrf_length,
+.sjcalc-rf.sjcalc-shape-boule #sjrf_width { opacity: .45; }
+.sjcalc-rf.sjcalc-shape-batard #sjrf_diameter { opacity: .45; }
+
+@media (max-width: 620px) {
+  .sjcalc { padding: 4px; }
+  .sjcalc-table { table-layout: auto; }
+  .sjcalc-table th, .sjcalc-table td { padding: 6px 4px; }
+  .sjcalc-input { width: 78px; font-size: 15px; }
+  .sjcalc-labelText { flex-wrap: wrap; }
+}
+
+/* ✅ 2026-06-07 🧮 [SJ-CALC-PASS1-HELP-RABBIT-STYLE-01]
+   Calculator intro helpers and richer rabbit-hole education panels. */
+.sjcalc-intro {
+  display: flex;
+  align-items: flex-start;
+  gap: 7px;
+}
+.sjcalc-intro-help {
+  flex: 0 0 auto;
+  margin-top: 1px;
+}
+.sjcalc-guide-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 8px;
+  margin: 10px 0;
+}
+.sjcalc-guide-item {
+  border: 1px solid var(--sjcalc-border);
+  background: #fff;
+  border-radius: 8px;
+  padding: 9px;
+}
+.sjcalc-rabbit-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 10px 0;
+  background: #fff;
+}
+.sjcalc-rabbit-table th,
+.sjcalc-rabbit-table td {
+  border: 1px solid var(--sjcalc-border);
+  padding: 7px;
+  vertical-align: top;
+}
+.sjcalc-rabbit-table th {
+  background: var(--sjcalc-light);
+  color: var(--sjcalc-text);
+}
+.sjcalc-mini-note {
+  border-left: 4px solid var(--sjcalc-blue);
+  padding: 8px 10px;
+  background: #fff;
+  border-radius: 6px;
+}
+.sjcalc-advanced-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 8px;
+  margin: 10px 0;
+}
+.sjcalc-advanced-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-weight: bold;
+  color: var(--sjcalc-text);
+  background: #fff;
+  border: 1px solid var(--sjcalc-border);
+  border-radius: 8px;
+  padding: 8px;
+}
+.sjcalc-advanced-field .sjcalc-input {
+  width: 100%;
+}
+@media (max-width: 520px) {
+  .sjcalc-rabbit-table {
+    font-size: 13px;
+  }
+  .sjcalc-rabbit-table th,
+  .sjcalc-rabbit-table td {
+    padding: 5px;
+  }
+}
+
+/* ✅ 2026-06-08 🧮 [SJ-CALC-PASS2-RH-TOPPIN-CSS-01]
+   Calculator Rabbit Hole panels now use fixed, top-of-viewport popup behavior:
+   the page behind the veil stays still while the calculator Rabbit Hole panel
+   remains pinned and scrolls its own content internally only when needed. */
+html.sjcalc-rh-scrollLock,
+body.sjcalc-rh-scrollLockBody {
+  overflow: hidden !important;
+  overscroll-behavior: none;
+}
+
+.sjRabbitHole-panel.sjcalc-rabbit-panel.sjcalc-rabbit-panel--pinned {
+  position: fixed !important;
+  z-index: 1985 !important;
+  overflow: auto !important;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  margin: 0 !important;
+  box-sizing: border-box;
+  background-color: rgba(255, 255, 255, 0.98) !important;
+}
+
+
+/* ✅ 2026-06-08 🧮 [SJ-CALC-PASS2C-DRAWER-VISIBILITY-01]
+   Calculator sections now live off-page until selected from the Calculator chapter TOC.
+   The same DOM nodes are moved into the bottom drawer, preserving all calculator IDs and logic. */
+.sjcalc-drawer-managed {
+  display: none !important;
+}
+
+/* ✅ 2026-06-09 🧭 [SJ-SEARCH-CALC-INLINE-CSS-01]
+   During Search, the active Calculator hit is revealed in-place on the page.
+   This avoids brittle bottom-drawer switching while still keeping calculators
+   hidden during normal reading unless selected from the Calculator List. */
+html.sj-search-active .sjcalc-drawer-managed.sjcalc-search-visible {
+  display: block !important;
+}
+
+.drawer.drawer-type-calculator .sjcalc-drawer-managed {
+  display: block !important;
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+/* The drawer header supplies the calculator title, so the old in-page section header is hidden. */
+.drawer.drawer-type-calculator .sjcalc-drawer-managed > .content-section-title {
+  display: none !important;
+}
+
+.drawer.drawer-type-calculator .sjcalc-drawer-managed > .content-section-verbiage {
+  width: min(940px, 100%);
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+/* Keep the Rabbit Hole launcher visible at the bottom after the More/Less shell is forced open. */
+.drawer.drawer-type-calculator .sjcalc-drawer-managed .content-section-moreMsg {
+  display: block !important;
+}
+
+.drawer.drawer-type-calculator .sjcalc-drawer-managed .sjcalc-rabbit-shell,
+.drawer.drawer-type-calculator .sjcalc-drawer-managed .sjRabbitHole-wrap {
+  display: flex !important;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 18px auto 6px;
+}
+
+/* Unit Converter had a placeholder paragraph in the old More/Less region; drawer mode exposes only the rabbit. */
+.drawer.drawer-type-calculator #moreunitConvertorMsg > p:first-child {
+  display: none !important;
+}
+
+/* ✅ 2026-06-08 🧮 [SJ-CALC-PASS2C-RH-Z-01]
+   Rabbit Holes may now be opened from inside the calculator drawer, so their veil/panel
+   must sit above the drawer layer, not underneath it. */
+:root {
+  --sjrhl-overlay-z: 3000;
+  --sjrhl-open-z: 3001;
+}
+
+.sjRabbitHole-panel.sjcalc-rabbit-panel.sjcalc-rabbit-panel--pinned {
+  z-index: 3005 !important;
+}
+
+/* ✅ 2026-06-08 🧮 [SJ-CALC-PASS2D-RH-X-CSS-01]
+   Calculator Rabbit Hole panels now include their own sticky close control,
+   so the user can close the popup even when it covers the rabbit icon. */
+.sjRabbitHole-panel .sj-rabbit-panel-x {
+  position: sticky;
+  top: 0;
+  float: right;
+  z-index: 2;
+  width: 34px;
+  height: 34px;
+  margin: -4px -4px 8px 10px;
+  border: 2px solid #086dfc;
+  border-radius: 999px;
+  background: #fff;
+  color: #086dfc;
+  font-size: 20px;
+  font-weight: bold;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: 0 1px 5px rgba(0,0,0,.18);
+}
+
+.sjRabbitHole-panel .sj-rabbit-panel-x:hover,
+.sjRabbitHole-panel .sj-rabbit-panel-x:focus-visible {
+  background: #e6f3ff;
+  outline: none;
+}
+
+
+/* ✅ 2026-06-08 🧮 [SJ-CALC-PASS2E-RH-MOBILE-CSS-01]
+   Extra safety for mobile/tablet Rabbit Hole panels: keep the panel horizontally constrained
+   and give the sticky close control a small breathing gap inside the scroll container. */
+.sjRabbitHole-panel.sjcalc-rabbit-panel.sjcalc-rabbit-panel--pinned {
+  max-width: calc(100vw - 16px) !important;
+  overflow-x: hidden !important;
+  scrollbar-gutter: stable;
+}
+
+.sjRabbitHole-panel .sj-rabbit-panel-x {
+  top: 6px;
+}
+
+/* ✅ 2026-06-08 🧮 [SJ-CALC-PASS3-TOC-LAUNCHER-CSS-01]
+   Calculator TOC launchers:
+   - Chapter-body calculator icon opens the Calculator List.
+   - Centered calculator shortcut appears at the bottom of non-calculator TOCs. */
+.sjcalc-chapter-toc-button {
+  float: left;
+  margin: 5px 15px 5px 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  line-height: 0;
+}
+
+.sjcalc-chapter-toc-button img {
+  width: 75px;
+  max-width: 24vw;
+  height: auto;
+  display: block;
+}
+
+.sjcalc-toc-shortcut {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 22px auto 6px;
+  padding-top: 12px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* ✅ 2026-06-08 🧮 [SJ-CALC-PASS3B-TOC-SHORTCUT-SIZE-01]
+   Larger calculator shortcuts for non-calculator TOCs.  The icon remains deliberately
+   more noticeable than a normal text link, while still using one shared launcher. */
+.sjcalc-toc-shortcut-button {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 58px;
+  height: 58px;
+  padding: 5px;
+  border: 0;
+  border-radius: 12px;
+  background: transparent;
+  cursor: pointer;
+}
+
+.sjcalc-toc-shortcut-button img {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  display: block;
+}
+
+.sjcalc-toc-shortcut-button:hover {
+  background: rgba(8, 109, 252, 0.08);
+}
+
+.sjcalc-chapter-toc-button:focus-visible,
+.sjcalc-toc-shortcut-button:focus-visible {
+  outline: 2px solid #086dfc;
+  outline-offset: 3px;
+}
+
+/* ✅ 2026-06-08 🧮 [SJ-CALC-PASS3C-TOC-SHORTCUT-VISUAL-01]
+   Stronger calculator shortcut tile after live testing showed the simple image
+   still looked too small/anemic.  The button remains one click target and still
+   uses the same sjOpenCalculatorTocDrawer(event) launcher. */
+.sjcalc-toc-shortcut {
+  margin: 28px auto 12px;
+  padding-top: 18px;
+  border-top: 1px dashed rgba(0, 70, 160, 0.28);
+}
+
+.sjcalc-toc-shortcut-button {
+  flex-direction: column;
+  width: 118px;
+  min-height: 104px;
+  height: auto;
+  gap: 5px;
+  padding: 10px 10px 9px;
+  border: 2px solid #086dfc;
+  border-radius: 17px;
+  background: linear-gradient(180deg, #ffffff 0%, #eaf4ff 100%);
+  box-shadow: 0 3px 8px rgba(0, 65, 150, 0.30), inset 0 0 0 1px rgba(255,255,255,0.95);
+  color: #064daf;
+  transition: transform 120ms ease, box-shadow 120ms ease, background 120ms ease;
+}
+
+.sjcalc-toc-shortcut-button img {
+  width: 66px;
+  height: 66px;
+  object-fit: contain;
+  display: block;
+  filter: drop-shadow(0 2px 2px rgba(0, 45, 110, 0.35));
+}
+
+.sjcalc-toc-shortcut-button::after {
+  content: "Calculators";
+  display: block;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 14px;
+  font-weight: 800;
+  line-height: 1.05;
+  color: #064daf;
+  text-align: center;
+  letter-spacing: 0.01em;
+}
+
+.sjcalc-toc-shortcut-button:hover {
+  background: linear-gradient(180deg, #ffffff 0%, #dcecff 100%);
+  box-shadow: 0 4px 11px rgba(0, 65, 150, 0.36), inset 0 0 0 1px rgba(255,255,255,0.95);
+  transform: translateY(-1px);
+}
+
+.sjcalc-toc-shortcut-button:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 6px rgba(0, 65, 150, 0.30), inset 0 0 0 1px rgba(255,255,255,0.95);
+}
+
+/* ✅ 2026-06-10 🧮 [SJ-CALC-ALL-TOC-COMPACT-01]
+   All TOC calculator shortcuts use the compact tile size.
+   The --compact class is retained as harmless legacy markup for the Main TOC. */
+.sjcalc-toc-shortcut-button {
+  width: 88px;
+  min-height: 78px;
+  padding: 7px 8px 7px;
+  border-radius: 14px;
+}
+
+.sjcalc-toc-shortcut-button img {
+  width: 46px;
+  height: 46px;
+}
+
+.sjcalc-toc-shortcut-button::after {
+  font-size: 12px;
+}
+
+.sjcalc-toc-shortcut-button--compact {
+  width: 88px;
+  min-height: 78px;
+  padding: 7px 8px 7px;
+  border-radius: 14px;
+}
+
+.sjcalc-toc-shortcut-button--compact img {
+  width: 46px;
+  height: 46px;
+}
+
+.sjcalc-toc-shortcut-button--compact::after {
+  font-size: 12px;
+}
+
+/* Make the Calculator Chapter body launcher feel clickable without changing placement. */
+.sjcalc-chapter-toc-button {
+  border-radius: 14px;
+  padding: 7px;
+}
+
+.sjcalc-chapter-toc-button:hover {
+  background: rgba(8, 109, 252, 0.10);
+}
+
+.sjcalc-chapter-toc-button img {
+  width: 90px;
+  filter: drop-shadow(0 2px 3px rgba(0, 45, 110, 0.32));
+}
+
+@media (max-width: 480px) {
+  .sjcalc-toc-shortcut-button {
+    width: 82px;
+    min-height: 72px;
+    padding: 6px 7px;
+  }
+
+  .sjcalc-toc-shortcut-button img {
+    width: 42px;
+    height: 42px;
+  }
+
+  .sjcalc-toc-shortcut-button::after {
+    font-size: 11.5px;
+  }
+
+  .sjcalc-toc-shortcut-button.sjcalc-toc-shortcut-button--compact {
+    width: 82px;
+    min-height: 72px;
+    padding: 6px 7px;
+  }
+
+  .sjcalc-toc-shortcut-button.sjcalc-toc-shortcut-button--compact img {
+    width: 42px;
+    height: 42px;
+  }
+
+  .sjcalc-toc-shortcut-button.sjcalc-toc-shortcut-button--compact::after {
+    font-size: 11.5px;
+  }
+}
+
+/* ✅ 2026-06-09 🧮 [SJ-CALC-PASS4C-UNIT-RH-REFERENCE-STYLE-01]
+   Unit Convertor Rabbit Hole reference styling.
+   Scoped to the Unit Convertor rabbit panel so other calculator rabbit holes remain unchanged. */
+#RH-unitConv-01-panel .sjcalc-rh-reference {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 2px 2px 6px;
+  color: #24364b;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+#RH-unitConv-01-panel .sjcalc-rh-reference h3 {
+  margin: 0 0 10px;
+  font-size: 1.45rem;
+  line-height: 1.15;
+  color: #064daf;
+  text-align: center;
+}
+
+#RH-unitConv-01-panel .sjcalc-rh-reference h4 {
+  margin: 0 0 8px;
+  font-size: 1.02rem;
+  line-height: 1.2;
+  color: #073d84;
+}
+
+#RH-unitConv-01-panel .sjcalc-rh-note,
+#RH-unitConv-01-panel .sjcalc-rh-source-note {
+  margin: 0 auto 14px;
+  max-width: 980px;
+  font-size: 0.95rem;
+  line-height: 1.45;
+  text-align: left;
+}
+
+#RH-unitConv-01-panel .sjcalc-rh-source-note {
+  margin-top: 14px;
+  font-size: 0.88rem;
+  color: #3f5268;
+  font-style: italic;
+}
+
+#RH-unitConv-01-panel .sjcalc-rh-reference-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(290px, 1fr));
+  gap: 14px;
+  align-items: start;
+}
+
+#RH-unitConv-01-panel .sjcalc-rh-card {
+  border: 1px solid rgba(8, 109, 252, 0.22);
+  border-radius: 12px;
+  background: #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 58, 140, 0.10);
+  padding: 12px;
+}
+
+#RH-unitConv-01-panel .sjcalc-rh-card-wide {
+  margin-top: 14px;
+}
+
+#RH-unitConv-01-panel .sjcalc-rh-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.91rem;
+  line-height: 1.28;
+}
+
+#RH-unitConv-01-panel .sjcalc-rh-table th,
+#RH-unitConv-01-panel .sjcalc-rh-table td {
+  padding: 6px 8px;
+  border-top: 1px solid rgba(0, 70, 160, 0.12);
+  vertical-align: top;
+  text-align: left;
+}
+
+#RH-unitConv-01-panel .sjcalc-rh-table tbody tr:first-child th,
+#RH-unitConv-01-panel .sjcalc-rh-table tbody tr:first-child td {
+  border-top: 0;
+}
+
+#RH-unitConv-01-panel .sjcalc-rh-table th {
+  width: 34%;
+  color: #102f57;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+#RH-unitConv-01-panel .sjcalc-rh-table-three th,
+#RH-unitConv-01-panel .sjcalc-rh-table-three td {
+  border-top: 1px solid rgba(0, 70, 160, 0.12);
+}
+
+#RH-unitConv-01-panel .sjcalc-rh-table-three thead th {
+  background: rgba(8, 109, 252, 0.08);
+  border-top: 0;
+}
+
+#RH-unitConv-01-panel .sjcalc-rh-table-three th:first-child,
+#RH-unitConv-01-panel .sjcalc-rh-table-three td:first-child {
+  width: 42%;
+}
+
+#RH-unitConv-01-panel .sjcalc-rh-temp-table th {
+  width: 15%;
+}
+
+@media (max-width: 760px) {
+  #RH-unitConv-01-panel .sjcalc-rh-reference-grid {
+    grid-template-columns: 1fr;
+  }
+
+  #RH-unitConv-01-panel .sjcalc-rh-table,
+  #RH-unitConv-01-panel .sjcalc-rh-note,
+  #RH-unitConv-01-panel .sjcalc-rh-source-note {
+    font-size: 0.88rem;
+  }
+
+  #RH-unitConv-01-panel .sjcalc-rh-table th,
+  #RH-unitConv-01-panel .sjcalc-rh-table td {
+    padding: 6px 6px;
+  }
+}

@@ -1,0 +1,6206 @@
+/* =================================================================================================
+   ✅ 2026-05-03 🧩 [SJP-PUBLIC-PREVIEW-01]
+   Public p.html overrides.
+   Load this AFTER the shared Book CSS files.  Public-only behaviour remains isolated here.
+   ================================================================================================= */
+
+/* ---------------------------------------------------------------------------------------------
+   [SJP-PUBLIC-CLEANUP-01]
+   Public page removes the private Book search UI from the visible page.
+   ✅ 2026-05-24 🧩 [SJP-PASS12-SJB-CSS-01] Shared sjBubbles helper-message plumbing is now intentionally visible/available here.
+   --------------------------------------------------------------------------------------------- */
+#search,
+#revealSearch,
+#revealSearchGray,
+#binocularSearch,
+#iconClearHighlight,
+#iconClose,
+#iconTop,
+#iconTopGray,
+#prevButton,
+#nextButton,
+.matchCountDisplay,
+.sjp-compat-hidden {
+  display: none !important;
+}
+
+/* ---------------------------------------------------------------------------------------------
+   [SJP-PUBLIC-HEADER-01]
+   Public fixed header layout: logo left, SOURJOE centered, Home + TOC right.
+   --------------------------------------------------------------------------------------------- */
+.header-top-center-container .back-to-recipes-box {
+  display: flex;
+  align-items: center;
+}
+
+.sjp-logo-home-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  text-decoration: none !important;
+}
+
+.header-top-center-container #mainTitle {
+  margin: 0;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-weight: 500;
+  letter-spacing: 0.055em;
+  text-transform: uppercase;
+}
+
+#openMainTOC {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 14px;
+}
+
+.sjp-top-home-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: inherit !important;
+  font-weight: 700;
+  text-decoration: none !important;
+  white-space: nowrap;
+}
+
+.sjp-top-home-link:hover {
+  text-decoration: underline !important;
+}
+
+/* ---------------------------------------------------------------------------------------------
+   [SJP-PUBLIC-LOWER-HEADER-01]
+   Lower fixed header: Sign In left, social icons center, Sign Up right.
+   --------------------------------------------------------------------------------------------- */
+.header-bottom-center-container {
+  display: grid !important;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 10px;
+}
+
+.sjp-lower-left,
+.sjp-lower-right,
+.sjp-lower-socials {
+  display: flex;
+  align-items: center;
+}
+
+.sjp-lower-left {
+  justify-content: flex-start;
+  padding-left: clamp(36px, 5.4vw, 72px);
+}
+
+.sjp-lower-right {
+  justify-content: flex-end;
+  padding-right: clamp(36px, 5.4vw, 72px);
+}
+
+.sjp-lower-socials {
+  justify-content: center;
+  gap: 13px;
+}
+
+.sjp-auth-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 34px;
+  padding: 8px 17px;
+  border-radius: 999px;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 0.92rem;
+  line-height: 1;
+  letter-spacing: 0.09em;
+  text-decoration: none !important;
+  white-space: nowrap;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.10);
+}
+
+.sjp-auth-button--signin {
+  background: #cfcfcf;
+  color: #111 !important;
+}
+
+.sjp-auth-button--signup {
+  background: #dfeaff;
+  color: #0b55ff !important;
+}
+
+.sjp-auth-button:hover {
+  filter: brightness(0.97);
+  transform: translateY(-1px);
+}
+
+.sjp-social-link {
+  width: 24px;
+  height: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: inherit !important;
+  text-decoration: none !important;
+}
+
+.sjp-social-link svg {
+  width: 20px;
+  height: 20px;
+  display: block;
+}
+
+.sjp-social-link svg rect,
+.sjp-social-link svg path,
+.sjp-social-link svg circle {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.9;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.sjp-social-link--youtube svg rect,
+.sjp-social-link--youtube svg path,
+.sjp-social-link--facebook svg path {
+  fill: currentColor;
+  stroke: none;
+}
+
+@media (max-width: 520px) {
+  #openMainTOC {
+    gap: 8px;
+  }
+
+  .sjp-top-home-link {
+    font-size: 0.88rem;
+  }
+
+  .sjp-lower-left {
+    padding-left: 0;
+  }
+
+  .sjp-lower-right {
+    padding-right: 0;
+  }
+
+  .sjp-auth-button {
+    min-height: 30px;
+    padding: 7px 11px;
+    font-size: 0.74rem;
+    letter-spacing: 0.055em;
+  }
+
+  .sjp-lower-socials {
+    gap: 7px;
+  }
+
+  .sjp-social-link {
+    width: 21px;
+    height: 21px;
+  }
+
+  .sjp-social-link svg {
+    width: 17px;
+    height: 17px;
+  }
+}
+
+/* ---------------------------------------------------------------------------------------------
+   [SJP-PUBLIC-NOTES-01]
+   Unified yellow public-preview information cards and timed preview message.
+   --------------------------------------------------------------------------------------------- */
+.sjp-public-note,
+#sjpLockNotice {
+  background: rgba(254, 249, 195, 0.94);
+  border-left: 4px solid #b59b00;
+  border-radius: 8px;
+  color: #333;
+}
+
+.sjp-public-note {
+  margin: 0 0 14px 0;
+  padding: 10px 12px;
+}
+
+.sjp-public-note strong,
+#sjpLockNotice strong {
+  color: #5f5100;
+}
+
+#sjpLockNotice {
+  position: fixed;
+  left: 50%;
+  bottom: 22px;
+  transform: translateX(-50%) translateY(16px);
+  width: min(92vw, 620px);
+  z-index: 999999;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.26);
+  opacity: 0;
+  pointer-events: none;
+  padding: 13px 16px 11px 16px;
+  text-align: left;
+  transition: opacity 180ms ease, transform 180ms ease;
+}
+
+#sjpLockNotice.sjp-lock-notice--visible {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.sjp-lock-notice__message {
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.sjp-lock-notice__countdown {
+  margin-top: 8px;
+  padding-top: 7px;
+  border-top: 1px solid rgba(95, 81, 0, 0.32);
+  color: #5f5100;
+  font-size: 0.88rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+/* Placeholder styling for the future About video. */
+.sjp-video-placeholder {
+  border: 1px dashed rgba(0, 0, 0, 0.35);
+  border-radius: 8px;
+  margin-top: 14px;
+  padding: 14px;
+  text-align: center;
+  background: rgba(0, 0, 0, 0.025);
+}
+
+/* ---------------------------------------------------------------------------------------------
+   [SJP-PUBLIC-PRIVATE-SECTIONS-01]
+   Private Book material exists in the DOM but remains hidden until a locked TOC preview opens it.
+   --------------------------------------------------------------------------------------------- */
+.sjp-private-section,
+.sjp-private-subsection {
+  display: none !important;
+}
+
+.sjp-private-section.sjp-preview-visible,
+.sjp-private-subsection.sjp-preview-visible {
+  display: block !important;
+}
+
+body.sjp-private-preview-active .sjp-preview-visible {
+  pointer-events: none;
+}
+
+body.sjp-private-preview-active .overlay.sjp-private-preview-veil {
+  cursor: default;
+}
+
+/* Make veiled preview feel deliberate rather than broken. */
+body.sjp-private-preview-active .overlay.sjp-private-preview-veil.visible {
+  background: rgba(0, 0, 0, 0.38);
+}
+
+/* ✅ 2026-05-03 🧩 [SJP-PUBLIC-RETURN-05]
+   While closing a veiled private preview, prevent browser scroll anchoring from
+   pulling the viewport back toward the scrolled preview content. */
+html:has(body.sjp-returning-from-preview),
+body.sjp-returning-from-preview {
+  scroll-behavior: auto !important;
+  overflow-anchor: none !important;
+}
+
+/* ---------------------------------------------------------------------------------------------
+   [SJP-PUBLIC-TOC-01]
+   Public TOC visual language: normal links remain bold blue; locked items keep the lock on the right.
+   --------------------------------------------------------------------------------------------- */
+.drawer-content .link-style,
+.sjp-locked-toc .link-style,
+.sjp-locked-inline {
+  color: darkblue !important;
+  font-weight: 700;
+  text-decoration: none !important;
+}
+
+.sjp-locked-toc,
+.sjp-locked-inline {
+  cursor: pointer;
+  opacity: 1;
+}
+
+.sjp-locked-toc:hover .link-style,
+.sjp-locked-inline:hover,
+.drawer-content .link-style:hover {
+  text-decoration: underline !important;
+}
+
+.sjp-lock-icon {
+  display: inline-block;
+  margin-left: 7px;
+  font-size: 0.94em;
+  vertical-align: baseline;
+}
+
+.sjp-toc-badge {
+  display: inline-block;
+  margin-left: 7px;
+  padding: 2px 7px;
+  border-radius: 999px;
+  font-size: 0.72em;
+  font-weight: 700;
+  background: rgba(16, 128, 64, 0.12);
+  border: 1px solid rgba(16, 128, 64, 0.35);
+  color: #0c6b36;
+  vertical-align: middle;
+}
+
+/* ---------------------------------------------------------------------------------------------
+   [SJP-PUBLIC-LEAD-CARDS-01]
+   About + Plans visual language aligned with the Welcome panel.
+   --------------------------------------------------------------------------------------------- */
+.sjp-lead-like-card {
+  border: 3px solid #71a3c1 !important;
+  background-color: #cfe2ff !important;
+  color: darkblue;
+  padding: 15px;
+}
+
+.sjp-lead-like-card .content-section-title {
+  background-color: #cfe2ff !important;
+  color: darkblue;
+  position: static;
+  top: auto;
+  border-bottom: 1.5px solid #71a3c1;
+  margin-bottom: 10px;
+}
+
+.sjp-lead-like-card .content-section-verbiage {
+  color: darkblue;
+}
+
+.sjp-lead-like-card .content-section-title .center-box {
+  font-weight: bold;
+  color: darkblue;
+  font-size: clamp(20px, calc(17.6px + 0.8vw), 24px);
+}
+
+.sjp-lead-like-card .sjp-public-note {
+  color: #333;
+}
+
+.sjp-plan-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 14px;
+  margin-top: 14px;
+}
+
+.sjp-plan-card {
+  border: 1px solid rgba(0, 0, 0, 0.18);
+  border-radius: 10px;
+  padding: 14px;
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.sjp-plan-card h4 {
+  margin-top: 0;
+}
+
+
+/* =================================================================================================
+   ✅ 2026-05-03 🧩 [SJP-PUBLIC-FIXPASS-02]
+   Second public-page correction pass:
+   - left header logo is logo-only
+   - top Home link is white + bold
+   - social icons are explicitly visible
+   - TOC links use the normal blue underlined link language
+   - About Vimeo iframe is responsive
+   ================================================================================================= */
+
+/* Keep any old copied Book text beside the logo suppressed if it appears from cached/older markup. */
+.header-top-center-container .back-to-recipes-text {
+  display: none !important;
+}
+
+.header-top-center-container .back-to-recipes-box .sjp-logo-home-link {
+  width: auto !important;
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: flex-start;
+  text-decoration: none !important;
+}
+
+#openMainTOC .sjp-top-home-link,
+#openMainTOC .sjp-top-home-link:visited {
+  color: #fff !important;
+  font-weight: 800 !important;
+  text-decoration: none !important;
+}
+
+#openMainTOC .sjp-top-home-link:hover,
+#openMainTOC .sjp-top-home-link:focus-visible {
+  color: #fff !important;
+  text-decoration: underline !important;
+}
+
+.sjp-lower-socials,
+.sjp-lower-socials .sjp-social-link,
+.sjp-lower-socials .sjp-social-link:visited {
+  color: #111 !important;
+}
+
+.sjp-social-link svg {
+  overflow: visible;
+}
+
+.sjp-social-link svg rect,
+.sjp-social-link svg path,
+.sjp-social-link svg circle {
+  stroke: currentColor !important;
+}
+
+.sjp-social-link--youtube svg rect,
+.sjp-social-link--youtube svg path,
+.sjp-social-link--facebook svg path {
+  fill: currentColor !important;
+  stroke: none !important;
+}
+
+/* Make every TOC link look like the familiar Sourjoe/App link treatment. */
+.drawer-content .link-style,
+.drawer-content .link-style:visited,
+.sjp-locked-toc .link-style,
+.sjp-locked-toc .link-style:visited,
+.sjp-locked-inline,
+.sjp-locked-inline:visited {
+  color: #0000ee !important;
+  font-weight: 700 !important;
+  text-decoration: none !important;
+  text-underline-offset: 2px;
+}
+
+.drawer-content .link-style:hover,
+.sjp-locked-toc:hover .link-style,
+.sjp-locked-inline:hover {
+  color: #0000aa !important;
+  text-decoration: underline !important;
+}
+
+.sjp-video-embed-wrap {
+  position: relative;
+  width: min(100%, 760px);
+  margin: 14px auto 0 auto;
+  padding: 0;
+  overflow: hidden;
+  aspect-ratio: 16 / 9;
+  background: rgba(0, 0, 0, 0.04);
+}
+
+.sjp-video-embed-wrap iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+/* =================================================================================================
+   ✅ 2026-05-03 🧩 [SJP-PUBLIC-FIXPASS-03]
+   Third public-page correction pass:
+   - SOURJOE title uses a closer high-contrast logo-style serif stack.
+   - Social icons are clean coloured inline SVG marks.
+   - Mobile portrait Home+TOC layout prevents hamburger compression.
+   - Private preview veil allows native scrolling while disabling page clicks.
+   - TOC link styling is reinforced for hidden and active drawer content.
+   ================================================================================================= */
+
+.header-top-center-container #mainTitle {
+  font-family: Didot, "Bodoni 72", "Bodoni MT", "Bodoni 72 Smallcaps", "Times New Roman", serif !important;
+  font-weight: 400 !important;
+  letter-spacing: 0.045em !important;
+  text-transform: uppercase;
+}
+
+/* Keep the public logo as logo-only, with no adjacent text accidentally revived by cached markup. */
+.header-top-center-container .back-to-recipes-box .back-to-recipes-text,
+.header-top-center-container .sjp-logo-home-link .back-to-recipes-text {
+  display: none !important;
+}
+
+/* Brand-coloured social icons.  These override the old outline-only SVG styling. */
+.sjp-lower-socials {
+  gap: 15px !important;
+}
+
+.sjp-social-link {
+  width: 28px !important;
+  height: 28px !important;
+  flex: 0 0 28px !important;
+}
+
+.sjp-social-link .sjp-brand-svg {
+  width: 28px !important;
+  height: 28px !important;
+  display: block !important;
+  overflow: visible !important;
+}
+
+.sjp-brand-svg rect,
+.sjp-brand-svg path,
+.sjp-brand-svg circle {
+  stroke-width: 0 !important;
+  stroke: none !important;
+}
+
+.sjp-youtube-bg { fill: #ff0000 !important; }
+.sjp-youtube-play { fill: #ffffff !important; }
+.sjp-instagram-bg { fill: url(#sjpInstagramGradient) !important; }
+.sjp-instagram-camera,
+.sjp-instagram-lens {
+  fill: none !important;
+  stroke: #ffffff !important;
+  stroke-width: 2.4 !important;
+}
+.sjp-instagram-dot { fill: #ffffff !important; stroke: none !important; }
+.sjp-facebook-bg { fill: #1877f2 !important; }
+.sjp-facebook-f { fill: #ffffff !important; stroke: none !important; }
+
+/* Force all public TOC entries to read as normal Sourjoe/App blue underlined links. */
+.drawer .drawer-content .link-style,
+.drawer .drawer-content .link-style:visited,
+div[id^="TOC-"][id$="-content"] .link-style,
+div[id^="TOC-"][id$="-content"] .link-style:visited,
+.sjp-locked-toc .link-style,
+.sjp-locked-toc .link-style:visited,
+.sjp-locked-inline,
+.sjp-locked-inline:visited {
+  color: #0000ee !important;
+  font-weight: 700 !important;
+  text-decoration-line: underline !important;
+  text-decoration-style: solid !important;
+  text-underline-offset: 2px !important;
+  cursor: pointer !important;
+}
+
+.drawer .drawer-content .link-style:hover,
+div[id^="TOC-"][id$="-content"] .link-style:hover,
+.sjp-locked-toc:hover .link-style,
+.sjp-locked-inline:hover {
+  color: #0000aa !important;
+  text-decoration-line: underline !important;
+}
+
+/* ✅ 2026-05-12 🧩 [SJP-PUBLIC-PASS7-SCROLL-ONLY-01]
+   Timed preview veil behavior:
+   - Keep the veil as a real pointer target so compact-mode veil clicks can show the sign-in/sign-up reminder.
+   - Allow vertical pan/scroll gestures through the active preview session so visitors can browse the revealed
+     private content without interacting with it.  Clicks are still blocked by the veil + disabled page pointers. */
+body.sjp-private-preview-active .overlay.sjp-private-preview-veil,
+body.sjp-private-preview-active .overlay.sjp-private-preview-veil.visible {
+  pointer-events: auto !important;
+  touch-action: pan-y !important;
+}
+
+body.sjp-private-preview-active main,
+body.sjp-private-preview-active .header-container,
+body.sjp-private-preview-active .content-section {
+  pointer-events: none !important;
+}
+
+body.sjp-private-preview-active #sjpLockNotice {
+  pointer-events: none !important;
+}
+
+/* Mobile portrait: Home may remain beside the TOC, but the hamburger must never shrink into a ladder. */
+@media only screen and (max-width: 500px) and (orientation: portrait) {
+  .header-top-center-container .right-box#openMainTOC {
+    flex: 0 0 30% !important;
+    width: 30% !important;
+    min-width: 94px !important;
+    gap: 6px !important;
+    justify-content: flex-end !important;
+  }
+
+  .header-top-center-container .center-box.type-header {
+    flex: 1 1 auto !important;
+    width: auto !important;
+    min-width: 0 !important;
+  }
+
+  #openMainTOC .sjp-top-home-link {
+    flex: 0 0 auto !important;
+    font-size: clamp(10px, 3.1vw, 12px) !important;
+    line-height: 1 !important;
+  }
+
+  #openMainTOC .header-icon-top-menu,
+  #openMainTOC .sj-app-hamburger {
+    flex: 0 0 44px !important;
+    width: 44px !important;
+    min-width: 44px !important;
+    max-width: 44px !important;
+    height: 36px !important;
+    min-height: 36px !important;
+    max-height: 36px !important;
+    margin-right: 0 !important;
+    gap: 5px !important;
+  }
+
+  #openMainTOC .sj-app-hamburger span {
+    flex: 0 0 2px !important;
+    width: 24px !important;
+    min-width: 24px !important;
+    height: 2px !important;
+    display: block !important;
+  }
+
+  .sjp-social-link,
+  .sjp-social-link .sjp-brand-svg {
+    width: 24px !important;
+    height: 24px !important;
+  }
+}
+
+
+/* ✅ 2026-05-03 🧩 [SJP-PUBLIC-SOCIAL-STRICT-01]
+   Higher-specificity brand icon rules so older generic SVG rules cannot turn the icons black/outline-only. */
+.sjp-social-link.sjp-social-link--youtube .sjp-brand-svg .sjp-youtube-bg {
+  fill: #ff0000 !important;
+  stroke: none !important;
+}
+.sjp-social-link.sjp-social-link--youtube .sjp-brand-svg .sjp-youtube-play {
+  fill: #ffffff !important;
+  stroke: none !important;
+}
+.sjp-social-link.sjp-social-link--instagram .sjp-brand-svg .sjp-instagram-bg {
+  fill: url(#sjpInstagramGradient) !important;
+  stroke: none !important;
+}
+.sjp-social-link.sjp-social-link--instagram .sjp-brand-svg .sjp-instagram-camera,
+.sjp-social-link.sjp-social-link--instagram .sjp-brand-svg .sjp-instagram-lens {
+  fill: none !important;
+  stroke: #ffffff !important;
+  stroke-width: 2.4 !important;
+}
+.sjp-social-link.sjp-social-link--instagram .sjp-brand-svg .sjp-instagram-dot {
+  fill: #ffffff !important;
+  stroke: none !important;
+}
+.sjp-social-link.sjp-social-link--facebook .sjp-brand-svg .sjp-facebook-bg {
+  fill: #1877f2 !important;
+  stroke: none !important;
+}
+.sjp-social-link.sjp-social-link--facebook .sjp-brand-svg .sjp-facebook-f {
+  fill: #ffffff !important;
+  stroke: none !important;
+}
+
+
+/* =================================================================================================
+   ✅ 2026-05-03 🧩 [SJP-PUBLIC-FIXPASS-04]
+   Final end-of-day public tweaks:
+   - The timed yellow preview notice now has a manual close button.
+   - The notice remains clickable while the private preview veil blocks the page behind it.
+   ================================================================================================= */
+
+#sjpLockNotice.sjp-lock-notice--visible {
+  pointer-events: auto !important;
+}
+
+.sjp-lock-notice__topline {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.sjp-lock-notice__message {
+  flex: 1 1 auto;
+}
+
+.sjp-lock-notice__close {
+  flex: 0 0 auto;
+  border: 1px solid rgba(95, 81, 0, 0.55);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.72);
+  color: #5f5100;
+  cursor: pointer;
+  font-size: 0.78rem;
+  font-weight: 800;
+  line-height: 1;
+  padding: 7px 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.sjp-lock-notice__close:hover,
+.sjp-lock-notice__close:focus-visible {
+  background: rgba(255, 255, 255, 0.94);
+  outline: 2px solid rgba(95, 81, 0, 0.38);
+  outline-offset: 2px;
+}
+
+body.sjp-private-preview-active #sjpLockNotice {
+  pointer-events: auto !important;
+}
+
+body.sjp-private-preview-active #sjpLockNotice * {
+  pointer-events: auto !important;
+}
+
+@media only screen and (max-width: 520px) {
+  .sjp-lock-notice__topline {
+    gap: 8px;
+  }
+
+  .sjp-lock-notice__close {
+    font-size: 0.68rem;
+    padding: 6px 8px;
+  }
+}
+
+/* =================================================================================================
+   ✅ 2026-05-03 🧩 [SJP-PUBLIC-FIXPASS-06]
+   Public guidance refinement:
+   - Header SOURJOE title matches the normal Sourjoe section-title font instead of the temporary logo-style serif.
+   - Lower social strip adds a coloured email/envelope icon beside Facebook.
+   - Permanent yellow chapter/section notes are hidden and replaced by a page-entry guide notice.
+   - Clickable TOC icons glow permanently for public visitors, because this page is primarily a guided preview.
+
+   ✅ 2026-05-03 🧩 [SJP-PUBLIC-GUIDE-CUES-02]
+   Keep the public preview cues permanent:
+   - The yellow guide notice appears on every page entry and remains until manually closed.
+   - Glowing TOC icons do not stop pulsing after a timeout or after first interaction.
+   - Section-level TOC stack icons get a stronger amber outline/halo so the cue is visible on small screens.
+
+   ✅ 2026-05-03 🧩 [SJP-PUBLIC-GUIDE-CUES-03]
+   Final public-preview cue polish:
+   - More.../Less... header buttons also glow because they are clickable exploration cues.
+   - Home replays the guide notice briefly for returning-to-start visitors.
+   - Amber border/halo is softened so the cue is friendly rather than harsh.
+
+   ✅ 2026-05-03 🧩 [SJP-PUBLIC-GUIDE-CUES-04]
+   Final minor cue tune-up:
+   - Boost glow intensity without bringing back the harsh dark-orange border.
+   - Keep HOME replay notice visible for 5 seconds.
+   - Preserve normal More/Less button colours while adding the glow.
+   ================================================================================================= */
+
+/* Match the ABOUT SOURJOE / content-section title typography: inherited page font, bold, no logo-serif treatment. */
+.header-top-center-container #mainTitle {
+  font-family: inherit !important;
+  font-weight: 700 !important;
+  letter-spacing: 0 !important;
+  text-transform: uppercase !important;
+  color: #ffffff !important;
+  font-size: clamp(20px, calc(17.6px + 0.8vw), 24px) !important;
+}
+
+/* Hide the permanent public-preview notes.  The timed popups remain visible because they use #sjpLockNotice. */
+body.sjp-guided-cues .content-section .sjp-public-note {
+  display: none !important;
+}
+
+/* Keep a little breathing room where the old first yellow note used to help separate intro copy from the title. */
+body.sjp-guided-cues .content-section-verbiage > .sjp-public-note:first-child + * {
+  margin-top: 4px;
+}
+
+/* Email/social icon strict brand rules. */
+.sjp-social-link.sjp-social-link--email .sjp-brand-svg .sjp-email-bg {
+  fill: #0b5fff !important;
+  stroke: none !important;
+}
+.sjp-social-link.sjp-social-link--email .sjp-brand-svg .sjp-email-envelope {
+  fill: none !important;
+  stroke: #ffffff !important;
+  stroke-width: 2.3 !important;
+}
+.sjp-social-link.sjp-social-link--email .sjp-brand-svg .sjp-email-flap {
+  fill: none !important;
+  stroke: #ffffff !important;
+  stroke-width: 2.3 !important;
+  stroke-linecap: round !important;
+  stroke-linejoin: round !important;
+}
+
+/* Temporary teaching popup for the new guided-cue approach. */
+#sjpGuideNotice {
+  position: fixed;
+  left: 50%;
+  top: calc(var(--appTop, 0px) + 112px);
+  transform: translateX(-50%) translateY(-12px);
+  width: min(92vw, 620px);
+  z-index: 999998;
+  background: rgba(254, 249, 195, 0.97);
+  border-left: 4px solid #b59b00;
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.22);
+  color: #333;
+  opacity: 0;
+  pointer-events: none;
+  padding: 11px 13px;
+  transition: opacity 180ms ease, transform 180ms ease;
+}
+
+#sjpGuideNotice.sjp-guide-notice--visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(-50%) translateY(0);
+}
+
+.sjp-guide-notice__topline {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.sjp-guide-notice__message {
+  flex: 1 1 auto;
+  line-height: 1.35;
+}
+
+.sjp-guide-notice__message strong {
+  color: #5f5100;
+}
+
+.sjp-guide-notice__close {
+  flex: 0 0 auto;
+  border: 1px solid rgba(95, 81, 0, 0.45);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.62);
+  color: #5f5100;
+  cursor: pointer;
+  font-weight: 700;
+  line-height: 1;
+  padding: 5px 10px;
+}
+
+.sjp-guide-notice__close:hover,
+.sjp-guide-notice__close:focus {
+  background: rgba(255, 255, 255, 0.88);
+  outline: none;
+}
+
+/* Permanent friendly glow on clickable exploration controls.
+   Includes the main TOC hamburger, section TOC stack icons, and More.../Less... buttons. */
+@keyframes sjpGentleTocPulse {
+  0%, 100% {
+    filter: drop-shadow(0 0 6px rgba(235, 184, 54, 0.58));
+    transform: scale(1);
+  }
+  50% {
+    filter: drop-shadow(0 0 15px rgba(235, 184, 54, 0.86));
+    transform: scale(1.055);
+  }
+}
+
+body.sjp-guide-cues-active .sjp-guide-pulse {
+  animation: sjpGentleTocPulse 2.15s ease-in-out infinite;
+  transform-origin: center center;
+}
+
+body.sjp-guide-cues-active .sj-app-hamburger.sjp-guide-pulse {
+  box-shadow:
+    0 0 0 2px rgba(235, 184, 54, 0.36),
+    0 0 17px rgba(235, 184, 54, 0.72) !important;
+}
+
+body.sjp-guide-cues-active img.content-title-menu.sjp-guide-pulse {
+  border-radius: 8px;
+  outline: 2px solid rgba(235, 184, 54, 0.62);
+  outline-offset: 2px;
+  box-shadow:
+    0 0 0 2px rgba(255, 246, 190, 0.62),
+    0 0 18px rgba(235, 184, 54, 0.74);
+  background-color: rgba(255, 248, 190, 0.16);
+}
+
+body.sjp-guide-cues-active .moreButton.sjp-guide-pulse {
+  border-radius: 8px;
+  outline: 2px solid rgba(235, 184, 54, 0.58);
+  outline-offset: 2px;
+  box-shadow:
+    0 0 0 2px rgba(255, 246, 190, 0.58),
+    0 0 18px rgba(235, 184, 54, 0.70);
+}
+
+/* Keep the More/Less button's original meaning colours while adding the glow.
+   The previous pale-yellow background made unopened More buttons look washed out. */
+body.sjp-guide-cues-active .moreButton.sjp-guide-pulse[data-sj-ml-state="more"] {
+  background-color: rgb(20, 137, 84) !important;
+  color: #ffffff !important;
+}
+
+body.sjp-guide-cues-active .moreButton.sjp-guide-pulse[data-sj-ml-state="less"] {
+  background-color: rgb(253, 193, 17) !important;
+  color: #000000 !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body.sjp-guide-cues-active .sjp-guide-pulse {
+    animation: none !important;
+    filter: drop-shadow(0 0 10px rgba(235, 184, 54, 0.76));
+  }
+
+  body.sjp-guide-cues-active img.content-title-menu.sjp-guide-pulse,
+  body.sjp-guide-cues-active .moreButton.sjp-guide-pulse {
+    outline: 2px solid rgba(235, 184, 54, 0.62);
+    box-shadow: 0 0 16px rgba(235, 184, 54, 0.66);
+  }
+}
+
+@media (max-width: 520px) {
+  #sjpGuideNotice {
+    top: calc(var(--appTop, 0px) + 104px);
+    font-size: 0.88rem;
+    padding: 10px 11px;
+  }
+
+  .sjp-guide-notice__close {
+    padding: 5px 8px;
+  }
+}
+
+
+
+/* =================================================================================================
+   ✅ 2026-05-04 🧩 [SJP-PUBLIC-FIXPASS-10]
+   Start-of-day public tweaks:
+   - Social/email icons scale to the available lower-header space without touching each other.
+   - Timed yellow lock notices remain visible.
+   - Public-only locks for recipe choices and recipe-step choices are visually clear.
+   ================================================================================================= */
+
+.header-bottom-center-container {
+  grid-template-columns: minmax(72px, 1fr) minmax(118px, auto) minmax(72px, 1fr) !important;
+  gap: clamp(4px, 1.2vw, 14px) !important;
+  min-width: 0 !important;
+}
+
+.sjp-lower-socials {
+  width: 100% !important;
+  max-width: min(48vw, 190px) !important;
+  min-width: 0 !important;
+  justify-content: center !important;
+  gap: clamp(7px, 1.45vw, 15px) !important;
+  overflow: hidden !important;
+}
+
+.sjp-social-link {
+  --sjp-social-size: clamp(24px, 4.2vw, 36px);
+  width: var(--sjp-social-size) !important;
+  height: var(--sjp-social-size) !important;
+  flex: 0 1 var(--sjp-social-size) !important;
+  min-width: 0 !important;
+  box-sizing: border-box !important;
+  padding: 0 !important;
+}
+
+.sjp-social-link .sjp-brand-svg {
+  width: 100% !important;
+  height: 100% !important;
+  max-width: var(--sjp-social-size) !important;
+  max-height: var(--sjp-social-size) !important;
+  display: block !important;
+}
+
+#sjpLockNotice.sjp-lock-notice--visible {
+  display: block !important;
+}
+
+.sjp-inline-lock-icon,
+.sjp-lock-icon {
+  display: inline-block;
+  margin-left: 6px;
+  text-decoration: none !important;
+  font-size: 0.92em;
+  vertical-align: baseline;
+}
+
+#recipeSelect option[data-sjp-recipe-lock="true"] {
+  color: #555;
+}
+
+.baker-btn.sjp-step-locked,
+.baker-btn[data-sjp-step-lock="true"] {
+  cursor: pointer;
+  opacity: 0.78;
+}
+
+.baker-btn.sjp-step-locked:hover,
+.baker-btn[data-sjp-step-lock="true"]:hover {
+  opacity: 0.92;
+}
+
+.baker-btn.sjp-step-locked .baker-label,
+.baker-btn[data-sjp-step-lock="true"] .baker-label {
+  color: #5c5c5c;
+}
+
+@media (max-width: 520px) {
+  .header-bottom-center-container {
+    grid-template-columns: minmax(62px, 1fr) minmax(108px, auto) minmax(62px, 1fr) !important;
+    gap: 4px !important;
+  }
+
+  .sjp-lower-socials {
+    max-width: min(44vw, 146px) !important;
+    gap: clamp(5px, 1.3vw, 8px) !important;
+  }
+
+  .sjp-social-link {
+    --sjp-social-size: clamp(22px, 6.2vw, 28px);
+  }
+
+  .sjp-auth-button {
+    padding-left: 9px !important;
+    padding-right: 9px !important;
+  }
+}
+
+/* =================================================================================================
+   ✅ 2026-05-04 🧩 [SJP-WELCOME-DRAWERS-01]
+   Public Welcome-panel guide drawers:
+   - Shorter Welcome copy with three clear exploratory actions.
+   - Full-height public drawer content for About, App Benefits, and Preview Instructions.
+   - Public-only CSS; shared Book files stay untouched.
+   ================================================================================================= */
+
+.sjp-public-welcome .lead-title {
+  letter-spacing: 0.01em;
+}
+
+.sjp-welcome-copy {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.sjp-welcome-copy p {
+  margin: 0 0 12px 0;
+  line-height: 1.42;
+}
+
+.sjp-welcome-link-row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(180px, 1fr));
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.sjp-welcome-link {
+  appearance: none;
+  border: 2px solid rgba(8, 109, 252, 0.35);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.72);
+  color: #0645ad !important;
+  cursor: pointer;
+  font-size: clamp(0.95rem, 0.9rem + 0.25vw, 1.08rem);
+  font-weight: 800;
+  line-height: 1.2;
+  padding: 12px 14px;
+  text-align: center;
+  text-decoration: underline !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.10);
+}
+
+.sjp-welcome-link:hover,
+.sjp-welcome-link:focus {
+  background: rgba(255, 255, 255, 0.92);
+  border-color: rgba(8, 109, 252, 0.62);
+  outline: none;
+}
+
+.sjp-public-drawer .drawer-header {
+  min-height: 46px;
+}
+
+.sjp-public-drawer .drawer-content {
+  align-items: flex-start !important;
+  justify-content: flex-start !important;
+  padding: clamp(14px, 2.2vw, 26px) !important;
+}
+
+.sjp-public-drawer-panel {
+  width: 100%;
+  max-width: 1180px;
+  margin: 0 auto;
+  color: #12233a;
+  line-height: 1.45;
+}
+
+.sjp-public-drawer-panel h3 {
+  color: darkblue;
+  font-size: clamp(1.08rem, 1rem + 0.35vw, 1.32rem);
+  margin: 18px 0 8px 0;
+}
+
+.sjp-public-drawer-panel p {
+  margin: 0 0 12px 0;
+}
+
+.sjp-public-drawer-video {
+  width: min(100%, 920px);
+  margin: 0 auto 18px auto;
+  aspect-ratio: 16 / 9;
+  border: 2px solid rgba(8, 109, 252, 0.28);
+  border-radius: 12px;
+  overflow: hidden;
+  background: #000;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.18);
+}
+
+.sjp-public-drawer-video iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+}
+
+.sjp-drawer-lede {
+  background: rgba(254, 249, 195, 0.72);
+  border-left: 4px solid #b59b00;
+  border-radius: 8px;
+  color: #333;
+  font-weight: 700;
+  padding: 12px 14px;
+}
+
+.sjp-feature-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 18px;
+}
+
+.sjp-feature-list {
+  background: rgba(255, 255, 255, 0.66);
+  border: 1px solid rgba(0, 0, 0, 0.14);
+  border-radius: 14px;
+  padding: 14px 16px;
+}
+
+.sjp-feature-list ul,
+.sjp-how-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.sjp-feature-list li,
+.sjp-how-list li {
+  margin: 0 0 10px 0;
+  padding-left: 34px;
+  position: relative;
+}
+
+.sjp-feature-list--is li::before {
+  content: "✓";
+  color: #0c7a35;
+  font-size: 1.35em;
+  font-weight: 900;
+  left: 0;
+  line-height: 1;
+  position: absolute;
+  top: 0.02em;
+}
+
+.sjp-feature-list--not li::before {
+  content: "✕";
+  color: #b00020;
+  font-size: 1.28em;
+  font-weight: 900;
+  left: 0;
+  line-height: 1;
+  position: absolute;
+  top: 0.04em;
+}
+
+.sjp-how-list {
+  counter-reset: sjp-how-step;
+}
+
+.sjp-how-list li {
+  counter-increment: sjp-how-step;
+  background: rgba(255, 255, 255, 0.60);
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 12px;
+  padding: 12px 12px 12px 48px;
+}
+
+.sjp-how-list li::before {
+  content: counter(sjp-how-step);
+  align-items: center;
+  background: #148954;
+  border-radius: 999px;
+  color: #fff;
+  display: flex;
+  font-weight: 900;
+  height: 26px;
+  justify-content: center;
+  left: 12px;
+  position: absolute;
+  top: 11px;
+  width: 26px;
+}
+
+.sjp-drawer-note {
+  background: rgba(207, 226, 255, 0.78);
+  border: 1px solid rgba(8, 109, 252, 0.20);
+  border-radius: 12px;
+  color: darkblue;
+  font-weight: 700;
+  margin-top: 16px !important;
+  padding: 12px 14px;
+}
+
+@media (min-width: 760px) {
+  .sjp-feature-grid {
+    grid-template-columns: 1.1fr 0.9fr;
+  }
+}
+
+@media (max-width: 760px) {
+  .sjp-welcome-link-row {
+    grid-template-columns: 1fr;
+  }
+
+  .sjp-public-drawer .drawer-content {
+    padding: 13px !important;
+  }
+}
+
+
+/* Public guide drawers must truly occupy the requested full viewport height. */
+.sjp-public-drawer.drawer-left,
+.sjp-public-drawer.drawer-right,
+.sjp-public-drawer.drawer-bottom {
+  height: 100% !important;
+  max-height: 100% !important;
+}
+
+.sjp-public-drawer.drawer-left,
+.sjp-public-drawer.drawer-right {
+  bottom: 0 !important;
+}
+
+
+
+/* =================================================================================================
+   ✅ 2026-05-04 🧩 [SJP-PUBLIC-FIXPASS-13]
+   Final public drawer/icon guidance refinements:
+   - Email icon appears first in lower-header social row.
+   - PC public guide drawers use 50% width; bottom drawer is centered.
+   - Guidance copy shows miniature TOC / More / Live demo / clock / lock cues inline.
+   - TOC private-preview markers use a clock icon instead of a lock icon.
+   ================================================================================================= */
+
+.sjp-toc-definition {
+  background: rgba(254, 249, 195, 0.48);
+  border-left: 4px solid rgba(181, 155, 0, 0.62);
+  border-radius: 8px;
+  color: #333;
+  font-weight: 700;
+  margin-top: 10px;
+  padding: 9px 12px;
+}
+
+.sjp-guide-inline-toc,
+.sjp-guide-line-icon--toc {
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 3px;
+  width: 22px;
+  height: 18px;
+  margin: 0 5px;
+  padding: 3px;
+  border: 1px solid rgba(235, 184, 54, 0.72);
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.72);
+  box-shadow: 0 0 10px rgba(235, 184, 54, 0.54);
+  vertical-align: -4px;
+}
+
+.sjp-guide-inline-toc span,
+.sjp-guide-line-icon--toc span {
+  display: block;
+  width: 100%;
+  height: 2px;
+  border-radius: 999px;
+  background: #083b8a;
+}
+
+.sjp-how-list--with-icons li {
+  padding-left: 58px;
+}
+
+.sjp-how-list--with-icons li::before {
+  left: 12px;
+}
+
+.sjp-guide-line-icon,
+.sjp-guide-line-badge,
+.sjp-guide-line-clock,
+.sjp-guide-line-lock {
+  position: absolute;
+  left: 44px;
+  top: 12px;
+  transform: translateX(-50%);
+  z-index: 1;
+}
+
+.sjp-guide-line-badge--more {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 52px;
+  padding: 2px 6px;
+  border-radius: 7px;
+  background: rgb(20, 137, 84);
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 800;
+  line-height: 1.15;
+  box-shadow: 0 0 10px rgba(235, 184, 54, 0.50);
+}
+
+.sjp-guide-line-badge--live {
+  top: 13px;
+  font-size: 0.62rem;
+  white-space: nowrap;
+}
+
+.sjp-clock-icon {
+  color: #9a5a00;
+  filter: drop-shadow(0 0 3px rgba(235, 184, 54, 0.45));
+}
+
+.sjp-lock-icon.sjp-clock-icon {
+  font-size: 1.02em;
+  margin-left: 8px;
+  vertical-align: -0.04em;
+}
+
+.sjp-guide-line-clock,
+.sjp-guide-line-lock {
+  font-size: 1.15rem;
+}
+
+@media (min-width: 1100px) {
+  .sjp-public-drawer-about.drawer-bottom {
+    left: 25% !important;
+    right: auto !important;
+    width: 50% !important;
+    max-width: 50vw !important;
+  }
+
+  .sjp-public-drawer-gives.drawer-right,
+  .sjp-public-drawer-how.drawer-left {
+    width: 50% !important;
+    max-width: 50vw !important;
+  }
+}
+
+@media (max-width: 520px) {
+  .sjp-how-list--with-icons li {
+    padding-left: 52px;
+  }
+
+  .sjp-guide-line-icon,
+  .sjp-guide-line-badge,
+  .sjp-guide-line-clock,
+  .sjp-guide-line-lock {
+    left: 40px;
+  }
+
+  .sjp-guide-line-badge--more {
+    min-width: 46px;
+    font-size: 0.66rem;
+  }
+
+  .sjp-guide-line-badge--live {
+    font-size: 0.56rem;
+  }
+}
+
+
+/* =================================================================================================
+   ✅ 2026-05-04 🧩 [SJP-PUBLIC-FIXPASS-14]
+   Evening polish pass:
+   - Rebuild the inline guide icons as clean, aligned visual tokens instead of cramped inline marks.
+   - Make the public guide drawers scroll reliably on small screens, especially the centered/bottom drawer.
+   ================================================================================================= */
+
+/* Make the Welcome-panel TOC definition icon cleaner and less visually awkward. */
+.sjp-toc-definition {
+  line-height: 1.45;
+}
+
+.sjp-guide-inline-toc {
+  width: 28px !important;
+  height: 22px !important;
+  padding: 4px !important;
+  margin: 0 7px !important;
+  border-color: rgba(235, 184, 54, 0.78) !important;
+  background: rgba(255, 255, 255, 0.86) !important;
+  box-shadow:
+    0 0 0 2px rgba(255, 246, 190, 0.66),
+    0 0 13px rgba(235, 184, 54, 0.60) !important;
+  vertical-align: -6px !important;
+}
+
+.sjp-guide-inline-toc span {
+  height: 2px !important;
+  background: #0645ad !important;
+}
+
+/* Public guide drawers: allow the actual drawer content to scroll instead of trapping content off-screen. */
+.sjp-public-drawer {
+  overflow: hidden !important;
+  max-height: 100dvh !important;
+}
+
+.sjp-public-drawer .drawer-header {
+  flex: 0 0 auto !important;
+}
+
+.sjp-public-drawer .drawer-content,
+.sjp-public-drawer.drawer-bottom.drawer-type-url .drawer-content {
+  display: block !important;
+  flex: 1 1 auto !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: calc(100dvh - 46px) !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  -webkit-overflow-scrolling: touch !important;
+  overscroll-behavior: contain !important;
+  padding: clamp(14px, 2.2vw, 26px) !important;
+  justify-content: flex-start !important;
+  align-items: stretch !important;
+}
+
+/* The guide list now uses a deliberate 3-column layout: number / icon-token / explanation. */
+.sjp-how-list--with-icons li {
+  display: grid !important;
+  grid-template-columns: 30px minmax(58px, auto) minmax(0, 1fr);
+  column-gap: 12px;
+  align-items: start;
+  padding: 12px 14px !important;
+  min-height: 48px;
+}
+
+.sjp-how-list--with-icons li::before {
+  position: static !important;
+  grid-column: 1;
+  grid-row: 1;
+  left: auto !important;
+  top: auto !important;
+  margin-top: 0;
+  align-self: start;
+  justify-self: center;
+}
+
+.sjp-guide-line-text {
+  grid-column: 3;
+  grid-row: 1;
+  align-self: center;
+  min-width: 0;
+  line-height: 1.36;
+}
+
+.sjp-guide-line-icon,
+.sjp-guide-line-badge,
+.sjp-guide-line-clock,
+.sjp-guide-line-lock {
+  position: static !important;
+  left: auto !important;
+  top: auto !important;
+  transform: none !important;
+  grid-column: 2;
+  grid-row: 1;
+  align-self: center;
+  justify-self: center;
+  z-index: 1;
+}
+
+.sjp-guide-line-icon--toc {
+  width: 32px !important;
+  height: 25px !important;
+  padding: 5px !important;
+  margin: 0 !important;
+  border: 1px solid rgba(235, 184, 54, 0.78) !important;
+  border-radius: 8px !important;
+  background: rgba(255, 255, 255, 0.88) !important;
+  box-shadow:
+    0 0 0 2px rgba(255, 246, 190, 0.66),
+    0 0 13px rgba(235, 184, 54, 0.58) !important;
+}
+
+.sjp-guide-line-icon--toc span {
+  height: 2px !important;
+  background: #0645ad !important;
+}
+
+.sjp-guide-line-badge--more,
+.sjp-guide-line-badge--signin,
+.sjp-guide-line-badge--live {
+  box-sizing: border-box;
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  min-width: 58px;
+  max-width: 74px;
+  min-height: 26px;
+  margin: 0 !important;
+  padding: 3px 7px !important;
+  border-radius: 999px !important;
+  line-height: 1.05 !important;
+  white-space: nowrap;
+  text-align: center;
+}
+
+.sjp-guide-line-badge--more {
+  background: rgb(20, 137, 84) !important;
+  color: #ffffff !important;
+  font-size: 0.70rem !important;
+  font-weight: 900 !important;
+  box-shadow:
+    0 0 0 2px rgba(255, 246, 190, 0.62),
+    0 0 12px rgba(235, 184, 54, 0.56) !important;
+}
+
+.sjp-guide-line-badge--live {
+  background: rgba(16, 128, 64, 0.12) !important;
+  border: 1px solid rgba(16, 128, 64, 0.35) !important;
+  color: #0c6b36 !important;
+  font-size: 0.58rem !important;
+  font-weight: 900 !important;
+}
+
+.sjp-guide-line-badge--signin {
+  background: rgba(217, 217, 217, 0.95) !important;
+  border: 1px solid rgba(0, 0, 0, 0.18) !important;
+  color: #111 !important;
+  font-size: 0.64rem !important;
+  font-weight: 900 !important;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.sjp-guide-line-clock,
+.sjp-guide-line-lock {
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 999px;
+  font-size: 1.05rem !important;
+  line-height: 1;
+  background: rgba(255, 255, 255, 0.88);
+  border: 1px solid rgba(235, 184, 54, 0.60);
+  box-shadow: 0 0 10px rgba(235, 184, 54, 0.40);
+}
+
+.sjp-guide-line-clock {
+  color: #8c5600;
+}
+
+.sjp-guide-line-lock {
+  color: #9a5a00;
+}
+
+@media (max-width: 520px) {
+  .sjp-how-list--with-icons li {
+    grid-template-columns: 28px minmax(50px, auto) minmax(0, 1fr);
+    column-gap: 8px;
+    padding: 11px 10px !important;
+  }
+
+  .sjp-guide-line-badge--more,
+  .sjp-guide-line-badge--signin,
+  .sjp-guide-line-badge--live {
+    min-width: 50px;
+    max-width: 62px;
+    padding-left: 5px !important;
+    padding-right: 5px !important;
+  }
+
+  .sjp-guide-line-badge--live {
+    font-size: 0.52rem !important;
+  }
+
+  .sjp-guide-line-badge--more,
+  .sjp-guide-line-badge--signin {
+    font-size: 0.60rem !important;
+  }
+
+  .sjp-guide-line-clock,
+  .sjp-guide-line-lock {
+    width: 28px;
+    height: 28px;
+  }
+}
+
+/* =================================================================================================
+   ✅ 2026-05-04 🧩 [SJP-PUBLIC-FIXPASS-15]
+   Final evening polish:
+   - Keep guide icons out of the middle of prose by grouping them as separate cue tokens.
+   - Give mobile social/email icons larger, safer tap targets with clearer spacing.
+   - Replace emoji-like guide clock/lock samples with cleaner CSS-drawn tokens.
+   ================================================================================================= */
+
+/* --- Welcome yellow TOC definition: text first, icon cue second; no icon wedged between words. --- */
+.sjp-toc-definition--rev15 {
+  display: block !important;
+  line-height: 1.45 !important;
+}
+
+.sjp-toc-definition__intro {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.sjp-toc-definition__cue {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  max-width: 100%;
+}
+
+.sjp-toc-definition__cue .sjp-guide-inline-toc {
+  flex: 0 0 auto;
+  margin: 0 !important;
+  vertical-align: middle !important;
+}
+
+/* --- Floating yellow tip: same treatment as Welcome definition, with the icon separated from prose. --- */
+.sjp-guide-notice__message {
+  display: flex !important;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.sjp-guide-notice__intro {
+  display: block;
+}
+
+.sjp-guide-notice__cue {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.sjp-guide-notice__cue .sjp-guide-inline-toc {
+  flex: 0 0 auto;
+  margin: 0 !important;
+  vertical-align: middle !important;
+}
+
+@media (max-width: 520px) {
+  .sjp-toc-definition__cue,
+  .sjp-guide-notice__cue {
+    align-items: flex-start;
+    gap: 9px;
+  }
+
+  .sjp-toc-definition__cue .sjp-guide-inline-toc,
+  .sjp-guide-notice__cue .sjp-guide-inline-toc {
+    margin-top: 2px !important;
+  }
+}
+
+/* --- Guide drawer icons: make clock/lock examples clean visual tokens rather than awkward emoji marks. --- */
+.sjp-guide-line-clock,
+.sjp-guide-line-lock {
+  position: relative !important;
+  font-size: 0 !important;
+  overflow: visible;
+}
+
+.sjp-guide-line-clock::before {
+  content: "";
+  position: absolute;
+  inset: 6px;
+  border: 2px solid #a86d08;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.96);
+}
+
+.sjp-guide-line-clock::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 8px;
+  height: 8px;
+  border-left: 2px solid #a86d08;
+  border-top: 2px solid #a86d08;
+  transform: translate(-1px, -7px) rotate(0deg);
+  transform-origin: left bottom;
+}
+
+.sjp-guide-line-lock::before {
+  content: "";
+  position: absolute;
+  left: 8px;
+  right: 8px;
+  bottom: 7px;
+  height: 13px;
+  border-radius: 4px;
+  background: #f0a326;
+  border: 1px solid rgba(130, 80, 0, 0.55);
+}
+
+.sjp-guide-line-lock::after {
+  content: "";
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  top: 5px;
+  height: 13px;
+  border: 2px solid #a86d08;
+  border-bottom: 0;
+  border-radius: 999px 999px 0 0;
+}
+
+/* --- Lower fixed header: larger tap targets + more breathing room, especially on small phones. --- */
+.header-bottom-center-container {
+  grid-template-columns: minmax(64px, 1fr) minmax(162px, auto) minmax(64px, 1fr) !important;
+  gap: clamp(3px, 1vw, 10px) !important;
+}
+
+.sjp-lower-socials {
+  max-width: min(58vw, 214px) !important;
+  gap: clamp(8px, 2.1vw, 16px) !important;
+  overflow: visible !important;
+  align-items: center !important;
+}
+
+.sjp-social-link {
+  --sjp-social-touch: clamp(34px, 7.4vw, 42px);
+  --sjp-social-icon: clamp(26px, 5.8vw, 34px);
+  width: var(--sjp-social-touch) !important;
+  height: var(--sjp-social-touch) !important;
+  flex: 0 0 var(--sjp-social-touch) !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 0 !important;
+  box-sizing: border-box !important;
+}
+
+.sjp-social-link .sjp-brand-svg {
+  width: var(--sjp-social-icon) !important;
+  height: var(--sjp-social-icon) !important;
+  max-width: var(--sjp-social-icon) !important;
+  max-height: var(--sjp-social-icon) !important;
+}
+
+@media (max-width: 520px) {
+  .header-bottom-center-container {
+    grid-template-columns: minmax(56px, 1fr) minmax(156px, auto) minmax(56px, 1fr) !important;
+    gap: 2px !important;
+  }
+
+  .sjp-lower-socials {
+    max-width: min(56vw, 180px) !important;
+    gap: clamp(7px, 2.15vw, 10px) !important;
+  }
+
+  .sjp-social-link {
+    --sjp-social-touch: clamp(34px, 9.6vw, 38px);
+    --sjp-social-icon: clamp(25px, 7.6vw, 30px);
+  }
+
+  .sjp-auth-button {
+    padding-left: 8px !important;
+    padding-right: 8px !important;
+  }
+}
+
+@media (max-width: 370px) {
+  .header-bottom-center-container {
+    grid-template-columns: minmax(52px, 1fr) minmax(150px, auto) minmax(52px, 1fr) !important;
+  }
+
+  .sjp-lower-socials {
+    gap: 6px !important;
+  }
+
+  .sjp-social-link {
+    --sjp-social-touch: 34px;
+    --sjp-social-icon: 25px;
+  }
+
+  .sjp-auth-button {
+    font-size: 0.78rem !important;
+    padding-left: 7px !important;
+    padding-right: 7px !important;
+  }
+}
+
+
+/* =================================================================================================
+   ✅ 2026-05-04 🧩 [SJP-PUBLIC-FIXPASS-16]
+   Guide drawer icon polish:
+   - Replace the awkward CSS/emoji clock and padlock samples with clean inline-SVG tokens.
+   - Keep the token column aligned with the other guide samples on PC, tablet, and smartphone.
+   ================================================================================================= */
+
+.sjp-guide-line-symbol {
+  position: static !important;
+  left: auto !important;
+  top: auto !important;
+  transform: none !important;
+  grid-column: 2;
+  grid-row: 1;
+  align-self: center;
+  justify-self: center;
+  z-index: 1;
+
+  box-sizing: border-box;
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 32px;
+  margin: 0 !important;
+  padding: 4px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.94);
+  border: 1px solid rgba(235, 184, 54, 0.66);
+  box-shadow:
+    0 0 0 2px rgba(255, 246, 190, 0.45),
+    0 0 12px rgba(235, 184, 54, 0.42);
+}
+
+.sjp-guide-line-symbol svg {
+  display: block;
+  width: 23px;
+  height: 23px;
+  overflow: visible;
+}
+
+.sjp-guide-line-symbol--clock svg {
+  fill: none;
+  stroke: #a86d08;
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* ✅ 30Jun26m 🧮 [SJP-GUIDE-UPARROW-01] Phase 5 New-3 fix: helper-line icon for the header
+   Up Arrow, added to the "How to use this preview" Guidance drawer list. Same treatment as
+   the clock icon above (stroke-only, no fill) since both sit on the guide list's light
+   cream circular badge rather than the header's dark background the real icon uses. */
+.sjp-guide-line-symbol--uparrow svg {
+  fill: none;
+  stroke: #a86d08;
+  stroke-width: 2.5;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+.sjp-guide-line-symbol--lock .sjp-guide-lock-shackle {
+  fill: none;
+  stroke: #a86d08;
+  stroke-width: 2.2;
+  stroke-linecap: round;
+}
+
+.sjp-guide-line-symbol--lock .sjp-guide-lock-body {
+  fill: #f0a326;
+  stroke: #925d03;
+  stroke-width: 1.45;
+}
+
+.sjp-guide-line-symbol--lock .sjp-guide-lock-dot {
+  fill: #7c5207;
+}
+
+.sjp-guide-line-symbol--lock .sjp-guide-lock-slot {
+  fill: none;
+  stroke: #7c5207;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+}
+
+@media (max-width: 520px) {
+  .sjp-guide-line-symbol {
+    width: 38px;
+    height: 30px;
+    padding: 4px;
+  }
+
+  .sjp-guide-line-symbol svg {
+    width: 21px;
+    height: 21px;
+  }
+}
+
+
+/* =================================================================================================
+   ✅ 2026-05-07 🧩 [SJP-PUBLIC-FIXPASS-17]
+   Requested public-site polish:
+   - Slightly reduce lower-header Sign In / Sign Up button height while keeping them readable.
+   - Add responsive About/Mission/Motto story-pair layout inside the existing About Sourjoe drawer.
+   - Add the yellow guide glow to the live-demo rabbit icons for Essential Tools and Initial Mix only.
+   ================================================================================================= */
+
+.sjp-auth-button {
+  box-sizing: border-box !important;
+  min-height: 30px !important;
+  padding-top: 5px !important;
+  padding-bottom: 5px !important;
+  line-height: 1 !important;
+}
+
+@media (max-width: 520px) {
+  .sjp-auth-button {
+    min-height: 28px !important;
+    padding-top: 4px !important;
+    padding-bottom: 4px !important;
+  }
+}
+
+.sjp-about-story-stack {
+  width: 100%;
+  display: grid;
+  gap: clamp(14px, 2vw, 22px);
+  margin-top: clamp(12px, 1.8vw, 20px);
+}
+
+.sjp-about-story-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(12px, 1.8vw, 22px);
+  align-items: stretch;
+}
+
+.sjp-about-story-cell {
+  min-width: 0;
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.sjp-about-story-cell--media {
+  background: rgba(0, 0, 0, 0.04);
+  border: 1px solid rgba(8, 109, 252, 0.16);
+}
+
+.sjp-about-story-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 210px;
+  object-fit: cover;
+}
+
+.sjp-about-story-cell--copy {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.72);
+  border: 1px solid rgba(8, 109, 252, 0.16);
+  padding: clamp(13px, 1.9vw, 22px);
+  text-align: center;
+}
+
+.sjp-about-story-cell--copy h3 {
+  margin: 0 0 10px 0;
+  color: #000;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: clamp(1.35rem, 1.05rem + 1.05vw, 2rem);
+  font-weight: 500;
+  letter-spacing: 0.035em;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+.sjp-about-story-cell--copy p {
+  color: #111;
+  font-size: clamp(0.92rem, 0.86rem + 0.18vw, 1.02rem);
+  line-height: 1.62;
+  margin: 0 0 10px 0;
+}
+
+.sjp-about-story-cell--copy p:last-child {
+  margin-bottom: 0;
+}
+
+.sjp-about-motto-line {
+  font-size: clamp(1.02rem, 0.95rem + 0.35vw, 1.28rem) !important;
+  line-height: 1.4 !important;
+}
+
+body.sjp-guide-cues-active .sjrhl-trigger.sjrhl-host-rabbit.sjp-live-demo-rabbit.sjp-guide-pulse {
+  border-radius: 16px;
+  outline: 2px solid rgba(235, 184, 54, 0.58);
+  outline-offset: 4px;
+  box-shadow:
+    0 0 0 2px rgba(255, 246, 190, 0.60),
+    0 0 20px rgba(235, 184, 54, 0.72);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body.sjp-guide-cues-active .sjrhl-trigger.sjrhl-host-rabbit.sjp-live-demo-rabbit.sjp-guide-pulse {
+    box-shadow: 0 0 18px rgba(235, 184, 54, 0.68);
+  }
+}
+
+@media (max-width: 760px) {
+  .sjp-about-story-row {
+    grid-template-columns: 1fr;
+  }
+
+  .sjp-about-story-row--copy-left .sjp-about-story-cell--copy {
+    order: 2;
+  }
+
+  .sjp-about-story-row--copy-left .sjp-about-story-cell--media {
+    order: 1;
+  }
+
+  .sjp-about-story-image {
+    min-height: 240px;
+    max-height: 360px;
+  }
+}
+
+
+/* =================================================================================================
+   ✅ 2026-05-07 🧩 [SJP-PUBLIC-FIXPASS-20]
+   Final public-site polish pass from the Rev19 stable snapshot:
+   - Lower fixed header uses edge-anchored auth buttons and a flexible centre social strip.
+   - Very small screens get smaller auth buttons/icons to prevent overlap.
+   - Mid-width screens move auth buttons outward so they do not crowd the social icons.
+   - About Sourjoe story images preserve their native perspective instead of cropping out-of-bounds.
+   ================================================================================================= */
+
+.header-bottom-center-container {
+  display: grid !important;
+  grid-template-columns: max-content minmax(0, 1fr) max-content !important;
+  align-items: center !important;
+  justify-content: stretch !important;
+  column-gap: clamp(8px, 2.2vw, 42px) !important;
+  width: min(100%, 1500px) !important;
+  padding-inline: clamp(10px, 2.7vw, 72px) !important;
+  box-sizing: border-box !important;
+}
+
+.header-bottom-center-container .sjp-lower-left,
+.header-bottom-center-container .sjp-lower-right,
+.header-bottom-center-container .sjp-lower-socials {
+  min-width: 0 !important;
+  width: auto !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  box-sizing: border-box !important;
+}
+
+.header-bottom-center-container .sjp-lower-left {
+  justify-content: flex-start !important;
+}
+
+.header-bottom-center-container .sjp-lower-right {
+  justify-content: flex-end !important;
+}
+
+.header-bottom-center-container .sjp-lower-socials {
+  justify-content: center !important;
+  width: 100% !important;
+  max-width: none !important;
+  gap: clamp(8px, 1.45vw, 18px) !important;
+  overflow: visible !important;
+}
+
+.sjp-auth-button {
+  min-height: 29px !important;
+  padding: 4px clamp(9px, 1.05vw, 15px) !important;
+  font-size: clamp(0.70rem, 0.58rem + 0.28vw, 0.90rem) !important;
+  letter-spacing: clamp(0.035em, 0.012em + 0.06vw, 0.085em) !important;
+}
+
+.sjp-social-link {
+  --sjp-social-touch: clamp(34px, 3.0vw, 42px) !important;
+  --sjp-social-icon: clamp(26px, 2.35vw, 34px) !important;
+}
+
+@media (min-width: 800px) and (max-width: 1399px) {
+  .header-bottom-center-container {
+    column-gap: clamp(24px, 4.2vw, 58px) !important;
+    padding-inline: clamp(16px, 3.4vw, 48px) !important;
+  }
+
+  .header-bottom-center-container .sjp-lower-socials {
+    gap: clamp(11px, 1.7vw, 18px) !important;
+  }
+}
+
+@media (max-width: 399px) {
+  .header-bottom-center-container {
+    column-gap: 4px !important;
+    padding-inline: 4px !important;
+  }
+
+  .sjp-auth-button {
+    min-height: 25px !important;
+    padding: 3px 5px !important;
+    font-size: 0.62rem !important;
+    letter-spacing: 0.018em !important;
+  }
+
+  .header-bottom-center-container .sjp-lower-socials {
+    gap: clamp(3px, 1.1vw, 5px) !important;
+  }
+
+  .sjp-social-link {
+    --sjp-social-touch: clamp(27px, 7.2vw, 30px) !important;
+    --sjp-social-icon: clamp(21px, 5.8vw, 24px) !important;
+  }
+}
+
+@media (max-width: 340px) {
+  .sjp-auth-button {
+    padding-left: 4px !important;
+    padding-right: 4px !important;
+    font-size: 0.58rem !important;
+  }
+
+  .sjp-social-link {
+    --sjp-social-touch: 26px !important;
+    --sjp-social-icon: 20px !important;
+  }
+}
+
+.sjp-about-story-cell--media {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: clamp(8px, 1.25vw, 16px) !important;
+}
+
+.sjp-about-story-image {
+  width: 100% !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: clamp(170px, 22vw, 300px) !important;
+  object-fit: contain !important;
+  object-position: center center !important;
+}
+
+@media (max-width: 760px) {
+  .sjp-about-story-row--copy-left .sjp-about-story-cell--copy {
+    order: 1 !important;
+  }
+
+  .sjp-about-story-row--copy-left .sjp-about-story-cell--media {
+    order: 2 !important;
+  }
+
+  .sjp-about-story-row--image-left .sjp-about-story-cell--media {
+    order: 1 !important;
+  }
+
+  .sjp-about-story-row--image-left .sjp-about-story-cell--copy {
+    order: 2 !important;
+  }
+
+  .sjp-about-story-image {
+    max-height: clamp(210px, 62vw, 360px) !important;
+  }
+}
+
+
+/* =================================================================================================
+   ✅ 2026-05-07 🧩 [SJP-PUBLIC-FIXPASS-21]
+   Rev21 field-test corrections:
+   - Lower fixed-header buttons are anchored to visual landmarks in the upper fixed header.
+     SIGN IN starts 5px after the logo; SIGN UP ends 5px before the hamburger stack.
+   - About/Mission/Motto copy is slightly smaller.
+   - About/Mission/Motto story rows use responsive auto-fit columns so tablet portrait can stay
+     side-by-side, while narrow/tablet-landscape drawer widths break into stacked rows.
+   - Story images preserve their perspective and may grow larger where the drawer has room.
+   ================================================================================================= */
+
+.header-bottom-div > .header-rail {
+  width: clamp(68%, calc(-9vw + 693px), 90%) !important;
+  box-sizing: border-box !important;
+}
+
+.header-bottom-center-container {
+  --sjp-top-logo-width: clamp(40px, calc(18px + 4.8vw), 56px);
+  --sjp-toc-stack-left-gap: 67px; /* 48px hamburger + 14px right nudge + 5px requested air gap */
+
+  width: 100% !important;
+  max-width: none !important;
+  display: grid !important;
+  grid-template-columns: max-content minmax(0, 1fr) max-content !important;
+  align-items: center !important;
+  justify-content: stretch !important;
+  column-gap: clamp(8px, 1.6vw, 24px) !important;
+  padding-left: calc(var(--sjp-top-logo-width) + 5px) !important;
+  padding-right: var(--sjp-toc-stack-left-gap) !important;
+  box-sizing: border-box !important;
+}
+
+.header-bottom-center-container .sjp-lower-left {
+  justify-content: flex-start !important;
+}
+
+.header-bottom-center-container .sjp-lower-right {
+  justify-content: flex-end !important;
+}
+
+.header-bottom-center-container .sjp-lower-socials {
+  min-width: 0 !important;
+  width: 100% !important;
+  max-width: none !important;
+  justify-content: center !important;
+  gap: clamp(6px, 1.15vw, 15px) !important;
+}
+
+.sjp-auth-button {
+  min-height: 28px !important;
+  padding: 4px clamp(8px, 0.86vw, 13px) !important;
+  font-size: clamp(0.68rem, 0.57rem + 0.25vw, 0.86rem) !important;
+  letter-spacing: clamp(0.03em, 0.012em + 0.04vw, 0.075em) !important;
+}
+
+@media only screen and (max-width: 500px) and (orientation: portrait) {
+  .header-bottom-div > .header-rail {
+    width: 100% !important;
+    padding-left: 6px !important;
+    padding-right: 6px !important;
+    box-sizing: border-box !important;
+  }
+
+  .header-bottom-center-container {
+    --sjp-top-logo-width: clamp(34px, 11vw, 46px);
+    --sjp-toc-stack-left-gap: 49px; /* 44px mobile hamburger + 5px requested air gap */
+    column-gap: clamp(2px, 1vw, 5px) !important;
+    padding-left: calc(var(--sjp-top-logo-width) + 5px) !important;
+    padding-right: var(--sjp-toc-stack-left-gap) !important;
+  }
+}
+
+@media (max-width: 399px) {
+  .sjp-auth-button {
+    min-height: 24px !important;
+    padding: 2px 4px !important;
+    font-size: 0.56rem !important;
+    letter-spacing: 0.012em !important;
+  }
+
+  .header-bottom-center-container {
+    column-gap: 2px !important;
+  }
+
+  .header-bottom-center-container .sjp-lower-socials {
+    gap: 2px !important;
+  }
+
+  .sjp-social-link {
+    --sjp-social-touch: clamp(23px, 6.4vw, 26px) !important;
+    --sjp-social-icon: clamp(18px, 5.0vw, 21px) !important;
+  }
+}
+
+@media (max-width: 340px) {
+  .sjp-auth-button {
+    min-height: 23px !important;
+    padding-left: 3px !important;
+    padding-right: 3px !important;
+    font-size: 0.52rem !important;
+  }
+
+  .sjp-social-link {
+    --sjp-social-touch: 22px !important;
+    --sjp-social-icon: 17px !important;
+  }
+}
+
+.sjp-about-story-row {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 310px), 1fr)) !important;
+  align-items: center !important;
+}
+
+.sjp-about-story-cell--copy {
+  padding: clamp(11px, 1.55vw, 18px) !important;
+}
+
+.sjp-about-story-cell--copy h3 {
+  font-size: clamp(1.08rem, 0.93rem + 0.62vw, 1.55rem) !important;
+  letter-spacing: 0.03em !important;
+  line-height: 1.08 !important;
+  margin-bottom: 8px !important;
+}
+
+.sjp-about-story-cell--copy p {
+  font-size: clamp(0.84rem, 0.78rem + 0.16vw, 0.94rem) !important;
+  line-height: 1.52 !important;
+}
+
+.sjp-about-motto-line {
+  font-size: clamp(0.92rem, 0.84rem + 0.26vw, 1.12rem) !important;
+  line-height: 1.32 !important;
+}
+
+.sjp-about-story-image {
+  width: 100% !important;
+  height: auto !important;
+  max-width: 100% !important;
+  max-height: clamp(230px, 32vw, 360px) !important;
+  object-fit: contain !important;
+}
+
+@media (min-width: 700px) and (orientation: portrait) {
+  .sjp-about-story-image {
+    max-height: clamp(300px, 52vw, 440px) !important;
+  }
+}
+
+@media (min-width: 761px) and (max-width: 1180px) and (orientation: landscape) {
+  .sjp-about-story-row {
+    grid-template-columns: 1fr !important;
+  }
+
+  .sjp-about-story-image {
+    max-height: clamp(300px, 50vw, 430px) !important;
+  }
+}
+
+@media (max-width: 520px) {
+  .sjp-about-story-image {
+    max-height: clamp(220px, 62vw, 360px) !important;
+  }
+}
+
+/* =================================================================================================
+   ✅ 2026-05-08 🧩 [SJP-PUBLIC-PASS3-01]
+   Public Site Update Pass3:
+   - Put the TOC definition note at the bottom of yellow guide cards in smaller text.
+   - Hide gated live-demo sections until their related TOC Live demo link is clicked.
+   - Recipe Facts and Calculator are intentionally left outside this gated-section rule.
+   ================================================================================================= */
+.sjp-toc-definition__note,
+.sjp-guide-notice__note {
+  display: block !important;
+  margin-top: 7px !important;
+  padding-top: 6px !important;
+  border-top: 1px solid rgba(95, 81, 0, 0.28) !important;
+  color: #5f5100 !important;
+  font-size: 0.78em !important;
+  font-weight: 650 !important;
+  line-height: 1.28 !important;
+}
+
+.sjp-drawer-lede .sjp-toc-definition__note {
+  font-size: 0.84em !important;
+}
+
+.sjp-live-demo-gated:not(.sjp-live-demo-visible) {
+  display: none !important;
+}
+
+.sjp-live-demo-gated.sjp-live-demo-visible {
+  display: block !important;
+}
+
+/* =================================================================================================
+   ✅ 2026-05-08 🧩 [SJP-PUBLIC-PASS3-02]
+   Minor public-site polish after Pass3:
+   - Center only the small TOC-definition note at the bottom of yellow guide/info cards.
+   - Replace the harsh orange outline on glowing TOC/rabbit cues with a softer animated halo.
+   - Keep the cue obvious, but make the glow breathe outward with lighter amber edges.
+   ================================================================================================= */
+.sjp-toc-definition__note,
+.sjp-guide-notice__note {
+  text-align: center !important;
+}
+
+@keyframes sjpSoftAmberHalo {
+  0%, 100% {
+    filter: drop-shadow(0 0 5px rgba(255, 213, 92, 0.34));
+    transform: scale(1);
+  }
+
+  50% {
+    filter: drop-shadow(0 0 12px rgba(255, 213, 92, 0.52));
+    transform: scale(1.035);
+  }
+}
+
+/* Main TOC hamburger: no heavy orange ring; just a layered amber halo around the existing icon. */
+body.sjp-guide-cues-active .sj-app-hamburger.sjp-guide-pulse {
+  outline: none !important;
+  border-color: rgba(255, 232, 140, 0.45) !important;
+  box-shadow:
+    0 0 0 1px rgba(191, 122, 10, 0.26),
+    0 0 0 4px rgba(235, 184, 54, 0.18),
+    0 0 16px rgba(255, 225, 112, 0.34),
+    0 0 28px rgba(255, 246, 190, 0.18) !important;
+  animation: sjpSoftAmberHalo 2.35s ease-in-out infinite !important;
+}
+
+/* Section-level TOC stack icons: remove the bold orange outline and use the same soft halo. */
+body.sjp-guide-cues-active img.content-title-menu.sjp-guide-pulse {
+  outline: none !important;
+  border: 0 !important;
+  border-radius: 9px !important;
+  background-color: rgba(255, 248, 205, 0.10) !important;
+  box-shadow:
+    0 0 0 1px rgba(191, 122, 10, 0.24),
+    0 0 0 4px rgba(235, 184, 54, 0.17),
+    0 0 16px rgba(255, 225, 112, 0.34),
+    0 0 28px rgba(255, 246, 190, 0.18) !important;
+  animation: sjpSoftAmberHalo 2.35s ease-in-out infinite !important;
+}
+
+/* Live-demo rabbit icons: same halo treatment, slightly rounder to suit the rabbit icon shape. */
+body.sjp-guide-cues-active .sjrhl-trigger.sjrhl-host-rabbit.sjp-live-demo-rabbit.sjp-guide-pulse {
+  outline: none !important;
+  border-color: rgba(255, 232, 140, 0.38) !important;
+  border-radius: 16px !important;
+  box-shadow:
+    0 0 0 1px rgba(191, 122, 10, 0.24),
+    0 0 0 4px rgba(235, 184, 54, 0.17),
+    0 0 18px rgba(255, 225, 112, 0.36),
+    0 0 32px rgba(255, 246, 190, 0.20) !important;
+  animation: sjpSoftAmberHalo 2.35s ease-in-out infinite !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body.sjp-guide-cues-active .sj-app-hamburger.sjp-guide-pulse,
+  body.sjp-guide-cues-active img.content-title-menu.sjp-guide-pulse,
+  body.sjp-guide-cues-active .sjrhl-trigger.sjrhl-host-rabbit.sjp-live-demo-rabbit.sjp-guide-pulse {
+    animation: none !important;
+    outline: none !important;
+    filter: drop-shadow(0 0 7px rgba(255, 213, 92, 0.38));
+  }
+}
+
+
+
+/* =================================================================================================
+   ✅ 2026-05-08 🧩 [SJP-PUBLIC-PASS3-03]
+   Pass3 next-step polish:
+   - HOME link gets a readable mobile/small-screen size without changing desktop alignment.
+   - Lower fixed-header social strip is sized from the actual Welcome title width via p.js.
+   - SIGN IN / SIGN UP sit centered in the left/right spaces around that social strip.
+   - Start Here TOC receives bold left-aligned group headings.
+   ================================================================================================= */
+:root {
+  --sjp-welcome-title-width: clamp(188px, 28vw, 280px);
+}
+
+.sjp-top-home-link {
+  font-size: clamp(0.88rem, 0.72rem + 0.38vw, 1.05rem) !important;
+}
+
+.header-bottom-center-container {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) minmax(0, var(--sjp-welcome-title-width)) minmax(0, 1fr) !important;
+  align-items: center !important;
+  justify-content: stretch !important;
+  column-gap: 0 !important;
+  width: 100% !important;
+  max-width: none !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  box-sizing: border-box !important;
+}
+
+.header-bottom-center-container .sjp-lower-left,
+.header-bottom-center-container .sjp-lower-right {
+  width: 100% !important;
+  min-width: 0 !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  justify-content: center !important;
+}
+
+.header-bottom-center-container .sjp-lower-socials {
+  width: var(--sjp-welcome-title-width) !important;
+  max-width: var(--sjp-welcome-title-width) !important;
+  min-width: 0 !important;
+  justify-content: space-between !important;
+  gap: 0 !important;
+  overflow: visible !important;
+}
+
+.sjp-social-link {
+  --sjp-social-touch: clamp(36px, 2.9vw, 44px) !important;
+  --sjp-social-icon: clamp(28px, 2.25vw, 36px) !important;
+}
+
+.sjp-auth-button {
+  min-height: clamp(30px, 2.55vw, 38px) !important;
+  min-width: clamp(76px, 6.9vw, 104px) !important;
+  padding: 5px clamp(10px, 0.9vw, 16px) !important;
+  font-size: clamp(0.76rem, 0.62rem + 0.30vw, 0.94rem) !important;
+  letter-spacing: clamp(0.035em, 0.016em + 0.045vw, 0.075em) !important;
+}
+
+.sjp-toc-group-heading {
+  margin: 12px 0 4px 0 !important;
+  padding: 0 !important;
+  color: #000 !important;
+  font-weight: 800 !important;
+  text-align: left !important;
+  text-decoration: none !important;
+  cursor: default !important;
+}
+
+#TOC-starthere-content .sjp-toc-group-heading:first-child {
+  margin-top: 2px !important;
+}
+
+@media only screen and (max-width: 500px) and (orientation: portrait) {
+  .sjp-top-home-link {
+    font-size: clamp(0.96rem, 4.0vw, 1.08rem) !important;
+    letter-spacing: 0.005em !important;
+  }
+
+  #openMainTOC {
+    gap: clamp(3px, 1.2vw, 6px) !important;
+  }
+
+  .header-bottom-div > .header-rail {
+    width: 100% !important;
+    padding-left: 6px !important;
+    padding-right: 6px !important;
+    box-sizing: border-box !important;
+  }
+
+  .header-bottom-center-container {
+    grid-template-columns: minmax(0, 1fr) minmax(0, var(--sjp-welcome-title-width)) minmax(0, 1fr) !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
+  .sjp-social-link {
+    --sjp-social-touch: clamp(38px, 10.8vw, 44px) !important;
+    --sjp-social-icon: clamp(30px, 8.4vw, 36px) !important;
+  }
+
+  .sjp-auth-button {
+    min-height: clamp(31px, 8.6vw, 36px) !important;
+    min-width: clamp(69px, 19.5vw, 86px) !important;
+    padding: 4px clamp(7px, 2.4vw, 10px) !important;
+    font-size: clamp(0.70rem, 3.2vw, 0.86rem) !important;
+    letter-spacing: 0.028em !important;
+  }
+}
+
+@media only screen and (max-width: 360px) and (orientation: portrait) {
+  .sjp-top-home-link {
+    font-size: clamp(0.91rem, 4.15vw, 0.98rem) !important;
+  }
+
+  .sjp-auth-button {
+    min-width: clamp(62px, 18.5vw, 72px) !important;
+    padding-left: 5px !important;
+    padding-right: 5px !important;
+    font-size: clamp(0.64rem, 3.05vw, 0.74rem) !important;
+  }
+
+  .sjp-social-link {
+    --sjp-social-touch: clamp(34px, 10.4vw, 38px) !important;
+    --sjp-social-icon: clamp(27px, 8.1vw, 31px) !important;
+  }
+}
+
+/* =================================================================================================
+   ✅ 2026-05-08 🧩 [SJP-PUBLIC-PASS3-04]
+   Final Pass3 polish:
+   - Nudge lower fixed-header auth buttons upward without reducing their size.
+   - Lay out START HERE body as two rows of two equal-width guide boxes on wider screens,
+     then one vertical stack on narrower screens.
+   ================================================================================================= */
+.header-bottom-center-container .sjp-auth-button {
+  position: relative !important;
+  top: -2px !important;
+}
+
+@media only screen and (max-width: 500px) and (orientation: portrait) {
+  .header-bottom-center-container .sjp-auth-button {
+    top: -3px !important;
+  }
+}
+
+.sjp-start-here-grid {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  align-items: stretch !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+  margin: 8px 0 4px 0 !important;
+}
+
+.sjp-start-here-box {
+  box-sizing: border-box !important;
+  min-width: 0 !important;
+  margin: 1px !important;
+  padding: clamp(10px, 1.5vw, 16px) !important;
+  border: none !important;
+  border-radius: 6px !important;
+  background: rgba(255, 255, 255, 0.46) !important;
+}
+
+.sjp-start-here-box p {
+  margin: 0 0 0.55em 0 !important;
+}
+
+.sjp-start-here-copybox {
+  display: flex !important;
+  align-items: center !important;
+}
+
+/* ✅ 2026-05-08 🧩 [SJP-START-HERE-GRID-02]
+   Center only the two right-side Start Here link-list boxes. */
+.sjp-start-here-linkbox {
+  text-align: center !important;
+}
+
+.sjp-start-here-linkbox .sjp-start-here-box-title {
+  text-align: center !important;
+}
+
+.sjp-start-here-linkbox .sjp-start-here-link-list {
+  text-align: center !important;
+}
+
+.sjp-start-here-copybox p:last-child,
+.sjp-start-here-linkbox p:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* ✅ 2026-05-09 🧩 [SJP-START-HERE-GLOSSARY-TITLES-01]
+   Start Here link-box headings now reuse the Glossary item visual language,
+   but remain plain heading text instead of list bullets. */
+.sjp-start-here-box-title {
+  margin: 0 0 6px 0 !important;
+  color: darkgreen !important;
+  font-weight: bold !important;
+  font-size: larger !important;
+  text-align: left !important;
+}
+
+.sjp-start-here-link-list {
+  list-style: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.sjp-start-here-link-list li {
+  margin: 3px 0 !important;
+  padding: 0 !important;
+}
+
+@media only screen and (max-width: 760px) {
+  .sjp-start-here-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .sjp-start-here-copybox {
+    display: block !important;
+  }
+}
+
+/* ✅ 2026-05-09 🧩 [SJP-START-HERE-PAIR-CARDS-01]
+   START HERE panel-only composition fix, revision 5:
+   - Replaces the too-wide four-box visual with two related pair cards.
+   - Each pair card contains one copy block plus its matching link-list block.
+   - Desktop/large tablet: copy + links sit side-by-side in a tighter, centered rail.
+   - Small screens: each pair stacks vertically, so "In the Book" and "In Recipes" stay visually attached
+     to their corresponding explanatory text.
+   - Uses subtle shared shading/border on each pair only; individual boxes remain unoutlined. */
+#startHereIntro.content-section-chapter > .content-section-verbiage > .sjp-chapter-copy-shell {
+  max-width: 760px !important;
+}
+
+#startHereIntro .sjp-start-here-grid {
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  row-gap: clamp(10px, 1.7vw, 16px) !important;
+  margin: 8px auto 4px auto !important;
+}
+
+#startHereIntro .sjp-start-here-pair {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) minmax(238px, 290px) !important;
+  align-items: center !important;
+  column-gap: clamp(12px, 2.1vw, 22px) !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+  padding: clamp(12px, 1.8vw, 18px) clamp(14px, 2.2vw, 20px) !important;
+  border: 1px solid rgba(88, 174, 93, 0.24) !important;
+  border-radius: 12px !important;
+  background: rgba(232, 248, 236, 0.30) !important;
+}
+
+#startHereIntro .sjp-start-here-box {
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+}
+
+/* ✅ 2026-05-09 🧩 [SJP-START-HERE-PAIR-TITLES-CSS-01]
+   In START HERE pair cards, the green heading now lives with the verbiage.
+   Keep that copy-side content stacked as: title line, then paragraph. */
+#startHereIntro .sjp-start-here-copybox {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  justify-content: center !important;
+}
+
+#startHereIntro .sjp-start-here-linkbox {
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  /* ✅ 2026-05-21 🧩 [SJP-START-HERE-BUBBLES-01]
+     Start Here public-preview link rows begin with a circled + helper icon.
+     Keep each row left-justified, but center the whole link-list group in its half
+     of the pair card so the copy side and link side feel evenly spaced. */
+  align-items: center !important;
+  text-align: left !important;
+}
+
+#startHereIntro .sjp-start-here-copybox .sjp-start-here-box-title {
+  width: 100% !important;
+  margin: 0 0 7px 0 !important;
+  text-align: left !important;
+}
+
+/* ✅ 2026-05-21 🧩 [SJP-START-HERE-LINK-GROUP-CENTER-01]
+   Center the START HERE circled-plus link group as a whole inside the right-side
+   container while preserving left-justified icon/link/lock rows. */
+#startHereIntro .sjp-start-here-linkbox .sjp-start-here-link-list {
+  display: inline-block !important;
+  width: auto !important;
+  max-width: 100% !important;
+  margin: 0 auto !important;
+  text-align: left !important;
+}
+
+
+#startHereIntro .sjp-start-here-link-list li {
+  margin: 4px 0 !important;
+}
+
+/* ✅ 2026-05-21 🧩 [SJP-START-HERE-BUBBLES-02]
+   App-style Start Here helper rows for the public preview.
+   - The circled + is a bubble trigger.
+   - Text stays left-justified.
+   - Recipe locks remain on the right edge of the link row. */
+#startHereIntro .sjp-start-here-link-list li.sjp-start-here-link-row {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 8px !important;
+  width: 100% !important;
+  text-align: left !important;
+}
+
+#startHereIntro .sjp-start-here-link-list li.sjp-start-here-link-row > .link-style,
+#startHereIntro .sjp-start-here-link-list li.sjp-start-here-link-row > .sjp-locked-inline {
+  flex: 1 1 auto !important;
+  min-width: 0 !important;
+  text-align: left !important;
+}
+
+#startHereIntro .sjp-start-here-link-list li.sjp-start-here-link-row > .sjp-locked-inline {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 8px !important;
+}
+
+#startHereIntro .sjp-start-here-link-list .sjp-info-anchor--start-plus {
+  margin: 0 !important;
+}
+
+#startHereIntro .sjp-start-here-link-list .sjp-inline-lock-icon.sjp-lock-bubble-trigger {
+  margin-left: auto !important;
+  cursor: help !important;
+}
+
+#TOC-starthere-content .sjp-start-here-locked-toc {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 8px !important;
+}
+
+#TOC-starthere-content .sjp-start-here-locked-toc .link-style {
+  flex: 1 1 auto !important;
+  min-width: 0 !important;
+}
+
+#TOC-starthere-content .sjp-start-here-locked-toc .sjp-lock-icon.sjp-lock-bubble-trigger {
+  margin-left: auto !important;
+  cursor: help !important;
+}
+
+@media only screen and (max-width: 760px) {
+  #startHereIntro.content-section-chapter > .content-section-verbiage > .sjp-chapter-copy-shell {
+    max-width: 100% !important;
+  }
+
+  #startHereIntro .sjp-start-here-pair {
+    grid-template-columns: 1fr !important;
+    row-gap: 8px !important;
+    padding: clamp(12px, 3.2vw, 16px) !important;
+  }
+
+  #startHereIntro .sjp-start-here-copybox,
+  #startHereIntro .sjp-start-here-linkbox {
+    display: block !important;
+  }
+}
+
+/* ✅ 2026-05-09 🧩 [SJP-START-HERE-TABLET-PORTRAIT-01]
+   Tablet portrait refinement:
+   - Keep the two START HERE pair cards stacked internally on portrait tablets.
+   - This prevents the copy side from becoming a narrow tower at iPad/tablet portrait widths.
+   - Landscape tablets and PC retain the side-by-side pair-card layout above. */
+@media only screen and (orientation: portrait) and (min-width: 761px) and (max-width: 1024px) {
+  #startHereIntro .sjp-start-here-pair {
+    grid-template-columns: 1fr !important;
+    row-gap: 8px !important;
+  }
+
+  #startHereIntro .sjp-start-here-copybox,
+  #startHereIntro .sjp-start-here-linkbox {
+    display: block !important;
+  }
+}
+
+
+
+/* =================================================================================================
+   ✅ 2026-05-09 🧩 [SJP-CHAPTER-INNER-WIDTH-01]
+   Public Chapter intro inner rail:
+   - Keeps each Chapter panel full-width, but narrows its body copy to match the Welcome-copy rail.
+   - Uses a lightweight wrapper so existing grids, galleries, floats, and panel-specific content remain intact.
+   ================================================================================================= */
+.content-section-chapter > .content-section-verbiage > .sjp-chapter-copy-shell {
+  width: 100% !important;
+  max-width: 940px !important; /* Matches .sjp-welcome-copy */
+  margin: 0 auto !important;
+  padding: 0 20px !important; /* Mirrors the existing .sjp-welcome-copy lead-child inset. */
+  border-bottom: none !important;
+  overflow: visible !important;
+  display: flow-root !important; /* Contains floated intro images without disturbing wrapping. */
+}
+
+/* ✅ 2026-05-09 🧩 [SJP-CHAPTER-INNER-WIDTH-02]
+   Chapter intro sketch images use the same responsive float pattern as the Baker's Process image,
+   so they do not grow larger than that established chapter-panel image treatment. */
+.content-section-chapter .sjp-chapter-wrap-img {
+  height: auto !important;
+}
+
+@media only screen and (max-width: 500px) {
+  .content-section-chapter > .content-section-verbiage > .sjp-chapter-copy-shell {
+    max-width: 100% !important;
+  }
+}
+
+
+/* ✅ 2026-05-09 🧩 [SJP-REFERENCE-DESKTOP-IMAGE-01]
+   Reference intro desktop-only image balance:
+   - The Reference sketch asset is now trimmed, but on PC it still visually overpowers
+     the shorter verbiage block.
+   - Reduce only the Reference chapter image on larger screens so the image/copy pair
+     feels better centered without changing smartphone or tablet layouts. */
+@media only screen and (min-width: 1025px) {
+  #referenceIntro.content-section-chapter .sjp-chapter-wrap-img {
+    max-width: 28% !important;
+    margin-right: clamp(24px, 3vw, 38px) !important;
+  }
+}
+
+
+/* =================================================================================================
+   ✅ 2026-05-09 🧩 [SJP-PUBLIC-PLANS-03]
+   Plans conversion cards:
+   - left card is Register with no-credit-card emphasis
+   - right card is Subscription with Stripe emphasis
+   - both cards keep the existing Plans two-card visual language but add bullet lists and centered CTA buttons
+   ================================================================================================= */
+.sjp-plan-grid--conversion {
+  grid-template-columns: repeat(2, minmax(260px, 1fr));
+  align-items: stretch;
+  max-width: 980px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.sjp-plan-grid--conversion .sjp-plan-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-height: 100%;
+}
+
+.sjp-plan-grid--conversion .sjp-plan-card h4 {
+  margin: 0 0 6px 0;
+  text-align: center;
+  font-size: clamp(21px, calc(18px + 0.9vw), 30px);
+  color: darkblue;
+}
+
+.sjp-plan-list {
+  flex: 1 1 auto;
+  margin: 0;
+  padding-left: 1.35em;
+  line-height: 1.45;
+  text-align: left;
+}
+
+.sjp-plan-list li {
+  margin-bottom: 9px;
+}
+
+.sjp-plan-emphasis {
+  color: #9a3412;
+  font-weight: 800;
+}
+
+.sjp-plan-button-wrap {
+  display: flex;
+  justify-content: center;
+  margin-top: 12px;
+}
+
+.sjp-plan-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 165px;
+  padding: 10px 18px;
+  border: 2px solid darkblue;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.88);
+  color: darkblue !important;
+  font-size: clamp(17px, calc(15px + 0.55vw), 22px);
+  font-weight: 800;
+  text-decoration: none !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+}
+
+.sjp-plan-button:hover,
+.sjp-plan-button:focus {
+  background: #ffffff;
+  transform: translateY(-1px);
+}
+
+@media (max-width: 760px) {
+  .sjp-plan-grid--conversion {
+    grid-template-columns: 1fr;
+    max-width: 560px;
+  }
+}
+
+/* =================================================================================================
+   ✅ 2026-05-11 🧩 [SJP-PUBLIC-PASS5-ENTRY-CLOUD-01]
+   First-entry public welcome cloud:
+   - Replaces the retired floating HOME guide popup.
+   - Pale-yellow cloud panel intentionally obscures the page until EXPLORE SOURJOE is clicked.
+   - No persistent storage: the panel returns on a fresh page/site entry, but not after being closed
+     during the current page visit.
+
+   ✅ 2026-05-11 🧩 [SJP-PUBLIC-PASS5-ENTRY-CLOUD-02]
+   Visual simplification after first browser review:
+   - Removed the extra top/bottom cloud lobes.
+   - Changed the card to a calmer rounded panel so the opening message can be judged for efficacy
+     before future colour/theme refinements.
+
+   ✅ 2026-05-11 🧩 [SJP-PUBLIC-PASS5-ENTRY-CLOUD-03]
+   Small-screen overflow correction:
+   - Keep the page behind the entry panel locked, but make the entry panel itself scrollable only
+     when its content is taller than the available viewport.
+   - Use dynamic viewport height where supported so mobile browser chrome does not hide the button.
+   ================================================================================================= */
+body.sjp-entry-cloud-active {
+  overflow: hidden !important;
+}
+
+.sjp-entry-cloud-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2147483000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(18px, 4vw, 42px);
+  background:
+    radial-gradient(circle at 50% 42%, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0) 34%),
+    rgba(36, 31, 12, 0.58);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 220ms ease;
+}
+
+.sjp-entry-cloud-overlay.sjp-entry-cloud-overlay--visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.sjp-entry-cloud-card {
+  position: relative;
+  width: min(91vw, 760px);
+  max-height: min(86vh, 720px);
+  max-height: min(calc(100dvh - (clamp(18px, 4vw, 42px) * 2)), 720px);
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  isolation: isolate;
+  text-align: center;
+  color: #3d3300;
+  background: rgba(255, 248, 185, 0.96);
+  border: 3px solid rgba(214, 176, 29, 0.72);
+  border-radius: clamp(26px, 4vw, 44px);
+  box-shadow:
+    0 18px 48px rgba(0, 0, 0, 0.35),
+    inset 0 0 0 5px rgba(255, 255, 255, 0.34),
+    0 0 0 8px rgba(238, 205, 72, 0.18);
+  padding: clamp(30px, 5vw, 54px) clamp(22px, 5vw, 58px) clamp(28px, 4.5vw, 48px);
+  transform: translateY(14px) scale(0.985);
+  transition: transform 220ms ease;
+}
+
+.sjp-entry-cloud-overlay.sjp-entry-cloud-overlay--visible .sjp-entry-cloud-card {
+  transform: translateY(0) scale(1);
+}
+
+/* [SJP-PUBLIC-PASS5-ENTRY-CLOUD-02]
+   The earlier decorative ::before/::after cloud lobes looked awkward in real browser testing,
+   so they are intentionally disabled rather than merely resized. */
+.sjp-entry-cloud-card::before,
+.sjp-entry-cloud-card::after {
+  content: none !important;
+  display: none !important;
+}
+
+.sjp-entry-cloud-logo-wrap {
+  width: min(100%, 500px);
+  margin: 0 auto clamp(18px, 3vw, 30px);
+  padding: clamp(8px, 1.6vw, 12px);
+  background: rgba(255, 255, 255, 0.58);
+  border: 1px solid rgba(188, 154, 24, 0.35);
+  border-radius: 28px;
+  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.42);
+}
+
+.sjp-entry-cloud-logo {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: clamp(78px, 16vh, 136px);
+  object-fit: contain;
+}
+
+.sjp-entry-cloud-copy {
+  width: min(100%, 620px);
+  margin: 0 auto;
+  font-size: clamp(1.02rem, 0.72rem + 1vw, 1.35rem);
+  font-weight: 650;
+  line-height: 1.42;
+}
+
+.sjp-entry-cloud-copy p {
+  margin: 0 0 clamp(12px, 2.1vw, 18px);
+}
+
+.sjp-entry-cloud-copy p:last-child {
+  margin-bottom: 0;
+}
+
+.sjp-entry-cloud-trial {
+  color: #806700;
+  font-size: clamp(1.18rem, 0.88rem + 1.2vw, 1.65rem);
+  font-weight: 800;
+  text-transform: none;
+}
+
+.sjp-entry-cloud-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: clamp(22px, 4vw, 36px);
+  min-width: min(100%, 260px);
+  min-height: 48px;
+  border: 2px solid rgba(98, 83, 0, 0.55);
+  border-radius: 999px;
+  background: linear-gradient(180deg, #fff5a8, #ebc94a);
+  color: #4a3d00;
+  cursor: pointer;
+  font-size: clamp(0.98rem, 0.82rem + 0.45vw, 1.15rem);
+  font-weight: 900;
+  letter-spacing: 0.045em;
+  line-height: 1.1;
+  padding: 13px 24px;
+  box-shadow:
+    0 8px 18px rgba(0, 0, 0, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.62);
+}
+
+.sjp-entry-cloud-button:hover,
+.sjp-entry-cloud-button:focus-visible {
+  background: linear-gradient(180deg, #fff8bd, #f3d75d);
+  outline: 3px solid rgba(116, 94, 0, 0.32);
+  outline-offset: 3px;
+}
+
+
+@media (max-width: 560px) {
+  .sjp-entry-cloud-overlay {
+    align-items: flex-start;
+    padding-top: calc(var(--appTop, 0px) + 76px);
+  }
+
+  .sjp-entry-cloud-card {
+    width: min(94vw, 440px);
+    max-height: calc(100vh - var(--appTop, 0px) - 104px);
+    max-height: calc(100dvh - var(--appTop, 0px) - 104px);
+    border-radius: 28px;
+    padding: 26px 18px 24px;
+  }
+
+  .sjp-entry-cloud-card::before,
+  .sjp-entry-cloud-card::after {
+    display: none;
+  }
+
+  .sjp-entry-cloud-logo-wrap {
+    border-radius: 20px;
+  }
+
+  .sjp-entry-cloud-copy {
+    font-size: 1rem;
+  }
+}
+
+/* =================================================================================================
+   ✅ 2026-05-11 🧩 [SJP-PUBLIC-PASS5-YELLOW-BOX-THEME-01]
+   Public Site Update Pass5 yellow-box unification:
+   - The entry logo holder is now a clean white box with a darker double-border treatment.
+   - All yellow guidance/message boxes use the same pale-yellow body + darker double-border family
+     as the opening entry panel, without changing their underlying placement or behavior.
+   ================================================================================================= */
+.sjp-entry-cloud-logo-wrap {
+  background: #ffffff !important;
+  border: 2px solid rgba(98, 83, 0, 0.58) !important;
+  box-shadow:
+    inset 0 0 0 3px rgba(238, 205, 72, 0.18),
+    0 0 0 4px rgba(214, 176, 29, 0.26),
+    0 4px 12px rgba(0, 0, 0, 0.12) !important;
+}
+
+.sjp-public-note,
+#sjpLockNotice,
+#sjpGuideNotice,
+.sjp-toc-definition,
+.sjp-drawer-lede {
+  background: rgba(255, 248, 185, 0.96) !important;
+  border: 3px solid rgba(214, 176, 29, 0.72) !important;
+  border-radius: 18px !important;
+  color: #3d3300 !important;
+  box-shadow:
+    inset 0 0 0 4px rgba(255, 255, 255, 0.34),
+    0 0 0 5px rgba(238, 205, 72, 0.18),
+    0 6px 16px rgba(0, 0, 0, 0.14) !important;
+}
+
+.sjp-public-note strong,
+#sjpLockNotice strong,
+#sjpGuideNotice strong,
+.sjp-toc-definition strong,
+.sjp-drawer-lede strong,
+.sjp-lock-notice__countdown,
+.sjp-toc-definition__note,
+.sjp-guide-notice__note {
+  color: #5f5100 !important;
+}
+
+/* =================================================================================================
+   ✅ 2026-05-11 🧩 [SJP-PUBLIC-PASS5-YELLOW-BOX-THEME-02]
+   Yellow body-fill correction after browser review:
+   - The unified yellow-box pass made the panel/card body read slightly darker than the earlier notes.
+   - Restore the lighter pale-yellow body fill while preserving the new darker double-border family.
+   ================================================================================================= */
+.sjp-entry-cloud-card,
+.sjp-public-note,
+#sjpLockNotice,
+#sjpGuideNotice,
+.sjp-toc-definition,
+.sjp-drawer-lede {
+  background: rgba(254, 249, 195, 0.94) !important;
+}
+
+
+/* =================================================================================================
+   ✅ 2026-05-12 🧩 [SJP-PUBLIC-PASS6-AUTH-01]
+   Public Site Update Pass6 auth relocation:
+   - HOME in the upper fixed header is larger and sits farther from the main TOC hamburger.
+   - While the Welcome panel is visible, Sign In / Sign Up are large Welcome-panel actions.
+   - Once the Welcome panel is no longer visible, the existing lower fixed-header auth buttons return.
+   - Smartphone portrait stacks the Welcome-panel auth buttons above the centered Welcome title.
+   ================================================================================================= */
+#openMainTOC {
+  gap: clamp(18px, 2.35vw, 34px) !important;
+}
+
+#openMainTOC .sjp-top-home-link {
+  font-size: clamp(1.03rem, 0.78rem + 0.58vw, 1.30rem) !important;
+  margin-right: clamp(4px, 0.65vw, 12px) !important;
+  letter-spacing: 0.018em !important;
+}
+
+.sjp-welcome-auth-title-row {
+  display: grid !important;
+  grid-template-columns: minmax(122px, 1fr) auto minmax(122px, 1fr) !important;
+  grid-template-areas: "signin title signup" !important;
+  align-items: center !important;
+  justify-items: center !important;
+  column-gap: clamp(16px, 3vw, 44px) !important;
+  row-gap: 10px !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+  padding: 2px clamp(8px, 2.4vw, 28px) 6px !important;
+}
+
+.sjp-welcome-auth-title-row .lead-title {
+  grid-area: title !important;
+  margin: 0 !important;
+  text-align: center !important;
+}
+
+.sjp-welcome-auth-signin {
+  grid-area: signin !important;
+  justify-self: end !important;
+}
+
+.sjp-welcome-auth-signup {
+  grid-area: signup !important;
+  justify-self: start !important;
+}
+
+.sjp-welcome-auth-title-row .sjp-auth-button--welcome {
+  min-height: clamp(42px, 3.9vw, 54px) !important;
+  min-width: clamp(116px, 10.2vw, 154px) !important;
+  padding: 9px clamp(18px, 1.55vw, 26px) !important;
+  font-size: clamp(0.94rem, 0.72rem + 0.42vw, 1.12rem) !important;
+  letter-spacing: 0.075em !important;
+  border: 2px solid rgba(0, 0, 0, 0.18) !important;
+  box-shadow:
+    0 2px 7px rgba(0, 0, 0, 0.16),
+    inset 0 0 0 2px rgba(255, 255, 255, 0.34) !important;
+}
+
+.sjp-welcome-auth-title-row .sjp-auth-button--welcome:hover,
+.sjp-welcome-auth-title-row .sjp-auth-button--welcome:focus-visible {
+  transform: translateY(-1px) !important;
+}
+
+body.sjp-welcome-in-view .header-bottom-center-container .sjp-lower-left,
+body.sjp-welcome-in-view .header-bottom-center-container .sjp-lower-right {
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+body:not(.sjp-welcome-in-view) .sjp-welcome-auth-title-row .sjp-auth-button--welcome {
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+@media only screen and (max-width: 500px) and (orientation: portrait) {
+  #openMainTOC {
+    gap: clamp(8px, 2.8vw, 13px) !important;
+  }
+
+  #openMainTOC .sjp-top-home-link {
+    font-size: clamp(1.02rem, 4.65vw, 1.18rem) !important;
+    margin-right: clamp(3px, 1.6vw, 7px) !important;
+  }
+
+  .sjp-welcome-auth-title-row {
+    grid-template-columns: 1fr 1fr !important;
+    grid-template-areas:
+      "signin signup"
+      "title title" !important;
+    column-gap: clamp(14px, 5vw, 24px) !important;
+    row-gap: 10px !important;
+    padding-top: 4px !important;
+    padding-left: clamp(8px, 3vw, 14px) !important;
+    padding-right: clamp(8px, 3vw, 14px) !important;
+  }
+
+  .sjp-welcome-auth-signin {
+    justify-self: start !important;
+  }
+
+  .sjp-welcome-auth-signup {
+    justify-self: end !important;
+  }
+
+  .sjp-welcome-auth-title-row .sjp-auth-button--welcome {
+    min-height: clamp(40px, 11.8vw, 48px) !important;
+    min-width: clamp(118px, 37vw, 148px) !important;
+    padding: 8px clamp(13px, 4vw, 18px) !important;
+    font-size: clamp(0.88rem, 3.85vw, 1.02rem) !important;
+    letter-spacing: 0.052em !important;
+  }
+}
+
+@media only screen and (max-width: 360px) and (orientation: portrait) {
+  .sjp-welcome-auth-title-row {
+    column-gap: 10px !important;
+  }
+
+  .sjp-welcome-auth-title-row .sjp-auth-button--welcome {
+    min-width: clamp(102px, 36vw, 124px) !important;
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+    font-size: clamp(0.80rem, 3.75vw, 0.92rem) !important;
+  }
+}
+
+/* =================================================================================================
+   ✅ 2026-05-12 🧩 [SJP-PUBLIC-PASS6B-FOLLOWUP-01]
+   Public Site Update Pass6 follow-up:
+   - Soften HOME: all caps gives enough emphasis, so remove heavy bolding and reduce the size slightly.
+   - Keep a healthy gap from the main TOC icon without making HOME visually dominate the header.
+   - Make timed yellow notice controls sit above preview veils and stay easy to click/tap.
+   ================================================================================================= */
+#openMainTOC .sjp-top-home-link,
+#openMainTOC .sjp-top-home-link:visited {
+  font-size: clamp(0.94rem, 0.74rem + 0.42vw, 1.12rem) !important;
+  font-weight: 400 !important;
+  margin-right: clamp(5px, 0.75vw, 14px) !important;
+  letter-spacing: 0.02em !important;
+}
+
+@media only screen and (max-width: 500px) and (orientation: portrait) {
+  #openMainTOC .sjp-top-home-link,
+  #openMainTOC .sjp-top-home-link:visited {
+    font-size: clamp(0.92rem, 4.05vw, 1.05rem) !important;
+    font-weight: 400 !important;
+    margin-right: clamp(4px, 1.8vw, 8px) !important;
+  }
+}
+
+#sjpLockNotice {
+  z-index: 1000002 !important;
+}
+
+.sjp-lock-notice__close,
+.sjp-guide-notice__close {
+  touch-action: manipulation;
+  position: relative;
+  z-index: 1;
+}
+
+
+
+/* =================================================================================================
+   ✅ 2026-05-12 🧩 [SJP-PUBLIC-PASS6C-TWEAKS-01]
+   Public Site Update Pass6 follow-up tweaks:
+   - Center the EXPLORE SOURJOE timed orientation note so its CLOSE button cannot sit over Sign Up.
+   - Make START HERE chapter TOC group headings match the bold green glossary-style heading language.
+   - In "How to Use This Preview", remove number bullets and let the visual tokens serve as larger bullets.
+   ================================================================================================= */
+#sjpGuideNotice {
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -56%) scale(0.98) !important;
+  width: min(88vw, 540px) !important;
+  z-index: 1000003 !important;
+  text-align: center !important;
+}
+
+#sjpGuideNotice.sjp-guide-notice--visible {
+  transform: translate(-50%, -50%) scale(1) !important;
+}
+
+#sjpGuideNotice .sjp-guide-notice__topline {
+  align-items: center !important;
+}
+
+#TOC-starthere-content .sjp-toc-group-heading {
+  color: darkgreen !important;
+  font-weight: 900 !important;
+  font-size: larger !important;
+  line-height: 1.25 !important;
+}
+
+.sjp-how-list--with-icons {
+  counter-reset: none !important;
+}
+
+.sjp-how-list--with-icons li {
+  grid-template-columns: minmax(76px, auto) minmax(0, 1fr) !important;
+  column-gap: 15px !important;
+  align-items: center !important;
+  padding: 14px 16px !important;
+  min-height: 62px !important;
+}
+
+.sjp-how-list--with-icons li::before {
+  content: none !important;
+  display: none !important;
+}
+
+.sjp-how-list--with-icons .sjp-guide-line-icon,
+.sjp-how-list--with-icons .sjp-guide-line-badge,
+.sjp-how-list--with-icons .sjp-guide-line-symbol {
+  grid-column: 1 !important;
+  grid-row: 1 !important;
+  justify-self: center !important;
+  align-self: center !important;
+}
+
+.sjp-how-list--with-icons .sjp-guide-line-text {
+  grid-column: 2 !important;
+  grid-row: 1 !important;
+}
+
+.sjp-how-list--with-icons .sjp-guide-line-icon--toc {
+  width: 46px !important;
+  height: 36px !important;
+  padding: 7px !important;
+}
+
+.sjp-how-list--with-icons .sjp-guide-line-icon--toc span {
+  height: 3px !important;
+}
+
+.sjp-how-list--with-icons .sjp-guide-line-badge--more,
+.sjp-how-list--with-icons .sjp-guide-line-badge--signin,
+.sjp-how-list--with-icons .sjp-guide-line-badge--live {
+  min-width: 74px !important;
+  max-width: 96px !important;
+  min-height: 34px !important;
+  padding: 5px 10px !important;
+  font-size: 0.78rem !important;
+}
+
+.sjp-how-list--with-icons .sjp-guide-line-symbol {
+  width: 56px !important;
+  height: 42px !important;
+  padding: 5px !important;
+}
+
+.sjp-how-list--with-icons .sjp-guide-line-symbol svg {
+  width: 30px !important;
+  height: 30px !important;
+}
+
+@media (max-width: 520px) {
+  #sjpGuideNotice {
+    top: 50% !important;
+    width: min(90vw, 420px) !important;
+  }
+
+  .sjp-how-list--with-icons li {
+    grid-template-columns: minmax(62px, auto) minmax(0, 1fr) !important;
+    column-gap: 10px !important;
+    padding: 12px 10px !important;
+    min-height: 58px !important;
+  }
+
+  .sjp-how-list--with-icons .sjp-guide-line-icon--toc {
+    width: 40px !important;
+    height: 32px !important;
+    padding: 6px !important;
+  }
+
+  .sjp-how-list--with-icons .sjp-guide-line-badge--more,
+  .sjp-how-list--with-icons .sjp-guide-line-badge--signin,
+  .sjp-how-list--with-icons .sjp-guide-line-badge--live {
+    min-width: 58px !important;
+    max-width: 74px !important;
+    min-height: 31px !important;
+    padding-left: 6px !important;
+    padding-right: 6px !important;
+    font-size: 0.66rem !important;
+  }
+
+  .sjp-how-list--with-icons .sjp-guide-line-symbol {
+    width: 44px !important;
+    height: 36px !important;
+  }
+
+  .sjp-how-list--with-icons .sjp-guide-line-symbol svg {
+    width: 25px !important;
+    height: 25px !important;
+  }
+}
+
+/* =================================================================================================
+   ✅ 2026-05-12 🧩 [SJP-PUBLIC-PASS6D-WELCOME-01]
+   Public Site Update Pass6 surgery:
+   - On medium/large screens, pair the spinning cube + cheeky comment column at left with the intro
+     paragraphs at right so the Welcome panel feels less vertically stacked.
+   - On smaller screens, stack intro copy under the cube again so the cube never crowds the text.
+   - Keep the yellow TOC guidance box and Welcome drawer action buttons in their existing lower flow.
+   ================================================================================================= */
+.sjp-public-welcome .sjp-welcome-main-row {
+  display: grid !important;
+  grid-template-columns: minmax(230px, 32%) minmax(0, 1fr) !important;
+  align-items: center !important;
+  justify-content: stretch !important;
+  column-gap: clamp(22px, 4vw, 58px) !important;
+  row-gap: 12px !important;
+  max-width: 980px !important;
+  margin: 4px auto 0 !important;
+  padding-left: clamp(14px, 2.6vw, 30px) !important;
+  padding-right: clamp(14px, 2.6vw, 30px) !important;
+}
+
+.sjp-public-welcome .sjp-welcome-cube-column {
+  width: 100% !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  justify-content: center !important;
+  background-color: transparent !important;
+}
+
+.sjp-public-welcome .sjp-welcome-cube-column .cube-container-parent {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  margin-top: clamp(18px, 2.4vw, 34px) !important;
+  margin-bottom: clamp(12px, 1.8vw, 24px) !important;
+}
+
+.sjp-public-welcome .sjp-welcome-cube-column .messageContainer {
+  width: min(100%, 260px) !important;
+  min-height: 70px !important;
+  margin: 0 !important;
+  display: flex !important;
+  align-items: flex-start !important;
+  justify-content: flex-start !important;
+}
+
+.sjp-public-welcome .sjp-welcome-cube-column .flipBoxMsgBox {
+  width: 100% !important;
+  margin: 0 !important;
+  text-align: left !important;
+  color: #000 !important; /* ✅ 29Jun26e override darkblue — illegible on dark bg */
+}
+
+.sjp-public-welcome .sjp-welcome-intro-copy {
+  min-width: 0 !important;
+  max-width: 690px !important;
+  color: darkblue !important;
+  text-align: left !important;
+}
+
+.sjp-public-welcome .sjp-welcome-intro-copy p {
+  margin: 0 0 12px 0 !important;
+  line-height: 1.42 !important;
+}
+
+.sjp-public-welcome .sjp-welcome-intro-copy p:last-child {
+  margin-bottom: 0 !important;
+}
+
+.sjp-public-welcome .sjp-welcome-after-copy {
+  max-width: 940px !important;
+  margin-top: 4px !important;
+}
+
+@media only screen and (max-width: 740px) {
+  .sjp-public-welcome .sjp-welcome-main-row {
+    grid-template-columns: 1fr !important;
+    justify-items: center !important;
+    row-gap: 8px !important;
+    max-width: 940px !important;
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+  }
+
+  .sjp-public-welcome .sjp-welcome-cube-column {
+    align-items: center !important;
+  }
+
+  .sjp-public-welcome .sjp-welcome-cube-column .cube-container-parent {
+    margin-left: auto !important;
+    margin-right: auto !important;
+    margin-top: 28px !important;
+    margin-bottom: 18px !important;
+  }
+
+  .sjp-public-welcome .sjp-welcome-cube-column .messageContainer {
+    width: 100% !important;
+    justify-content: center !important;
+  }
+
+  .sjp-public-welcome .sjp-welcome-cube-column .flipBoxMsgBox {
+    text-align: center !important;
+  }
+
+  .sjp-public-welcome .sjp-welcome-intro-copy {
+    max-width: 940px !important;
+    text-align: left !important;
+  }
+}
+
+
+/* =================================================================================================
+   ✅ 2026-05-12 🧩 [SJP-PUBLIC-PASS6D-PREVIEW-TIMER-01]
+   Live preview timed-message refinement:
+   - Veiled previews now last 12 seconds in JS.
+   - After the first 4 seconds, JS adds .sjp-lock-notice--compact so the long yellow verbiage collapses.
+   - The CLOSE control and countdown remain visible, reducing obstruction on small/medium screens.
+   ================================================================================================= */
+#sjpLockNotice.sjp-lock-notice--compact {
+  width: min(84vw, 430px) !important;
+  padding: 10px 13px 9px 13px !important;
+  text-align: center !important;
+}
+
+#sjpLockNotice.sjp-lock-notice--compact .sjp-lock-notice__message {
+  display: none !important;
+}
+
+#sjpLockNotice.sjp-lock-notice--compact .sjp-lock-notice__topline {
+  justify-content: flex-end !important;
+  margin-bottom: 6px !important;
+}
+
+#sjpLockNotice.sjp-lock-notice--compact .sjp-lock-notice__countdown {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+  border-top: 0 !important;
+  font-size: clamp(0.86rem, 2.7vw, 0.98rem) !important;
+  line-height: 1.25 !important;
+}
+
+@media only screen and (max-width: 520px) {
+  #sjpLockNotice.sjp-lock-notice--compact {
+    width: min(86vw, 360px) !important;
+    padding: 9px 11px 8px 11px !important;
+  }
+}
+
+/* =================================================================================================
+   ✅ 2026-05-12 🧩 [SJP-PUBLIC-PASS7-WELCOME-MARGIN-01]
+   Small-screen Welcome-panel spacing:
+   - Add breathing room between the stacked Welcome intro/verbiage area and the yellow TOC guidance box.
+   - Limit this to smartphone portrait and cramped landscape layouts so desktop/tablet surgery stays stable.
+   ================================================================================================= */
+@media only screen and (max-width: 740px) {
+  .sjp-public-welcome .sjp-welcome-after-copy {
+    margin-top: clamp(18px, 4.8vw, 30px) !important;
+  }
+}
+
+@media only screen and (orientation: landscape) and (max-height: 540px) and (max-width: 950px) {
+  .sjp-public-welcome .sjp-welcome-after-copy {
+    margin-top: 24px !important;
+  }
+}
+
+
+
+/* =================================================================================================
+   ✅ 2026-05-12 🧩 [SJP-PUBLIC-PASS7-QA1-WELCOME-02]
+   QA follow-up:
+   - Center the cheeky spinning-cube comments.
+   - Keep the numbered Welcome-panel buttons equal-sized where practical.
+   - Style the direct Welcome-panel instruction now that the second EXPLORE follow-up panel is gone.
+   ================================================================================================= */
+.sjp-public-welcome .sjp-welcome-cube-column .messageContainer {
+  justify-content: center !important;
+  align-items: flex-start !important;
+}
+
+.sjp-public-welcome .sjp-welcome-cube-column .flipBoxMsgBox {
+  text-align: center !important;
+}
+
+.sjp-welcome-link-row {
+  align-items: stretch !important;
+}
+
+.sjp-welcome-link {
+  width: 100% !important;
+  min-height: clamp(58px, 6.8vw, 74px) !important;
+  height: 100% !important;
+  display: grid !important;
+  grid-template-columns: clamp(34px, 4.2vw, 48px) minmax(0, 1fr) !important;
+  align-items: center !important;
+  column-gap: clamp(9px, 1.4vw, 16px) !important;
+  padding: 10px clamp(12px, 1.5vw, 18px) 10px clamp(10px, 1.3vw, 16px) !important;
+  text-align: left !important;
+  text-decoration: none !important;
+}
+
+.sjp-welcome-link-number {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: clamp(28px, 3.4vw, 38px) !important;
+  height: clamp(28px, 3.4vw, 38px) !important;
+  border-radius: 999px !important;
+  background: linear-gradient(180deg, #fff6ad, #f2cf3f) !important;
+  border: 2px solid rgba(97, 76, 0, 0.52) !important;
+  color: #583f00 !important;
+  font-weight: 950 !important;
+  line-height: 1 !important;
+  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.40), 0 2px 7px rgba(0, 0, 0, 0.16) !important;
+}
+
+.sjp-welcome-link-text {
+  display: block !important;
+  min-width: 0 !important;
+  text-align: center !important;
+  text-decoration: underline !important;
+}
+
+.sjp-welcome-order-note {
+  color: #075e28 !important;
+  font-size: clamp(1.02rem, 0.86rem + 0.62vw, 1.38rem) !important;
+  font-weight: 950 !important;
+  line-height: 1.22 !important;
+  text-align: center !important;
+}
+
+.sjp-welcome-order-note strong {
+  color: #075e28 !important;
+  font-weight: 950 !important;
+}
+
+.sjp-guide-line-note {
+  display: block;
+  margin-top: 4px;
+  color: #5f5100 !important;
+  font-size: 0.92em;
+  line-height: 1.25;
+}
+
+
+
+
+
+@media only screen and (max-width: 420px) and (orientation: portrait),
+       only screen and (max-height: 500px) and (orientation: landscape) {
+
+  .sjp-welcome-link-number {
+    width: 28px !important;
+    height: 28px !important;
+    font-size: 0.90rem !important;
+  }
+
+  .sjp-welcome-link {
+    min-height: 54px !important;
+    grid-template-columns: 34px minmax(0, 1fr) !important;
+  }
+}
+
+/* =================================================================================================
+   ✅ 2026-05-14 🧩 [SJP-PUBLIC-PASS8-CLEANUP-01]
+   Public Site Pass8 cleanup:
+   - Keep the cheeky spinning-cube comment box horizontally centered to the cube's own 200px wrapper.
+   - Nudge the Welcome intro copy upward on two-column layouts so it visually centers against the cube,
+     not against the taller cube-plus-comment stack.
+   - Pull Welcome button titles closer to their yellow numbered circles without changing the button text.
+   - Remove the private Book's large end-of-page search buffer from public p.html; keep only a small comfort pad.
+   ================================================================================================= */
+
+/* Public p.html does not need sjLearn's 100dvh end-of-book/search buffer. */
+main {
+  padding-bottom: clamp(28px, 6vh, 72px) !important;
+}
+
+/* Match the comment container width to .cube-container-parent so their centers coincide. */
+.sjp-public-welcome .sjp-welcome-cube-column .messageContainer {
+  width: min(100%, 200px) !important;
+  max-width: 200px !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  justify-content: center !important;
+}
+
+.sjp-public-welcome .sjp-welcome-cube-column .flipBoxMsgBox {
+  width: 100% !important;
+  text-align: center !important;
+}
+
+/* Desktop/tablet two-column Welcome layout: visually align intro copy with the cube, not the caption below it. */
+@media only screen and (min-width: 741px) {
+  .sjp-public-welcome .sjp-welcome-intro-copy {
+    transform: translateY(clamp(-32px, -2.8vw, -20px)) !important;
+  }
+}
+
+/* Stacked small-screen layout should remain natural; no upward desktop nudge. */
+@media only screen and (max-width: 740px) {
+  .sjp-public-welcome .sjp-welcome-intro-copy {
+    transform: none !important;
+  }
+
+  .sjp-public-welcome .sjp-welcome-cube-column .messageContainer {
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+}
+
+/* Center the number + title as a tighter visual group inside each Welcome button. */
+.sjp-welcome-link {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: clamp(6px, 0.9vw, 10px) !important;
+  grid-template-columns: none !important;
+  column-gap: 0 !important;
+}
+
+.sjp-welcome-link-number {
+  flex: 0 0 auto !important;
+}
+
+.sjp-welcome-link-text {
+  flex: 0 1 auto !important;
+  max-width: calc(100% - 46px) !important;
+  text-align: center !important;
+}
+
+@media only screen and (max-width: 420px) and (orientation: portrait),
+       only screen and (max-height: 500px) and (orientation: landscape) {
+  .sjp-welcome-link {
+    gap: 6px !important;
+    grid-template-columns: none !important;
+  }
+
+  .sjp-welcome-link-text {
+    max-width: calc(100% - 40px) !important;
+  }
+}
+
+
+/* =================================================================================================
+   ✅ 2026-05-14 🧩 [SJP-PUBLIC-PASS8B-CLEANUP-01]
+   Public Site Pass8 follow-up:
+   - Ease the Welcome button number/title spacing back out so the yellow circles do not crowd the labels.
+   - Slightly increase the Welcome intro paragraph size because this is the preview's opening copy.
+   - Public-only Unit Convertor refinement: narrower centered calculator rail, clean 2-across/stacked
+     ingredient row, and clean 3-across/stacked volume row with no orphaned/offset middle state.
+   ================================================================================================= */
+
+/* Welcome buttons: halfway between the original roomy grid spacing and the too-tight Pass8 flex spacing. */
+.sjp-welcome-link {
+  gap: clamp(8px, 1.15vw, 13px) !important;
+}
+
+.sjp-welcome-link-text {
+  max-width: calc(100% - 52px) !important;
+}
+
+@media only screen and (max-width: 420px) and (orientation: portrait),
+       only screen and (max-height: 500px) and (orientation: landscape) {
+  .sjp-welcome-link {
+    gap: 8px !important;
+  }
+
+  .sjp-welcome-link-text {
+    max-width: calc(100% - 44px) !important;
+  }
+}
+
+/* Welcome intro: small increase only; keep line-height calm so the copy still feels refined. */
+.sjp-public-welcome .sjp-welcome-intro-copy p {
+  font-size: clamp(1.06rem, 0.98rem + 0.34vw, 1.22rem) !important;
+  line-height: 1.44 !important;
+}
+
+/* Unit Convertor: center the calculator inside a narrower public-preview rail. */
+#unitConvertor .sj-math.sj-uc {
+  width: min(100%, 760px) !important;
+  max-width: 760px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  padding: clamp(5px, 1.2vw, 10px) !important;
+}
+
+/* Ingredient row: either two clean columns or one clean stack; never a loose wrapped offset. */
+#unitConvertor .sj-uc .sj-uc-row {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  align-items: center !important;
+  justify-items: center !important;
+  gap: clamp(8px, 1.6vw, 14px) !important;
+}
+
+#unitConvertor .sj-uc .sj-uc-cell {
+  width: 100% !important;
+  min-width: 0 !important;
+  flex: none !important;
+}
+
+#unitConvertor .sj-uc .sj-uc-select,
+#unitConvertor .sj-uc .sj-uc-input {
+  max-width: 100% !important;
+}
+
+/* Volume row: three clean columns on roomier screens, then one clean vertical stack on tight screens. */
+#unitConvertor .sj-uc .sj-uc-volumeFields {
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  align-items: start !important;
+  justify-items: center !important;
+  gap: clamp(8px, 1.6vw, 14px) !important;
+}
+
+#unitConvertor .sj-uc .sj-uc-volField {
+  max-width: 215px !important;
+}
+
+#unitConvertor .sj-uc .sj-uc-volBox {
+  width: min(100%, 12.5rem) !important;
+}
+
+@media only screen and (max-width: 650px) {
+  #unitConvertor .sj-math.sj-uc {
+    width: min(100%, 520px) !important;
+    padding: 6px !important;
+  }
+
+  #unitConvertor .sj-uc .sj-uc-row,
+  #unitConvertor .sj-uc .sj-uc-volumeFields {
+    grid-template-columns: 1fr !important;
+  }
+
+  #unitConvertor .sj-uc .sj-uc-cell,
+  #unitConvertor .sj-uc .sj-uc-volField {
+    max-width: 260px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+}
+
+/* =================================================================================================
+   ✅ 2026-05-14 🧩 [SJP-PUBLIC-PASS8C-UNIT-01]
+   Public Site Pass8C follow-up:
+   - Make the Choose Ingredient controls collapse as cleanly as the Cups/Tablespoons/Teaspoons row.
+   - Keep the ingredient select and g/Cup control as equal-width visual units when stacked.
+   - Prevent the g/Cup label from pushing the grey input off-center on narrow screens.
+   ================================================================================================= */
+
+#unitConvertor .sj-uc .sj-uc-row {
+  gap: clamp(10px, 1.8vw, 16px) !important;
+}
+
+#unitConvertor .sj-uc .sj-uc-cell {
+  width: min(100%, 260px) !important;
+  max-width: 260px !important;
+  min-width: 0 !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+#unitConvertor .sj-uc .sj-uc-cell:first-child .sj-uc-select {
+  width: 100% !important;
+  max-width: none !important;
+}
+
+#unitConvertor .sj-uc .sj-uc-cell:nth-child(2) {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) 52px !important;
+  align-items: center !important;
+  justify-items: stretch !important;
+  column-gap: 6px !important;
+}
+
+#unitConvertor .sj-uc .sj-uc-cell:nth-child(2) .sj-uc-input--xPerCup {
+  width: 100% !important;
+  max-width: none !important;
+  min-width: 0 !important;
+}
+
+#unitConvertor .sj-uc .sj-uc-cell:nth-child(2) .sj-uc-unit {
+  width: 52px !important;
+  min-width: 0 !important;
+  margin-left: 0 !important;
+  text-align: left !important;
+  white-space: nowrap !important;
+}
+
+@media only screen and (max-width: 650px) {
+  #unitConvertor .sj-uc .sj-uc-cell {
+    width: min(100%, 260px) !important;
+    max-width: 260px !important;
+  }
+}
+
+/* =================================================================================================
+   ✅ 2026-05-23 🧩 [SJP-PUBLIC-PASS11-WELCOME-02]
+   Welcome panel Pass11 cleanup:
+   - Keep only the three ordered primer buttons in the Welcome action row.
+   - Move Chapter Guide into a centered reference line below the buttons.
+   - Add a companion public ? bubble for that quieter Chapter Guide reference.
+   ================================================================================================= */
+.sjp-welcome-link-row {
+  grid-template-columns: repeat(3, minmax(170px, 1fr)) !important;
+}
+
+.sjp-welcome-reference-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  margin: 13px auto 0;
+  font-size: 1rem;
+  line-height: 1.35;
+  text-align: center;
+}
+
+.sjp-welcome-reference-text {
+  display: inline-flex;
+  align-items: baseline;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.sjp-welcome-reference-link {
+  font-weight: 800;
+}
+
+.sjp-info-anchor--welcome-reference {
+  width: 21px;
+  height: 21px;
+  min-width: 21px;
+  min-height: 21px;
+  font-size: 14px;
+}
+
+@media only screen and (max-width: 900px) {
+  .sjp-welcome-link-row {
+    grid-template-columns: repeat(3, minmax(150px, 1fr)) !important;
+  }
+}
+
+@media only screen and (max-width: 680px) {
+  .sjp-welcome-link-row {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+@media only screen and (max-width: 420px) {
+  .sjp-welcome-reference-row {
+    font-size: 0.95rem;
+  }
+}
+
+/* =================================================================================================
+   ✅ 2026-05-17 🧩 [SJP-RECIPE-STEP-PREVIEW-01]
+   Public Recipe Step Preview:
+   - Adds an app-style sj2 Recipe Step card for visitors to preview the Sourjoe app step structure.
+   - Keeps the app pjb-steps.css/js behaviour intact, but gives the public wrapper a small amount
+     of spacing/typographic polish.
+
+   ✅ 2026-05-19 🧩 [SJP-RECIPE-STEP-PREVIEW-STANDALONE-02]
+   - The preview now lives as its own no-header panel, outside the sticky Recipe Steps Review area.
+
+   ✅ 2026-05-25 🧩 [SJP-PASS13-RECIPE-PREVIEW-PANEL-01]
+   - Make the standalone preview panel match the main section/chapter width.
+   - Use the Sourjoe section-style light-green border + pale-green panel background.
+   - Place the attached Recipes-list screenshot above the Recipe Step preview text.
+   - Let the STEP sample use about 80% of the wider panel on desktop/tablet, then expand on narrow screens.
+   ================================================================================================= */
+
+.sjp-recipe-step-preview-section {
+  /* ✅ 26Jun26b 🧩 [SJP-RECIPE-SECTION-WIDTH-01]
+     Outer container matches the site's chapter/section width (Pass13 original intent).
+     The max-width:420px constraint applies only to the inner images and step content,
+     not to this wrapper. Border, background and padding stay on this outer shell. */
+  width: clamp(68%, calc(-9vw + 693px), 90%) !important;
+  margin: 15px auto 18px !important;
+  box-sizing: border-box !important;
+  border: 1.5px solid #75ba75 !important;
+  border-radius: 5px !important;
+  background: #e6f4ed !important;
+  padding: clamp(14px, 2.2vw, 24px) !important;
+}
+
+.formula-card.sjp-recipe-step-preview-card,
+.sjp-recipe-step-preview-section .formula-card.sjp-recipe-step-preview-card {
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 auto !important;
+  padding: 0 !important;
+  gap: clamp(14px, 2vw, 22px) !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  overflow: visible !important;
+}
+
+.sjp-recipe-list-preview-copy,
+.sjp-recipe-step-preview-title {
+  /* ✅ 26Jun26a 🧩 [SJP-RECIPE-IMAGES-WIDTH-01] Match Recipe Facts panel-wrap width */
+  width: 100% !important;
+  max-width: 420px !important;
+  margin: 0 auto !important;
+  padding: 10px 12px !important;
+  font-size: 0.98rem;
+  line-height: 1.35;
+  font-weight: 700;
+  box-sizing: border-box !important;
+}
+
+.sjp-recipe-list-preview-figure {
+  /* ✅ 26Jun26a 🧩 [SJP-RECIPE-IMAGES-WIDTH-01] Match Recipe Facts panel-wrap width (100% up to 420px) */
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 auto !important;
+  padding: 0 !important;
+  line-height: 0 !important;
+}
+
+.sjp-recipe-list-preview-image {
+  display: block !important;
+  width: 100% !important;
+  height: auto !important;
+  /* ✅ 30Jun26i [SJP-RECIPE-IMAGES-CLS-01] Reserve the real image box (980x837) immediately at
+     layout time, instead of collapsing to 0 height until the image loads. This is what was
+     causing the calculator-return scroll restore to clamp into this section before the image
+     loaded and the page grew to its final height ("herky-jerky" jump to Recipe Preview). */
+  aspect-ratio: 980 / 837 !important;
+  border: 1px solid rgba(117, 186, 117, 0.85) !important;
+  border-radius: 5px !important;
+  background: #fff !important;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.10) !important;
+}
+
+/* The global public-guidance mode hides .sjp-public-note cards; these two preview notes are intentionally visible. */
+body.sjp-guided-cues .content-section .sjp-recipe-list-preview-copy,
+body.sjp-guided-cues .content-section .sjp-recipe-step-preview-title {
+  display: block !important;
+}
+
+.sjp-recipe-step-preview-card .sj2-step {
+  /* ✅ 26Jun26c 🧩 [SJP-STEP-PREVIEW-VIDEO-WIDTH-02]
+     sj2-step fills the card, then ctrl/video/pane are capped at 420px — same as the
+     recipe list and card images above them in the same container. */
+  width: 100% !important;
+  max-width: none !important;
+  margin: 2px auto 0 !important;
+  overflow: visible !important;
+}
+
+.sjp-recipe-step-preview-card .sj2-ctrl,
+.sjp-recipe-step-preview-card .sj2-video,
+.sjp-recipe-step-preview-card .sj2-step > .sj2-pane {
+  /* ✅ 26Jun26c 🧩 [SJP-STEP-PREVIEW-VIDEO-WIDTH-02] Match recipe image width in same container */
+  width: 100% !important;
+  max-width: 420px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+.sjp-recipe-step-preview-card .sj2-ctrl {
+  margin-top: 0 !important;
+}
+
+.sjp-recipe-step-preview-card .sj2-video {
+  border: 0 !important;
+  overflow: visible !important;
+  box-shadow: 0 0 0 3px transparent !important;
+}
+
+.sjp-recipe-step-preview-card .sj2-video .sj2-embed {
+  overflow: hidden;
+  border-radius: 4px;
+  background: #000;
+}
+
+.sjp-recipe-step-preview-card .sj2-step[data-open="details"] > .sj2-video {
+  box-shadow: 0 0 0 3px #007BFF !important;
+}
+
+.sjp-recipe-step-preview-card .sj2-step[data-open="explore"] > .sj2-video {
+  box-shadow: 0 0 0 3px #28a745 !important;
+}
+
+.sjp-recipe-step-preview-card .sj2-txt {
+  text-align: left;
+}
+
+.sjp-recipe-step-preview-card .sj2-links a {
+  text-align: left;
+}
+
+@media (max-width: 760px) {
+  .sjp-recipe-step-preview-card .sj2-step {
+    width: 100% !important;
+  }
+}
+
+@media (max-width: 420px) {
+  .sjp-recipe-step-preview-section {
+    padding: 10px !important;
+  }
+
+  .sjp-recipe-list-preview-copy,
+  .sjp-recipe-step-preview-title {
+    font-size: 0.92rem;
+    padding: 9px 10px !important;
+  }
+
+  .sjp-recipe-step-preview-card .sj2-button {
+    padding: 7px 12px;
+    font-size: 13px;
+  }
+}
+
+
+/* ✅ 27Jun26d 🧩 [SJP-PHASE1-CSS-CUT] Recipe step preview CSS removed — content lives in sjLearn iframe in Phase 3. */
+
+/* =================================================================================================
+   ✅ 2026-05-25 🧩 [SJP-PASS13-ENTRY-LOGO-STABILITY-01]
+   Entry-cloud logo stability:
+   - Reserve the correct logo area before the image bytes arrive so the intro card does not show a tiny
+     white placeholder that later expands.
+   - Pair this with the p.html preload hint and p.js image prefetch.
+   ================================================================================================= */
+.sjp-entry-cloud-logo-wrap {
+  min-height: clamp(94px, 17vh, 156px) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.sjp-entry-cloud-logo {
+  width: min(100%, 500px) !important;
+  max-height: clamp(78px, 16vh, 136px) !important;
+  object-fit: contain !important;
+}
+
+@media (max-width: 560px) {
+  .sjp-entry-cloud-logo-wrap {
+    min-height: clamp(78px, 16vh, 128px) !important;
+  }
+}
+
+
+/* =================================================================================================
+   ✅ 2026-05-17 🧩 [SJP-UNIT-CONVERTOR-BUTTON-01]
+   Unit Convertor title-button boundary fix:
+   - The public Unit Convertor rail was narrowed earlier, and the pulsing More/Less affordance could
+     visually hang too far left of the green section border.
+   - Keep this scoped to Unit Convertor only; do not disturb the global More/Less geometry elsewhere.
+   ================================================================================================= */
+#unitConvertorButton.moreButton.left-box {
+  margin-left: clamp(6px, 1vw, 10px) !important;
+  box-sizing: border-box !important;
+}
+
+#unitConvertor .content-section-title .center-title-container {
+  box-sizing: border-box !important;
+  padding-left: 2px !important;
+}
+
+/* =================================================================================================
+   ✅ 2026-05-21 🧩 [SJP-PUBLIC-INFO-BUBBLES-01]
+   Public info-icon bubble system:
+   - Adds Sourjoe-style circular "?" icons beside public live-demo section titles, their TOC menu icons,
+     live-demo rabbit-hole buttons, and live-demo More/Less buttons.
+   - Icons intentionally echo the four numbered Welcome buttons while using a bold question-mark glyph.
+   - Bubble is black with white text and a directional tail, sized responsively for phone/tablet/desktop.
+   ================================================================================================= */
+.sjp-info-anchor {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 24px;
+  height: 24px;
+  min-width: 24px;
+  min-height: 24px;
+  border-radius: 999px;
+  border: 2px solid rgba(16, 95, 120, 0.95);
+  background: #f8df68;
+  color: #08384a;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 16px;
+  font-weight: 900;
+  font-style: normal;
+  line-height: 1;
+  text-align: center;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.24), inset 0 1px 0 rgba(255, 255, 255, 0.72);
+  cursor: help;
+  user-select: none;
+  -webkit-user-select: none;
+  vertical-align: middle;
+  z-index: 2;
+}
+
+.sjp-info-anchor:focus-visible {
+  outline: 3px solid rgba(255, 210, 40, 0.85);
+  outline-offset: 3px;
+}
+
+.sjp-info-anchor--before-title,
+.sjp-info-anchor--before-toc-icon,
+.sjp-info-anchor--before-rabbit,
+.sjp-info-anchor--before-more {
+  margin-right: 8px;
+}
+
+#openMainTOC .sjp-info-anchor--before-toc-icon {
+  margin-left: 8px;
+}
+
+.content-section-title .center-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+}
+
+/* ✅ 2026-05-21 🧩 [SJP-PUBLIC-INFO-BUBBLES-04]
+   Text span used when sticky title text changes without erasing the companion info icon. */
+.sjp-dynamic-title-text {
+  display: inline-flex;
+  align-items: center;
+}
+
+.content-section-title .right-box.type-content-title-right,
+.content-section-title .right-box.content-title-right,
+.content-section-title .right-box[id$="Button"] {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: nowrap;
+  gap: 6px;
+}
+
+.content-section-title .right-box.content-title-right > a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+}
+
+.content-section-title .left-box.moreButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+}
+
+/* ✅ 2026-05-23 🧩 [SJP-PUBLIC-PASS11-LIVE-HEADER-01]
+   Live-demo header order is now: More/Less-with-internal-? > ? Title > ? TOC.
+   23May26 Pass11 follow-up: restore the original full-size More/Less button footprint,
+   then render a smaller helper ? inside the left side of the button instead of beside it. */
+.sjp-info-more-shell {
+  flex: 0 0 clamp(60px, calc(-15px + 25vw), 110px);
+  width: clamp(60px, calc(-15px + 25vw), 110px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  position: relative;
+  overflow: visible;
+  min-width: 0;
+}
+
+.sjp-info-more-shell > .left-box.moreButton {
+  flex: 0 0 auto;
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  height: 30px !important;
+  margin-left: 0 !important;
+  white-space: nowrap;
+}
+
+.sjp-info-more-shell > .left-box.moreButton.sjp-more-info-combo {
+  position: relative;
+  box-sizing: border-box;
+  padding-left: clamp(17px, calc(12px + 1.25vw), 23px) !important;
+  padding-right: 5px !important;
+}
+
+.sjp-info-more-shell > .left-box.moreButton.sjp-more-info-combo::before {
+  content: "?";
+  position: absolute;
+  left: 4px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 15px;
+  height: 15px;
+  border-radius: 999px;
+  border: 1px solid rgba(16, 95, 120, 0.9);
+  background: #fff7cf;
+  color: #08384a;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 11px;
+  font-weight: 900;
+  line-height: 1;
+  pointer-events: none;
+}
+
+.sjp-info-more-shell > .sjp-info-anchor--before-more {
+  display: none;
+}
+
+/* ✅ 2026-05-21 🧩 [SJP-PUBLIC-INFO-BUBBLES-02]
+   Keep the rabbit icon on its original centerline while placing the new info icon to its left. */
+.sjp-info-rabbit-shell {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  justify-content: center;
+  column-gap: 8px;
+  width: 100%;
+}
+
+.sjp-info-rabbit-shell .sjp-info-anchor--before-rabbit {
+  justify-self: end;
+}
+
+.sjp-info-rabbit-shell .sjrhl-trigger.sjrhl-host-rabbit {
+  justify-self: center;
+}
+
+.sjp-info-rabbit-shell .sjRabbitHole-button {
+  justify-self: center;
+  margin: 0;
+}
+
+/* Static info icon used inside the "How to Use This Preview" drawer. */
+.sjp-how-list--with-icons .sjp-info-anchor--guide {
+  grid-column: 1 !important;
+  grid-row: 1 !important;
+  justify-self: center !important;
+  align-self: center !important;
+}
+
+/* ✅ 2026-05-24 🧩 [SJP-PASS12E-HOW-HELPER-SLIDER-01]
+   Non-interactive Helper Messages switch sample used as the icon image in the How-to-use drawer. */
+.sjp-how-list--with-icons .sjp-guide-helper-switch-sample {
+  grid-column: 1 !important;
+  grid-row: 1 !important;
+  justify-self: center !important;
+  align-self: center !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 66px !important;
+  min-width: 66px !important;
+  height: 42px !important;
+  pointer-events: none !important;
+}
+
+.sjp-how-list--with-icons .sjp-guide-helper-switch {
+  transform: scale(0.82);
+  transform-origin: center;
+}
+
+.sjp-how-list--with-icons .sjp-guide-helper-switch .sjb-slider {
+  cursor: default !important;
+}
+
+@media (max-width: 520px) {
+  .sjp-how-list--with-icons .sjp-guide-helper-switch-sample {
+    width: 58px !important;
+    min-width: 58px !important;
+    height: 36px !important;
+  }
+
+  .sjp-how-list--with-icons .sjp-guide-helper-switch {
+    transform: scale(0.72);
+  }
+}
+
+
+.sjp-info-bubble {
+  position: fixed;
+  left: 0;
+  top: 0;
+  max-width: min(310px, calc(100vw - 28px));
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.94);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.35;
+  text-align: left;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.34);
+  z-index: 50000;
+  opacity: 0;
+  transform: translateY(4px);
+  pointer-events: none;
+  transition: opacity 120ms ease, transform 120ms ease;
+}
+
+.sjp-info-bubble.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.sjp-info-bubble::after {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 0;
+  border: 8px solid transparent;
+}
+
+.sjp-info-bubble[data-placement="top"]::after {
+  left: var(--sjp-info-tail-left, 50%);
+  top: 100%;
+  transform: translateX(-50%);
+  border-top-color: rgba(0, 0, 0, 0.94);
+}
+
+.sjp-info-bubble[data-placement="bottom"]::after {
+  left: var(--sjp-info-tail-left, 50%);
+  bottom: 100%;
+  transform: translateX(-50%);
+  border-bottom-color: rgba(0, 0, 0, 0.94);
+}
+
+@media (max-width: 575px) {
+  .sjp-info-anchor {
+    width: 21px;
+    height: 21px;
+    min-width: 21px;
+    min-height: 21px;
+    font-size: 14px;
+    border-width: 2px;
+  }
+
+  .sjp-info-anchor--before-title,
+  .sjp-info-anchor--before-toc-icon,
+  .sjp-info-anchor--before-rabbit,
+  .sjp-info-anchor--before-more {
+    margin-right: 6px;
+  }
+
+  .sjp-info-more-shell > .left-box.moreButton.sjp-more-info-combo {
+    padding-left: 17px !important;
+    padding-right: 4px !important;
+  }
+
+  .sjp-info-more-shell > .left-box.moreButton.sjp-more-info-combo::before {
+    left: 3px;
+    width: 13px;
+    height: 13px;
+    font-size: 10px;
+  }
+
+  .sjp-info-bubble {
+    max-width: min(292px, calc(100vw - 18px));
+    padding: 9px 10px;
+    font-size: 13px;
+  }
+}
+
+
+/* ✅ 2026-05-21 🧩 [SJP-START-HERE-BUBBLES-03]
+   Pass10f refinements:
+   - START HERE circled + helpers use the same black/white visual language as the app's sjLearn bubbles.
+   - Body recipe locks sit immediately after the link text instead of being pushed to the right edge.
+   - Body recipe locked links do not use the underlined TOC/private-preview treatment. */
+#startHereIntro .sjp-start-here-link-list .sjp-info-anchor.sjp-info-anchor--start-plus {
+  width: 18px !important;
+  height: 18px !important;
+  min-width: 18px !important;
+  min-height: 18px !important;
+  margin: 0 !important;
+  border: 1px solid rgba(0, 0, 0, 0.25) !important;
+  background: rgba(0, 0, 0, 0.06) !important;
+  color: #4f5960 !important;
+  font-family: inherit !important;
+  font-size: 12px !important;
+  font-weight: 800 !important;
+  line-height: 1 !important;
+  box-shadow: none !important;
+}
+
+#startHereIntro .sjp-start-here-link-list .sjp-info-anchor.sjp-info-anchor--start-plus:hover,
+#startHereIntro .sjp-start-here-link-list .sjp-info-anchor.sjp-info-anchor--start-plus:focus-visible {
+  background: rgba(0, 0, 0, 0.10) !important;
+  border-color: rgba(0, 0, 0, 0.30) !important;
+}
+
+#startHereIntro .sjp-start-here-link-list li.sjp-start-here-link-row > .link-style,
+#startHereIntro .sjp-start-here-link-list li.sjp-start-here-link-row > .sjp-locked-inline {
+  flex: 0 1 auto !important;
+}
+
+#startHereIntro .sjp-start-here-pair-recipes .sjp-start-here-link-list li.sjp-start-here-link-row > .sjp-locked-inline {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  width: auto !important;
+  gap: 7px !important;
+  text-decoration: none !important;
+  text-decoration-line: none !important;
+}
+
+#startHereIntro .sjp-start-here-pair-recipes .sjp-start-here-link-list .sjp-inline-lock-icon.sjp-lock-bubble-trigger {
+  margin-left: 0 !important;
+}
+
+/* =================================================================================================
+   ✅ 2026-05-23 🧩 [SJP-PUBLIC-PASS11C-HEADER-01]
+   Follow-up refinements:
+   - HOME now rides beside the Sourjoe logo in the fixed black header.
+   - Right header space is reserved for the public-info ? + main TOC hamburger only.
+   - The main TOC hamburger keeps its full app-style footprint on smartphone landscape and tablets.
+   ================================================================================================= */
+.header-top-center-container .back-to-recipes-box {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: clamp(8px, 1.1vw, 16px) !important;
+  min-width: 0 !important;
+}
+
+.header-top-center-container .back-to-recipes-box .sjp-logo-home-link {
+  flex: 0 0 auto !important;
+}
+
+.header-top-center-container .back-to-recipes-box .sjp-top-home-link,
+.header-top-center-container .back-to-recipes-box .sjp-top-home-link:visited {
+  flex: 0 0 auto !important;
+  color: #fff !important;
+  font-size: clamp(0.88rem, 0.70rem + 0.38vw, 1.05rem) !important;
+  font-weight: 400 !important;
+  letter-spacing: 0.02em !important;
+  line-height: 1 !important;
+  margin: 0 !important;
+  text-decoration: none !important;
+  white-space: nowrap !important;
+}
+
+.header-top-center-container .back-to-recipes-box .sjp-top-home-link:hover,
+.header-top-center-container .back-to-recipes-box .sjp-top-home-link:focus-visible {
+  color: #fff !important;
+  text-decoration: underline !important;
+}
+
+#openMainTOC {
+  justify-content: flex-end !important;
+  gap: clamp(8px, 1.1vw, 14px) !important;
+}
+
+#openMainTOC .sjp-info-anchor--before-toc-icon {
+  flex: 0 0 auto !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+
+#openMainTOC .header-icon-top-menu,
+#openMainTOC .sj-app-hamburger {
+  flex: 0 0 48px !important;
+  width: 48px !important;
+  min-width: 48px !important;
+  max-width: 48px !important;
+  height: 40px !important;
+  min-height: 40px !important;
+  max-height: 40px !important;
+  margin-right: 0 !important;
+  padding: 0 !important;
+  box-sizing: border-box !important;
+}
+
+#openMainTOC .sj-app-hamburger span {
+  flex: 0 0 2px !important;
+  width: 25px !important;
+  min-width: 25px !important;
+  height: 2px !important;
+  display: block !important;
+}
+
+@media only screen and (max-width: 1024px) {
+  #openMainTOC .header-icon-top-menu,
+  #openMainTOC .sj-app-hamburger {
+    flex-basis: 48px !important;
+    width: 48px !important;
+    min-width: 48px !important;
+    height: 40px !important;
+    min-height: 40px !important;
+  }
+}
+
+@media only screen and (max-width: 500px) and (orientation: portrait) {
+  .header-top-center-container .left-box.back-to-recipes-box {
+    flex: 0 0 33% !important;
+    width: 33% !important;
+    gap: 5px !important;
+  }
+
+  .header-top-center-container .center-box.type-header {
+    flex: 0 0 42% !important;
+    width: 42% !important;
+    min-width: 0 !important;
+  }
+
+  .header-top-center-container .right-box#openMainTOC {
+    flex: 0 0 25% !important;
+    width: 25% !important;
+    min-width: 78px !important;
+    gap: 5px !important;
+    justify-content: flex-end !important;
+  }
+
+  .header-top-center-container .back-to-recipes-box .sjp-top-home-link,
+  .header-top-center-container .back-to-recipes-box .sjp-top-home-link:visited {
+    font-size: clamp(10px, 3.0vw, 12px) !important;
+  }
+
+  #openMainTOC .sjp-info-anchor--before-toc-icon {
+    width: 19px !important;
+    height: 19px !important;
+    min-width: 19px !important;
+    min-height: 19px !important;
+    font-size: 13px !important;
+    border-width: 2px !important;
+  }
+
+  #openMainTOC .header-icon-top-menu,
+  #openMainTOC .sj-app-hamburger {
+    flex-basis: 42px !important;
+    width: 42px !important;
+    min-width: 42px !important;
+    max-width: 42px !important;
+    height: 36px !important;
+    min-height: 36px !important;
+    max-height: 36px !important;
+  }
+
+  #openMainTOC .sj-app-hamburger span {
+    width: 24px !important;
+    min-width: 24px !important;
+  }
+}
+
+
+/* ✅ 2026-05-24 🧩 [SJP-PASS12B-WELCOME-HELPER-ROW-02] Reference + Helper Messages share one row on large screens and stack/center cleanly on small screens. */
+.sjp-welcome-helper-strip {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 14px !important;
+  width: min(100%, 940px) !important;
+  margin: 13px auto 2px !important;
+}
+
+.sjp-welcome-helper-strip .sjp-welcome-reference-row,
+.sjp-welcome-helper-strip .sjp-helper-toggle-row {
+  width: auto !important;
+  margin: 0 !important;
+}
+
+.sjp-welcome-helper-strip .sjp-welcome-reference-row {
+  justify-content: flex-start !important;
+  text-align: left !important;
+}
+
+.sjp-welcome-helper-strip .sjp-helper-toggle-row {
+  justify-content: flex-end !important;
+  flex: 0 0 auto !important;
+  padding-top: 4px !important;
+  padding-bottom: 2px !important;
+}
+
+@media only screen and (max-width: 760px) {
+  .sjp-welcome-helper-strip {
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: center !important;
+    gap: 8px !important;
+  }
+
+  .sjp-welcome-helper-strip .sjp-welcome-reference-row,
+  .sjp-welcome-helper-strip .sjp-helper-toggle-row {
+    justify-content: center !important;
+    text-align: center !important;
+  }
+}
+
+/* ✅ 2026-05-24 🧩 [SJP-PASS12-SJB-CSS-03] Keep shared sjBubbles rabbit markers aligned inside the existing Public rabbit shell grid. */
+.sjp-info-rabbit-shell .sjp-sjb-before-rabbit {
+  grid-column: 1;
+  grid-row: 1;
+  justify-self: end;
+}
+
+/* ✅ 2026-05-30 🧩 [SJP-PASS14E-RABBIT-CENTER-01]
+   Keep live-demo rabbit-hole icons centered even when controlled helper dots are OFF.
+   Why: when the helper dot is hidden, CSS Grid auto-placement can otherwise move the
+   rabbit trigger into the first column.  Explicit grid columns keep the trigger parked
+   in the center column whether the helper dot is visible or hidden. */
+.sjp-info-rabbit-shell .sjp-info-anchor--before-rabbit,
+.sjp-info-rabbit-shell .sjp-sjb-before-rabbit {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.sjp-info-rabbit-shell .sjrhl-trigger.sjrhl-host-rabbit,
+.sjp-info-rabbit-shell .sjRabbitHole-button {
+  grid-column: 2;
+  grid-row: 1;
+  justify-self: center;
+}
+
+
+/* ✅ 2026-05-24 🧩 [SJP-PASS12B-WELCOME-TABLET-01] Tablet widths needed more breathing room above the copy beside the cube. */
+@media only screen and (min-width: 741px) and (max-width: 1024px) {
+  .sjp-public-welcome .sjp-welcome-intro-copy {
+    transform: none !important;
+    margin-top: clamp(14px, 2vw, 24px) !important;
+  }
+}
+
+/* =================================================================================================
+   ✅ 2026-05-30 🧩 [SJP-PUBLIC-PASS14-HEADER-CSS-01]
+   Header Recipes/Start Here baby step:
+   - HOME text link is now Recipes and points to the standalone Recipes preview panel.
+   - Blue boxed Start Here arrow sits between Recipes and SOURJOE without participating in flex layout.
+   - p.js measures the real text edges and sets --sjp-start-arrow-left for exact responsive placement.
+   ================================================================================================= */
+.header-top-center-container {
+  position: relative !important;
+}
+
+.header-top-center-container .back-to-recipes-box .sjp-top-recipes-link,
+.header-top-center-container .back-to-recipes-box .sjp-top-recipes-link:visited {
+  text-transform: none !important;
+}
+
+.sjp-top-start-arrow-link {
+  position: absolute !important;
+  top: 50% !important;
+  left: var(--sjp-start-arrow-left, 37.5%) !important;
+  transform: translate(-50%, -50%) !important;
+  z-index: 3 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: clamp(22px, calc(18px + 1.05vw), 32px) !important;
+  height: clamp(22px, calc(18px + 1.05vw), 32px) !important;
+  padding: 0 !important;
+  box-sizing: border-box !important;
+  border: 0 !important;
+  border-radius: 4px !important;
+  background: rgba(255, 255, 255, 0.08) !important;
+  text-decoration: none !important;
+  line-height: 1 !important;
+  /* ✅ 26Jun26f 🧩 [SJP-COMPASS-NO-JERK-01]
+     Start invisible: JS measures and sets --sjp-start-arrow-left, then removes
+     sjp-top-start-arrow-link--hidden to reveal the icon in its correct position.
+     This prevents the visible jump from the CSS fallback (37.5%) to the real px value. */
+  opacity: 0 !important;
+  pointer-events: none !important;
+  transition: opacity 0.18s ease !important;
+}
+
+.sjp-top-start-arrow-link img {
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain !important;
+}
+
+.sjp-top-start-arrow-link:hover,
+.sjp-top-start-arrow-link:focus-visible {
+  background: rgba(255, 255, 255, 0.14) !important;
+}
+
+.sjp-top-start-arrow-link:focus-visible {
+  outline: 2px solid #ffffff !important;
+  outline-offset: 2px !important;
+}
+
+.sjp-top-start-arrow-link.sjp-top-start-arrow-link--tight {
+  width: 22px !important;
+  height: 22px !important;
+}
+
+.sjp-top-start-arrow-link.sjp-top-start-arrow-link--hidden {
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+/* JS adds this class after setting the correct position — icon fades in cleanly */
+.sjp-top-start-arrow-link.sjp-top-start-arrow-link--positioned {
+  opacity: 1 !important;
+  pointer-events: auto !important;
+}
+
+@media only screen and (max-width: 500px) and (orientation: portrait) {
+  .sjp-top-start-arrow-link {
+    width: clamp(20px, 6.0vw, 24px) !important;
+    height: clamp(20px, 6.0vw, 24px) !important;
+    border-radius: 3px !important;
+  }
+
+  .sjp-top-start-arrow-link.sjp-top-start-arrow-link--tight {
+    width: 19px !important;
+    height: 19px !important;
+  }
+}
+
+
+
+/* =================================================================================================
+   ✅ 2026-05-30 🧩 [SJP-PUBLIC-PASS14B-TOC-PREVIEW-GUIDE-CSS-01]
+   Public TOC Preview Guide button:
+   - p.js injects a Preview Guide button directly below the existing TOC Helper ON/OFF button.
+   - Both buttons share one responsive width so the controls look intentional in main/chapter/section TOCs.
+   ================================================================================================= */
+.sjb-tocHelpersRow {
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  gap: 6px !important;
+}
+
+.sjb-tocHelpersRow .sjb-tocHelpersBtn,
+.sjb-tocHelpersRow .sjp-previewGuideBtn {
+  width: min(100%, clamp(132px, 44vw, 158px)) !important;
+  box-sizing: border-box !important;
+  text-align: center !important;
+}
+
+.sjb-tocHelpersRow .sjp-previewGuideBtn {
+  border-color: rgba(0, 0, 0, 0.32) !important;
+  background: #ffffff !important;
+  color: inherit !important;
+}
+
+.sjb-tocHelpersRow .sjp-previewGuideBtn:hover {
+  background: rgba(0, 0, 0, 0.04) !important;
+}
+
+.sjb-tocHelpersRow .sjb-tocHelpersNote {
+  width: min(100%, clamp(132px, 44vw, 158px)) !important;
+}
+
+/* =================================================================================================
+   ✅ 2026-06-02 🧩 [SJP-PUBLIC-PASS15-PREVIEW-EYE-MARGINS-01]
+   Public Site Update Pass15:
+   - Balance the lower fixed-header Sign In / Sign Up buttons vertically inside the 40px header row.
+   - Add medium/small-screen breathing room below the Welcome intro copy beside/under the cube.
+   - Replace the former blue up-arrow image with a custom inline preview-eye icon and matching guide sample.
+   ================================================================================================= */
+.header-bottom-center-container .sjp-auth-button {
+  top: 0 !important;
+  min-height: clamp(28px, 2.28vw, 34px) !important;
+  margin-top: 3px !important;
+  margin-bottom: 3px !important;
+  padding-top: 4px !important;
+  padding-bottom: 4px !important;
+  box-sizing: border-box !important;
+}
+
+@media only screen and (max-width: 500px) and (orientation: portrait) {
+  .header-bottom-center-container .sjp-auth-button {
+    top: 0 !important;
+    min-height: clamp(28px, 7.7vw, 32px) !important;
+    margin-top: 4px !important;
+    margin-bottom: 4px !important;
+    padding-top: 3px !important;
+    padding-bottom: 3px !important;
+  }
+}
+
+@media only screen and (max-width: 360px) and (orientation: portrait) {
+  .header-bottom-center-container .sjp-auth-button {
+    min-height: 28px !important;
+    margin-top: 4px !important;
+    margin-bottom: 4px !important;
+  }
+}
+
+@media only screen and (max-width: 1024px) {
+  .sjp-public-welcome .sjp-welcome-intro-copy {
+    margin-bottom: clamp(16px, 2.8vw, 28px) !important;
+  }
+}
+
+@media only screen and (max-width: 740px) {
+  .sjp-public-welcome .sjp-welcome-intro-copy {
+    margin-bottom: clamp(18px, 5vw, 32px) !important;
+  }
+}
+
+.sjp-top-preview-guide-link {
+  border: 1px solid rgba(11, 85, 255, 0.72) !important;
+  background: rgba(255, 255, 255, 0.94) !important;
+  box-shadow: 0 0 0 1px rgba(255,255,255,0.20), 0 1px 4px rgba(0,0,0,0.18) !important;
+}
+
+.sjp-top-preview-guide-link:hover,
+.sjp-top-preview-guide-link:focus-visible {
+  background: rgba(255, 255, 255, 1) !important;
+  box-shadow: 0 0 0 2px rgba(11,85,255,0.28), 0 1px 5px rgba(0,0,0,0.22) !important;
+}
+
+.sjp-top-start-arrow-link .sjp-preview-eye-svg {
+  display: block !important;
+  width: 88% !important;
+  height: 88% !important;
+  overflow: visible !important;
+}
+
+.sjp-preview-eye-outline {
+  fill: rgba(255, 255, 255, 0.98);
+  stroke: #0b55ff;
+  stroke-width: 4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.sjp-preview-eye-iris {
+  fill: #0b55ff;
+  stroke: #ffffff;
+  stroke-width: 1.7;
+}
+
+.sjp-preview-eye-glint {
+  fill: #ffffff;
+}
+
+.sjp-how-list--with-icons .sjp-guide-line-symbol--preview-eye svg {
+  width: 38px !important;
+  height: 25px !important;
+}
+
+.sjp-guide-line-symbol--preview-eye .sjp-preview-eye-outline {
+  stroke-width: 3.4;
+}
+
+.sjp-guide-line-symbol--preview-eye .sjp-preview-eye-iris {
+  stroke-width: 1.35;
+}
+
+@media (max-width: 520px) {
+  .sjp-how-list--with-icons .sjp-guide-line-symbol--preview-eye svg {
+    width: 34px !important;
+    height: 23px !important;
+  }
+}
+
+/* =================================================================================================
+   ✅ 2026-06-02 🧩 [SJP-PUBLIC-PASS15B-PREVIEW-EYE-ICON-01]
+   Public Site Update Pass15B:
+   - Remove the visible button tile from the top-header preview eye.
+   - Enlarge the eye glyph itself and render it as a clean white icon on the black fixed header.
+   - Update the Preview Guide drawer sample so the white eye is shown in a small dark header-like swatch.
+   - Enlarge the Preview Guide drawer circled "?" sample so it matches the visual weight of the other guide icons.
+   ================================================================================================= */
+.sjp-top-preview-guide-link.sjp-top-start-arrow-link {
+  width: clamp(32px, calc(26px + 1.05vw), 42px) !important;
+  height: clamp(22px, calc(18px + 0.78vw), 30px) !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.sjp-top-preview-guide-link.sjp-top-start-arrow-link:hover,
+.sjp-top-preview-guide-link.sjp-top-start-arrow-link:focus-visible {
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.sjp-top-preview-guide-link.sjp-top-start-arrow-link:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.92) !important;
+  outline-offset: 4px !important;
+  border-radius: 4px !important;
+}
+
+.sjp-top-preview-guide-link.sjp-top-start-arrow-link.sjp-top-start-arrow-link--tight {
+  width: 30px !important;
+  height: 22px !important;
+}
+
+.sjp-top-preview-guide-link.sjp-top-start-arrow-link .sjp-preview-eye-svg {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.sjp-top-preview-guide-link .sjp-preview-eye-outline {
+  fill: none !important;
+  stroke: #ffffff !important;
+  stroke-width: 5.2 !important;
+  stroke-linecap: round !important;
+  stroke-linejoin: round !important;
+}
+
+.sjp-top-preview-guide-link .sjp-preview-eye-iris {
+  fill: #ffffff !important;
+  stroke: none !important;
+}
+
+.sjp-top-preview-guide-link .sjp-preview-eye-glint {
+  fill: rgba(0, 0, 0, 0.72) !important;
+}
+
+@media only screen and (max-width: 500px) and (orientation: portrait) {
+  .sjp-top-preview-guide-link.sjp-top-start-arrow-link {
+    width: clamp(29px, 8.4vw, 34px) !important;
+    height: clamp(20px, 5.8vw, 24px) !important;
+  }
+
+  .sjp-top-preview-guide-link.sjp-top-start-arrow-link.sjp-top-start-arrow-link--tight {
+    width: 28px !important;
+    height: 20px !important;
+  }
+}
+
+.sjp-how-list--with-icons .sjp-guide-line-symbol--preview-eye {
+  width: 66px !important;
+  height: 42px !important;
+  padding: 6px !important;
+  border: 0 !important;
+  border-radius: 7px !important;
+  background: #111111 !important;
+  box-shadow: none !important;
+}
+
+.sjp-how-list--with-icons .sjp-guide-line-symbol--preview-eye svg {
+  width: 48px !important;
+  height: 30px !important;
+}
+
+.sjp-how-list--with-icons .sjp-guide-line-symbol--preview-eye .sjp-preview-eye-outline {
+  fill: none !important;
+  stroke: #ffffff !important;
+  stroke-width: 5.0 !important;
+}
+
+.sjp-how-list--with-icons .sjp-guide-line-symbol--preview-eye .sjp-preview-eye-iris {
+  fill: #ffffff !important;
+  stroke: none !important;
+}
+
+.sjp-how-list--with-icons .sjp-guide-line-symbol--preview-eye .sjp-preview-eye-glint {
+  fill: rgba(0, 0, 0, 0.72) !important;
+}
+
+.sjp-how-list--with-icons .sjp-info-anchor--guide {
+  width: 34px !important;
+  height: 34px !important;
+  min-width: 34px !important;
+  min-height: 34px !important;
+  margin-left: 0 !important;
+  font-size: 20px !important;
+  border-width: 2px !important;
+  color: #d10000 !important;
+  background: #ffffff !important;
+  border-color: rgba(209, 0, 0, 0.58) !important;
+  box-shadow: 0 0 0 2px rgba(255, 246, 190, 0.42), 0 0 10px rgba(235, 184, 54, 0.32) !important;
+}
+
+@media (max-width: 520px) {
+  .sjp-how-list--with-icons .sjp-guide-line-symbol--preview-eye {
+    width: 58px !important;
+    height: 38px !important;
+    padding: 5px !important;
+  }
+
+  .sjp-how-list--with-icons .sjp-guide-line-symbol--preview-eye svg {
+    width: 42px !important;
+    height: 27px !important;
+  }
+
+  .sjp-how-list--with-icons .sjp-info-anchor--guide {
+    width: 31px !important;
+    height: 31px !important;
+    min-width: 31px !important;
+    min-height: 31px !important;
+    font-size: 18px !important;
+  }
+}
+
+/* =================================================================================================
+   ✅ 2026-06-02 🧩 [SJP-PUBLIC-PASS15C-PREVIEW-EYE-ASSET-01]
+   Public Site Update Pass15C:
+   - Top-header Preview Eye now uses the white transparent SVG hosted at sjMedia0.
+   - Preview Guide drawer sample uses the same SVG inside a small dark swatch so the white glyph remains visible.
+   - The guide circled "?" sample remains enlarged so it matches the visual weight of nearby guide icons.
+   ================================================================================================= */
+.sjp-top-preview-guide-link.sjp-top-start-arrow-link .sjp-preview-eye-img {
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.sjp-how-list--with-icons .sjp-guide-line-symbol--preview-eye .sjp-preview-eye-img {
+  display: block !important;
+  width: 54px !important;
+  height: 33px !important;
+  object-fit: contain !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.sjp-how-list--with-icons .sjp-guide-line-symbol--preview-eye {
+  width: 70px !important;
+  height: 46px !important;
+  padding: 6px 8px !important;
+  border: 0 !important;
+  border-radius: 7px !important;
+  background: #111111 !important;
+  box-shadow: none !important;
+}
+
+.sjp-how-list--with-icons .sjp-info-anchor--guide {
+  width: 36px !important;
+  height: 36px !important;
+  min-width: 36px !important;
+  min-height: 36px !important;
+  font-size: 21px !important;
+  line-height: 1 !important;
+}
+
+@media (max-width: 520px) {
+  .sjp-how-list--with-icons .sjp-guide-line-symbol--preview-eye {
+    width: 62px !important;
+    height: 40px !important;
+    padding: 5px 7px !important;
+  }
+
+  .sjp-how-list--with-icons .sjp-guide-line-symbol--preview-eye .sjp-preview-eye-img {
+    width: 48px !important;
+    height: 29px !important;
+  }
+
+  .sjp-how-list--with-icons .sjp-info-anchor--guide {
+    width: 33px !important;
+    height: 33px !important;
+    min-width: 33px !important;
+    min-height: 33px !important;
+    font-size: 19px !important;
+  }
+}
+
+
+/* =================================================================================================
+   ✅ 2026-06-05 🧭 [SJP-PUBLIC-PASS17-COMPASS-ICON-CSS-01]
+   Public Site Pass17:
+   - Use the existing Preview Guide control classes, but size the new compass glyph as a square icon.
+   - Keep the top-header control visually clean on the black fixed header.
+   - Keep the Preview Guide drawer sample readable as a small header-style swatch.
+   ================================================================================================= */
+.sjp-top-preview-guide-link.sjp-top-start-arrow-link {
+  width: clamp(28px, calc(22px + 0.95vw), 36px) !important;
+  height: clamp(28px, calc(22px + 0.95vw), 36px) !important;
+}
+
+.sjp-top-preview-guide-link.sjp-top-start-arrow-link.sjp-top-start-arrow-link--tight {
+  width: 28px !important;
+  height: 28px !important;
+}
+
+.sjp-top-preview-guide-link.sjp-top-start-arrow-link .sjp-preview-eye-img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain !important;
+}
+
+@media only screen and (max-width: 500px) and (orientation: portrait) {
+  .sjp-top-preview-guide-link.sjp-top-start-arrow-link {
+    width: clamp(27px, 7.4vw, 32px) !important;
+    height: clamp(27px, 7.4vw, 32px) !important;
+  }
+
+  .sjp-top-preview-guide-link.sjp-top-start-arrow-link.sjp-top-start-arrow-link--tight {
+    width: 27px !important;
+    height: 27px !important;
+  }
+}
+
+.sjp-how-list--with-icons .sjp-guide-line-symbol--preview-eye {
+  width: 52px !important;
+  height: 52px !important;
+  padding: 7px !important;
+}
+
+.sjp-how-list--with-icons .sjp-guide-line-symbol--preview-eye .sjp-preview-eye-img {
+  width: 38px !important;
+  height: 38px !important;
+  object-fit: contain !important;
+}
+
+@media (max-width: 520px) {
+  .sjp-how-list--with-icons .sjp-guide-line-symbol--preview-eye {
+    width: 46px !important;
+    height: 46px !important;
+    padding: 6px !important;
+  }
+
+  .sjp-how-list--with-icons .sjp-guide-line-symbol--preview-eye .sjp-preview-eye-img {
+    width: 34px !important;
+    height: 34px !important;
+  }
+}
+
+
+/* =================================================================================================
+   ✅ 2026-06-05 🧭 [SJP-PUBLIC-PASS17B-COMPASS-WHITE-FILTER-01]
+   Public Site Pass17B:
+   - The hosted compass SVG is a black-line transparent asset.
+   - Because the SVG is loaded through an <img>, CSS cannot directly edit its internal stroke/fill.
+   - Apply a targeted filter so the rendered black compass becomes white on the black header and dark drawer swatch.
+   ================================================================================================= */
+.sjp-top-preview-guide-link.sjp-top-start-arrow-link .sjp-preview-eye-img,
+.sjp-how-list--with-icons .sjp-guide-line-symbol--preview-eye .sjp-preview-eye-img {
+  filter: brightness(0) saturate(100%) invert(1) !important;
+  -webkit-filter: brightness(0) saturate(100%) invert(1) !important;
+  opacity: 1 !important;
+  mix-blend-mode: normal !important;
+}
+
+/* =================================================================================================
+   ✅ 2026-06-02 🧩 [SJP-PUBLIC-PASS15D-START-HERE-PLUS-ALIGN-01]
+   Public Site Pass15D:
+   - Keep the START HERE circled "+" helper icons vertically centered with their link text.
+   - Keep each In the Book / In Recipes link group centered as a whole inside its card at all breakpoints.
+   ================================================================================================= */
+#startHereIntro .sjp-start-here-linkbox {
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  align-items: center !important;
+  text-align: left !important;
+}
+
+#startHereIntro .sjp-start-here-linkbox .sjp-start-here-link-list {
+  display: inline-flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  justify-content: center !important;
+  width: max-content !important;
+  max-width: 100% !important;
+  margin: 0 auto !important;
+  padding: 0 !important;
+  text-align: left !important;
+}
+
+#startHereIntro .sjp-start-here-link-list li,
+#startHereIntro .sjp-start-here-link-list li.sjp-start-here-link-row {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 8px !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  margin: 4px 0 !important;
+  text-align: left !important;
+}
+
+#startHereIntro .sjp-start-here-link-list li > .sjb-helpDot:first-child,
+#startHereIntro .sjp-start-here-link-list li > .sjp-sjb-start-plus {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex: 0 0 20px !important;
+  align-self: center !important;
+  width: 20px !important;
+  height: 20px !important;
+  min-width: 20px !important;
+  min-height: 20px !important;
+  margin: 0 !important;
+  line-height: 1 !important;
+  vertical-align: middle !important;
+}
+
+#startHereIntro .sjp-start-here-link-list li > .link-style,
+#startHereIntro .sjp-start-here-link-list li > .sjp-locked-inline,
+#startHereIntro .sjp-start-here-link-list li > a {
+  display: inline-flex !important;
+  align-items: center !important;
+  min-width: 0 !important;
+  text-align: left !important;
+}
+
+#startHereIntro .sjp-start-here-link-list li > a .link-style {
+  display: inline !important;
+}
+
+/* =================================================================================================
+   ✅ 2026-06-02 🧩 [SJP-PUBLIC-PASS15D-RECIPE-CARD-PREVIEW-01]
+   Public Site Pass15D:
+   - Add the Recipe Card preview image between the Recipes List sample and the Recipe Step sample.
+   - Reuse the yellow guidance-card treatment for the new explanatory banner.
+   ================================================================================================= */
+.sjp-recipe-card-preview-copy {
+  /* ✅ 26Jun26a 🧩 [SJP-RECIPE-IMAGES-WIDTH-01] Match Recipe Facts panel-wrap width */
+  width: 100% !important;
+  max-width: 420px !important;
+  margin: 0 auto !important;
+  padding: 10px 12px !important;
+  font-size: 0.98rem;
+  line-height: 1.35;
+  font-weight: 700;
+  box-sizing: border-box !important;
+}
+
+.sjp-recipe-card-preview-figure {
+  /* ✅ 26Jun26a 🧩 [SJP-RECIPE-IMAGES-WIDTH-01] Match Recipe Facts panel-wrap width (100% up to 420px) */
+  width: 100% !important;
+  max-width: 420px !important;
+  margin: 0 auto !important;
+  padding: 0 !important;
+  line-height: 0 !important;
+}
+
+.sjp-recipe-card-preview-image {
+  display: block !important;
+  width: 100% !important;
+  height: auto !important;
+  /* ✅ 30Jun26i [SJP-RECIPE-IMAGES-CLS-01] Reserve the real image box (519x672) immediately,
+     same reasoning as sjp-recipe-list-preview-image above. */
+  aspect-ratio: 519 / 672 !important;
+  border: 1px solid rgba(117, 186, 117, 0.85) !important;
+  border-radius: 5px !important;
+  background: #ffffff !important;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.10) !important;
+}
+
+body.sjp-guided-cues .content-section .sjp-recipe-card-preview-copy {
+  display: block !important;
+}
+
+@media (max-width: 420px) {
+  .sjp-recipe-card-preview-copy {
+    font-size: 0.92rem;
+    padding: 9px 10px !important;
+  }
+}
+
+/* =================================================================================================
+   ✅ 2026-06-04 🧩 [SJP-PUBLIC-PASS16-STARTER-RABBIT-IMAGES-01]
+   Public Site Update Pass16:
+   - Add constrained, responsive images inside the Starter rabbit-hole panel.
+   - Desktop/tablet: image/text rows keep the image on the right without dominating the panel.
+   - Small screens: images stack above the related text and stay within the panel width.
+   ================================================================================================= */
+#RH-starter-01-panel .sjp-rh-media-row {
+  display: flex !important;
+  align-items: flex-start !important;
+  gap: 14px !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+#RH-starter-01-panel .sjp-rh-media-row--image-right {
+  flex-direction: row-reverse !important;
+}
+
+#RH-starter-01-panel .sjp-rh-media-row > ol,
+#RH-starter-01-panel .sjp-rh-media-row > ul {
+  flex: 1 1 auto !important;
+  min-width: 0 !important;
+  margin-top: 0 !important;
+}
+
+#RH-starter-01-panel .sjp-rh-figure {
+  box-sizing: border-box !important;
+  flex: 0 0 clamp(150px, 28%, 260px) !important;
+  max-width: 42% !important;
+  margin: 4px 0 10px 0 !important;
+  padding: 0 !important;
+  line-height: 0 !important;
+}
+
+#RH-starter-01-panel .sjp-rh-image {
+  display: block !important;
+  width: 100% !important;
+  height: auto !important;
+  max-height: 220px !important;
+  object-fit: contain !important;
+  border: 1px solid rgba(0, 0, 0, 0.12) !important;
+  border-radius: 7px !important;
+  background: #ffffff !important;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.10) !important;
+}
+
+#RH-starter-01-panel .sjp-rh-figure--starter-fix {
+  flex-basis: clamp(170px, 30%, 280px) !important;
+}
+
+@media (max-width: 720px) {
+  #RH-starter-01-panel .sjp-rh-media-row,
+  #RH-starter-01-panel .sjp-rh-media-row--image-right {
+    flex-direction: column !important;
+    gap: 8px !important;
+  }
+
+  #RH-starter-01-panel .sjp-rh-figure,
+  #RH-starter-01-panel .sjp-rh-figure--starter-fix {
+    flex: 0 0 auto !important;
+    width: min(100%, 360px) !important;
+    max-width: 100% !important;
+    margin: 8px auto 12px auto !important;
+  }
+
+  #RH-starter-01-panel .sjp-rh-image {
+    max-height: 240px !important;
+  }
+}
+
+@media (max-width: 420px) {
+  #RH-starter-01-panel .sjp-rh-image {
+    max-height: 210px !important;
+  }
+}
+
+/* =================================================================================================
+   ✅ 2026-06-04 🧩 [SJP-PUBLIC-PASS16B-HEADER-AUTH-EYE-01]
+   Public Site Update Pass16B:
+   - Re-assert lower fixed-header Sign In / Sign Up breathing room after later header overrides.
+   - Keep the Preview Guide eye as a clean top-header control while p.js positions it between SOURJOE and the TOC icon.
+   ================================================================================================= */
+.header-bottom-center-container .sjp-auth-button.sjp-auth-button--signin,
+.header-bottom-center-container .sjp-auth-button.sjp-auth-button--signup {
+  align-self: center !important;
+  min-height: clamp(27px, 2.08vw, 31px) !important;
+  margin-top: 2px !important;
+  margin-bottom: 5px !important;
+  padding-top: 3px !important;
+  padding-bottom: 3px !important;
+  box-sizing: border-box !important;
+}
+
+.sjp-top-preview-guide-link.sjp-top-start-arrow-link {
+  z-index: 4 !important;
+}
+
+@media only screen and (max-width: 500px) and (orientation: portrait) {
+  .header-bottom-center-container .sjp-auth-button.sjp-auth-button--signin,
+  .header-bottom-center-container .sjp-auth-button.sjp-auth-button--signup {
+    min-height: clamp(26px, 7.2vw, 30px) !important;
+    margin-top: 2px !important;
+    margin-bottom: 6px !important;
+    padding-top: 2px !important;
+    padding-bottom: 2px !important;
+  }
+}
+
+@media only screen and (max-width: 360px) and (orientation: portrait) {
+  .header-bottom-center-container .sjp-auth-button.sjp-auth-button--signin,
+  .header-bottom-center-container .sjp-auth-button.sjp-auth-button--signup {
+    min-height: 26px !important;
+    margin-bottom: 6px !important;
+  }
+}
+
+
+
+/* =================================================================================================
+   ✅ 2026-06-04 🧩 [SJP-PUBLIC-PASS16C-START-HERE-GROUP-CENTER-01]
+   Public Site Update Pass16C:
+   - Keep each entire START HERE circled-plus link group vertically centered inside its pair card.
+   - The earlier rule centered each individual + icon with its link text; this rule stretches the
+     right-side link box to the full pair-card height so the whole list group is centered vertically too.
+   ================================================================================================= */
+#startHereIntro .sjp-start-here-pair {
+  align-items: stretch !important;
+}
+
+#startHereIntro .sjp-start-here-copybox,
+#startHereIntro .sjp-start-here-linkbox {
+  align-self: stretch !important;
+  min-height: 100% !important;
+}
+
+#startHereIntro .sjp-start-here-linkbox {
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  align-items: center !important;
+  height: 100% !important;
+  text-align: left !important;
+}
+
+#startHereIntro .sjp-start-here-linkbox .sjp-start-here-link-list {
+  display: inline-flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  justify-content: center !important;
+  margin-top: auto !important;
+  margin-bottom: auto !important;
+}
+
+/* =================================================================================================
+   ✅ 2026-06-04 🧩 [SJP-PUBLIC-PASS16D-START-HERE-PLUS-RAIL-01]
+   Public Site Update Pass16D:
+   - Normalize the START HERE right-side link column so both circled-plus groups share one vertical rail.
+   - Keep the whole link group vertically centered in each pair card.
+   - Avoid max-content centering, which moved the plus column differently for short vs long link text.
+   ================================================================================================= */
+#startHereIntro .sjp-start-here-pair {
+  grid-template-columns: minmax(0, 1fr) clamp(270px, 38%, 320px) !important;
+  align-items: stretch !important;
+}
+
+#startHereIntro .sjp-start-here-copybox,
+#startHereIntro .sjp-start-here-linkbox {
+  align-self: stretch !important;
+  min-height: 100% !important;
+}
+
+#startHereIntro .sjp-start-here-linkbox {
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  align-items: stretch !important;
+  height: 100% !important;
+  text-align: left !important;
+}
+
+#startHereIntro .sjp-start-here-linkbox .sjp-start-here-link-list {
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  align-items: stretch !important;
+  width: 100% !important;
+  max-width: 320px !important;
+  margin: auto !important;
+  padding: 0 !important;
+  text-align: left !important;
+}
+
+#startHereIntro .sjp-start-here-link-list li,
+#startHereIntro .sjp-start-here-link-list li.sjp-start-here-link-row {
+  display: grid !important;
+  grid-template-columns: 22px minmax(0, 1fr) !important;
+  align-items: center !important;
+  justify-content: stretch !important;
+  column-gap: 8px !important;
+  width: 100% !important;
+  margin: 4px 0 !important;
+  padding: 0 !important;
+  text-align: left !important;
+}
+
+#startHereIntro .sjp-start-here-link-list li > .sjb-helpDot:first-child,
+#startHereIntro .sjp-start-here-link-list li > .sjp-sjb-start-plus,
+#startHereIntro .sjp-start-here-link-list li > .sjp-info-anchor--start-plus {
+  grid-column: 1 !important;
+  justify-self: center !important;
+  align-self: center !important;
+  margin: 0 !important;
+}
+
+#startHereIntro .sjp-start-here-link-list li > .link-style,
+#startHereIntro .sjp-start-here-link-list li > .sjp-locked-inline,
+#startHereIntro .sjp-start-here-link-list li > a {
+  grid-column: 2 !important;
+  justify-self: start !important;
+  align-self: center !important;
+  min-width: 0 !important;
+  text-align: left !important;
+}
+
+#startHereIntro .sjp-start-here-link-list li > .sjp-locked-inline {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 8px !important;
+}
+
+@media only screen and (max-width: 760px),
+       only screen and (orientation: portrait) and (min-width: 761px) and (max-width: 1024px) {
+  #startHereIntro .sjp-start-here-pair {
+    grid-template-columns: 1fr !important;
+  }
+
+  #startHereIntro .sjp-start-here-linkbox {
+    align-items: center !important;
+  }
+
+  #startHereIntro .sjp-start-here-linkbox .sjp-start-here-link-list {
+    width: min(100%, 320px) !important;
+  }
+}
+
+
+/* =================================================================================================
+   ✅ 2026-06-05 🧭 [SJP-PUBLIC-PASS17C-COMPASS-CLEAN-01]
+   Public Site Pass17C:
+   - Replace the filtered black compass with a clean white SVG asset using continuous stroked paths.
+   - Make the top-header compass larger without changing its click behavior.
+   - Disable the old white-filter treatment for the clean white SVG so the lines stay crisp.
+   ================================================================================================= */
+.sjp-top-preview-guide-link.sjp-top-start-arrow-link {
+  width: clamp(36px, calc(30px + 1vw), 44px) !important;
+  height: clamp(36px, calc(30px + 1vw), 44px) !important;
+}
+
+.sjp-top-preview-guide-link.sjp-top-start-arrow-link.sjp-top-start-arrow-link--tight {
+  width: 34px !important;
+  height: 34px !important;
+}
+
+.sjp-top-preview-guide-link.sjp-top-start-arrow-link .sjp-compass-clean-img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain !important;
+  filter: none !important;
+  -webkit-filter: none !important;
+  image-rendering: auto !important;
+}
+
+.sjp-how-list--with-icons .sjp-guide-line-symbol--preview-eye {
+  width: 60px !important;
+  height: 60px !important;
+  padding: 7px !important;
+}
+
+.sjp-how-list--with-icons .sjp-guide-line-symbol--preview-eye .sjp-compass-clean-img {
+  width: 46px !important;
+  height: 46px !important;
+  object-fit: contain !important;
+  filter: none !important;
+  -webkit-filter: none !important;
+  image-rendering: auto !important;
+}
+
+@media only screen and (max-width: 500px) and (orientation: portrait) {
+  .sjp-top-preview-guide-link.sjp-top-start-arrow-link {
+    width: clamp(32px, 8.2vw, 38px) !important;
+    height: clamp(32px, 8.2vw, 38px) !important;
+  }
+
+  .sjp-top-preview-guide-link.sjp-top-start-arrow-link.sjp-top-start-arrow-link--tight {
+    width: 31px !important;
+    height: 31px !important;
+  }
+}
+
+@media (max-width: 520px) {
+  .sjp-how-list--with-icons .sjp-guide-line-symbol--preview-eye {
+    width: 52px !important;
+    height: 52px !important;
+    padding: 6px !important;
+  }
+
+  .sjp-how-list--with-icons .sjp-guide-line-symbol--preview-eye .sjp-compass-clean-img {
+    width: 40px !important;
+    height: 40px !important;
+  }
+}
+
+/* =================================================================================================
+   ✅ 2026-06-05 🧩 [SJP-PUBLIC-PASS17E-START-HERE-PROPORTIONS-01]
+   Public Site Pass17E:
+   - Rebalance the START HERE pair cards so the verbiage column gets more width.
+   - Narrow the circled-plus link column to remove the excess empty space to the right of the list.
+   - Preserve the existing centered plus/list group and the fixed vertical plus rail from Pass16.
+   ================================================================================================= */
+#startHereIntro.content-section-chapter > .content-section-verbiage > .sjp-chapter-copy-shell {
+  max-width: 840px !important;
+}
+
+#startHereIntro .sjp-start-here-pair {
+  grid-template-columns: minmax(0, 1fr) clamp(230px, 30%, 255px) !important;
+  column-gap: clamp(10px, 1.5vw, 16px) !important;
+}
+
+#startHereIntro .sjp-start-here-linkbox .sjp-start-here-link-list {
+  width: 100% !important;
+  max-width: 255px !important;
+}
+
+@media only screen and (max-width: 760px),
+       only screen and (orientation: portrait) and (min-width: 761px) and (max-width: 1024px) {
+  #startHereIntro.content-section-chapter > .content-section-verbiage > .sjp-chapter-copy-shell {
+    max-width: 100% !important;
+  }
+
+  #startHereIntro .sjp-start-here-pair {
+    grid-template-columns: 1fr !important;
+  }
+
+  #startHereIntro .sjp-start-here-linkbox .sjp-start-here-link-list {
+    width: min(100%, 255px) !important;
+  }
+}
+
+/* =================================================================================================
+   ✅ 2026-06-05 🧩 [SJP-PUBLIC-PASS17F-START-HERE-WIDE-RAIL-01]
+   Public Site Pass17F:
+   - Let the START HERE pale-green pair cards use the same 940px chapter inner rail as other chapter intros.
+   - Keep the right-side circled-plus list column narrower so the verbiage side gets the extra width.
+   - Add a little more breathing room between the verbiage and the circled-plus list on side-by-side layouts.
+   ================================================================================================= */
+#startHereIntro.content-section-chapter > .content-section-verbiage > .sjp-chapter-copy-shell {
+  max-width: 940px !important;
+}
+
+#startHereIntro .sjp-start-here-pair {
+  grid-template-columns: minmax(0, 1fr) clamp(235px, 27%, 270px) !important;
+  column-gap: clamp(22px, 3vw, 36px) !important;
+}
+
+#startHereIntro .sjp-start-here-linkbox {
+  padding-left: clamp(8px, 1.2vw, 14px) !important;
+  box-sizing: border-box !important;
+}
+
+#startHereIntro .sjp-start-here-linkbox .sjp-start-here-link-list {
+  width: min(100%, 270px) !important;
+  max-width: 270px !important;
+}
+
+@media only screen and (max-width: 760px),
+       only screen and (orientation: portrait) and (min-width: 761px) and (max-width: 1024px) {
+  #startHereIntro.content-section-chapter > .content-section-verbiage > .sjp-chapter-copy-shell {
+    max-width: 100% !important;
+  }
+
+  #startHereIntro .sjp-start-here-pair {
+    grid-template-columns: 1fr !important;
+    column-gap: 0 !important;
+  }
+
+  #startHereIntro .sjp-start-here-linkbox {
+    padding-left: 0 !important;
+  }
+
+  #startHereIntro .sjp-start-here-linkbox .sjp-start-here-link-list {
+    width: min(100%, 270px) !important;
+  }
+}
+
+
+
+/* =================================================================================================
+   ✅ 2026-06-05 🧩 [SJP-PUBLIC-PASS17G-SECTION-INTRO-RAIL-01]
+   Public Site Pass17G:
+   - Reinforce the regular Section intro wrapper rail after Public-site overrides load.
+   - Keeps Public section intro copy/image blocks aligned to the same 940px inner width as Chapter intros.
+   ================================================================================================= */
+.content-section:not(.content-section-chapter) > .content-section-verbiage > .sjIntroWrap {
+  width: 100% !important;
+  max-width: 940px !important;
+  margin: 10px auto 0 auto !important;
+  padding: 0 20px 10px 20px !important;
+  box-sizing: border-box !important;
+  display: flow-root !important;
+  overflow: visible !important;
+}
+
+.content-section:not(.content-section-chapter) > .content-section-verbiage > .sjIntroWrap > .sjIntroWrap-img {
+  width: min(33%, 300px) !important;
+  max-width: min(33%, 300px) !important;
+  height: auto !important;
+}
+
+@media only screen and (max-width: 760px) {
+  .content-section:not(.content-section-chapter) > .content-section-verbiage > .sjIntroWrap {
+    max-width: 100% !important;
+    padding-left: clamp(12px, 3.6vw, 20px) !important;
+    padding-right: clamp(12px, 3.6vw, 20px) !important;
+  }
+
+  .content-section:not(.content-section-chapter) > .content-section-verbiage > .sjIntroWrap > .sjIntroWrap-img {
+    float: none !important;
+    display: block !important;
+    width: min(72%, 220px) !important;
+    max-width: min(72%, 220px) !important;
+    margin: 8px auto 12px auto !important;
+  }
+}
+
+
+/* =================================================================================================
+   ✅ 2026-06-05 🧩 [SJP-PUBLIC-PASS17H-ALL-SECTION-RAIL-01]
+   Public Site Pass17H:
+   - Reinforces the shared Section body rail after Public-specific overrides load.
+   - Regular Section intro content and expanded More... content now use the same 940px inner width as
+     Chapter intro copy, instead of only the intro image/copy wrapper being narrowed.
+   ================================================================================================= */
+.content-section:not(.content-section-chapter) > .content-section-verbiage,
+.content-section:not(.content-section-chapter) > .content-section-moreMsg {
+  width: 100% !important;
+  max-width: 940px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  box-sizing: border-box !important;
+  /* ✅ 2026-06-05 🧩 [PASS17J-MORELESS-RESTORE-01]
+     Do NOT force display here. More... panels must keep their original display:none state
+     until toggleMore() sets an inline display value. */
+  padding-left: var(--sjContentPad, 20px) !important;
+  padding-right: var(--sjContentPad, 20px) !important;
+  overflow: visible !important;
+  overflow-y: visible !important;
+}
+
+.content-section:not(.content-section-chapter) > .content-section-verbiage > .sjIntroWrap {
+  width: 100% !important;
+  max-width: 100% !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  box-sizing: border-box !important;
+}
+
+.content-section:not(.content-section-chapter) > .content-section-verbiage > .sjIntroWrap > .sjIntroWrap-img {
+  width: min(33%, 300px) !important;
+  max-width: min(33%, 300px) !important;
+  height: auto !important;
+}
+
+@media only screen and (max-width: 760px) {
+  .content-section:not(.content-section-chapter) > .content-section-verbiage,
+  .content-section:not(.content-section-chapter) > .content-section-moreMsg {
+    max-width: 100% !important;
+    padding-left: clamp(12px, 3.6vw, 20px) !important;
+    padding-right: clamp(12px, 3.6vw, 20px) !important;
+  }
+
+  .content-section:not(.content-section-chapter) > .content-section-verbiage > .sjIntroWrap > .sjIntroWrap-img {
+    float: none !important;
+    display: block !important;
+    width: min(72%, 220px) !important;
+    max-width: min(72%, 220px) !important;
+    margin: 8px auto 12px auto !important;
+  }
+}
+
+/* =================================================================================================
+   ✅ 2026-06-05 🧩 [SJP-PUBLIC-PASS17I-NESTED-SECTION-RAIL-01]
+   Public Site Pass17I:
+   - Tools A to Z and Grains A to Z use an extra wrapper <div> around their content body.
+   - Pass17H targeted direct Section body children; this reinforces the same 940px chapter rail for
+     Section bodies / More... bodies that sit one wrapper level deeper.
+   ================================================================================================= */
+.content-section:not(.content-section-chapter) > div > .content-section-verbiage,
+.content-section:not(.content-section-chapter) > div > .content-section-moreMsg {
+  width: 100% !important;
+  max-width: 940px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  box-sizing: border-box !important;
+  /* ✅ 2026-06-05 🧩 [PASS17J-MORELESS-RESTORE-01]
+     Do NOT force display here. More... panels must keep their original display:none state
+     until toggleMore() sets an inline display value. */
+  padding-left: var(--sjContentPad, 20px) !important;
+  padding-right: var(--sjContentPad, 20px) !important;
+  overflow: visible !important;
+  overflow-y: visible !important;
+}
+
+.content-section:not(.content-section-chapter) > div > .content-section-verbiage > .sjIntroWrap {
+  width: 100% !important;
+  max-width: 100% !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  box-sizing: border-box !important;
+}
+
+.content-section:not(.content-section-chapter) > div > .content-section-verbiage > .sjIntroWrap > .sjIntroWrap-img {
+  width: min(33%, 300px) !important;
+  max-width: min(33%, 300px) !important;
+  height: auto !important;
+}
+
+@media only screen and (max-width: 760px) {
+  .content-section:not(.content-section-chapter) > div > .content-section-verbiage,
+  .content-section:not(.content-section-chapter) > div > .content-section-moreMsg {
+    max-width: 100% !important;
+    padding-left: clamp(12px, 3.6vw, 20px) !important;
+    padding-right: clamp(12px, 3.6vw, 20px) !important;
+  }
+
+  .content-section:not(.content-section-chapter) > div > .content-section-verbiage > .sjIntroWrap > .sjIntroWrap-img {
+    float: none !important;
+    display: block !important;
+    width: min(72%, 220px) !important;
+    max-width: min(72%, 220px) !important;
+    margin: 8px auto 12px auto !important;
+  }
+}
+
+/* =================================================================================================
+   ✅ 2026-06-10 🧭 [SJP-ENTRY-CLOUD-SIGNIN-01]
+   Public intro cloud: stack EXPLORE SOURJOE and MEMBER SIGN IN as equal peer buttons with a centered OR divider.
+   ================================================================================================= */
+.sjp-entry-cloud-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(10px, 2vw, 16px);
+  margin-top: clamp(22px, 4vw, 36px);
+}
+
+.sjp-entry-cloud-actions .sjp-entry-cloud-button {
+  width: min(100%, 260px);
+  margin-top: 0;
+}
+
+.sjp-entry-cloud-choice {
+  color: #6e5b00;
+  font-size: clamp(0.92rem, 0.78rem + 0.35vw, 1.08rem);
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  line-height: 1;
+}
+
+
+/* =================================================================================================
+   ✅ 26Jun26d 🧩 [SJP-UP-ARROW-CSS-03]
+   Up Arrow is now a flex child inside .back-to-recipes-box (after Recipes link).
+   margin-left: auto pushes it to the right end of the left-box, naturally centring it
+   in the visible gap between the Recipes text and the SOURJOE title — no absolute
+   positioning, no JS measurement, no percentage guesswork.
+   ================================================================================================= */
+.sjp-top-up-arrow-link {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex: 0 0 auto !important;
+  margin-left: auto !important;
+  width: clamp(26px, calc(20px + 1vw), 34px) !important;
+  height: clamp(26px, calc(20px + 1vw), 34px) !important;
+  padding: 0 !important;
+  box-sizing: border-box !important;
+  border: 0 !important;
+  border-radius: 4px !important;
+  background: rgba(255, 255, 255, 0.08) !important;
+  text-decoration: none !important;
+  line-height: 1 !important;
+  opacity: 1 !important;
+  transition: opacity 0.14s ease !important;
+}
+
+.sjp-top-up-arrow-link svg {
+  width: 100% !important;
+  height: 100% !important;
+  display: block !important;
+  overflow: visible !important;
+}
+
+.sjp-top-up-arrow-link:hover,
+.sjp-top-up-arrow-link:focus-visible {
+  background: rgba(255, 255, 255, 0.18) !important;
+}
+
+.sjp-top-up-arrow-link:focus-visible {
+  outline: 2px solid #ffffff !important;
+  outline-offset: 2px !important;
+}
+
+@media only screen and (max-width: 500px) and (orientation: portrait) {
+  .sjp-top-up-arrow-link {
+    width: clamp(20px, 5.8vw, 26px) !important;
+    height: clamp(20px, 5.8vw, 26px) !important;
+  }
+}
+
+
+/* ✅ 27Jun26f 🧩 [SJP-PHASE1-SCROLL-MARGIN] Ensure scroll targets land below fixed headers */
+#plans {
+  scroll-margin-top: 110px !important;
+}
+#appRecipeStepPreview {
+  scroll-margin-top: 110px !important;
+}
+
+/* ✅ 27Jun26h 🧩 [SJP-UP-ARROW-CLICKABLE] Force up arrow to be always clickable */
+#sjpTopUpArrow {
+  position: relative !important;
+  z-index: 10 !important;
+  pointer-events: all !important;
+}
+
+/* =================================================================================================
+   ✅ 27Jun26l 🧩 [SJP-PHASE3-IFRAME-FADE-01]
+   Phase 3 — iframe opacity fade-in on load.
+   ================================================================================================= */
+.drawer-bottom iframe {
+  transition: opacity 0.25s ease;
+}
+
+/* ✅ 29Jun26e 🧩 [SJP-RECIPE-IMAGES-PERMANENT-02] Recipe preview notes always visible */
+.sjp-recipe-step-preview-card .sjp-recipe-list-preview-copy,
+.sjp-recipe-step-preview-card .sjp-recipe-card-preview-copy,
+.sjp-recipe-step-preview-card .sjp-recipe-step-preview-title {
+  display: block !important;
+}
+
+
+/* =================================================================================================
+   ✅ 2026-07-02 🧭 [SJP-GUIDANCE-UPARROW-SQUARE-01]
+   Guidance drawer: use the same visual language as the real top-header Up Arrow:
+   white outlined arrow on a small square dark tile.  Match the nearby compass sample's
+   square footprint, rather than inheriting the generic rounded cream guide badge.
+   ================================================================================================= */
+.sjp-how-list--with-icons .sjp-guide-line-symbol--uparrow {
+  width: 60px !important;
+  height: 60px !important;
+  min-width: 60px !important;
+  min-height: 60px !important;
+  padding: 7px !important;
+  border: 0 !important;
+  border-radius: 7px !important;
+  background: #111111 !important;
+  box-shadow: none !important;
+}
+
+.sjp-how-list--with-icons .sjp-guide-line-symbol--uparrow svg {
+  display: block !important;
+  width: 46px !important;
+  height: 46px !important;
+  fill: none !important;
+  stroke: #ffffff !important;
+  stroke-width: 2.5 !important;
+  stroke-linejoin: round !important;
+  stroke-linecap: round !important;
+}
+
+@media (max-width: 520px) {
+  .sjp-how-list--with-icons .sjp-guide-line-symbol--uparrow {
+    width: 52px !important;
+    height: 52px !important;
+    min-width: 52px !important;
+    min-height: 52px !important;
+    padding: 6px !important;
+  }
+
+  .sjp-how-list--with-icons .sjp-guide-line-symbol--uparrow svg {
+    width: 40px !important;
+    height: 40px !important;
+  }
+}

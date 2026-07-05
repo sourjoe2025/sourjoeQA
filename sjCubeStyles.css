@@ -1,0 +1,90 @@
+/* include the following global variables in main :root css
+:root {
+    --cubeBaseWidth: 125px;
+    --cubeSideWidth: calc(var(--cubeBaseWidth) / 2);
+}
+*/
+
+/* ✅ 2026-03-04 🧩 [SJ-CUBE-FALLBACK-01] Fallback sizes so cube still renders even if main :root vars are missing */
+.cube-container-parent {
+    width: 200px; /* Fixed width of the outer container (square) */
+    height: 200px; /* Fixed height to make it square */
+    position: relative; /* Enables child elements to be positioned relative to this container */
+    margin: auto; /* Centers the container horizontally within its parent */
+    margin-top: 50px;
+    margin-bottom: 50px;
+    display: flex; /* Flexbox for aligning child elements */
+    justify-content: center; /* Centers child elements horizontally */
+    align-items: center; /* Centers child elements vertically */
+    /* border: 2px solid #000; Optional: Uncomment to add a border for visualization */
+}
+
+.cube-container {
+    width: var(--cubeBaseWidth, 150px); /* Width of the cube (fallback if :root missing) */
+    height: var(--cubeBaseWidth, 150px); /* Height of the cube (fallback if :root missing) */
+    margin-bottom: 10px;
+    perspective: 800px; /* Perspective for 3D effect, giving depth to the cube */
+    position: absolute; /* Positions the cube container relative to its parent */
+    top: 50%; /* Moves the cube container to the vertical center of the parent */
+    left: 50%; /* Moves the cube container to the horizontal center of the parent */
+    transform: translate(-50%, -50%); /* Offsets by 50% of its width and height to center it perfectly */
+}
+
+.cube {
+    width: 100%; /* Cube takes up the full width of its container */
+    height: 100%; /* Cube takes up the full height of its container */
+    position: relative; /* Allows child elements to be positioned relative to the cube */
+    transform-style: preserve-3d; /* Ensures all child elements are rendered in 3D space */
+    /*transition: transform 1s ease-in-out;  Smoothly animates rotations over 1 second */
+    transition: transform 8s cubic-bezier(0.2, 0.91, 0.22, 1); /* Smooth 10-second transition with a custom easing function */
+}                                                               /* original  cubic-bezier(0.19, 1, 0.22, 1) */
+
+.side {
+    position: absolute; /* Positions each face of the cube relative to the cube container */
+    width: 100%; /* Each face matches the width of the cube */
+    height: 100%; /* Each face matches the height of the cube */
+    display: flex; /* Flexbox for aligning content inside the face */
+    justify-content: center; /* Horizontally centers content inside the face */
+    align-items: center; /* Vertically centers content inside the face */
+    font-size: 1vw; /* Responsive font size based on viewport width */
+    color: white; /* Text color for content on the face */
+    border: 2px solid lightyellow; /* Optional border for visualizing each face */
+    
+    /* Background image properties */
+    background-color: white; /* Fallback background color if no image is applied */
+    background-size: cover; /* Scales the background image to cover the entire face */
+    background-position: center; /* Centers the background image within the face */
+}
+
+.front {
+    transform: translateZ(var(--cubeSideWidth, calc(var(--cubeBaseWidth, 150px) / 2))); /* Moves the front face forward along the Z-axis */
+    background-image: var(--image-1); /* Applies the first image as the background */
+}
+.left {
+    transform: rotateY(-90deg) translateZ(var(--cubeSideWidth, calc(var(--cubeBaseWidth, 150px) / 2))); /* Rotates the left face 90° counterclockwise around the Y-axis and moves it forward */
+    background-image: var(--image-2); /* Applies the second image as the background */
+}
+.back {
+    transform: rotateY(180deg) translateZ(var(--cubeSideWidth, calc(var(--cubeBaseWidth, 150px) / 2))); /* Rotates the back face 180° around the Y-axis and moves it forward */
+    background-image: var(--image-3); /* Applies the third image as the background */
+}
+.right {
+    transform: rotateY(90deg) translateZ(var(--cubeSideWidth, calc(var(--cubeBaseWidth, 150px) / 2))); /* Rotates the right face 90° clockwise around the Y-axis and moves it forward */
+    background-image: var(--image-4); /* Applies the fourth image as the background */
+}
+.bottom {
+    transform: rotateX(-90deg) translateZ(var(--cubeSideWidth, calc(var(--cubeBaseWidth, 150px) / 2))); /* Rotates the bottom face 90° counterclockwise around the X-axis and moves it forward */
+    background-image: var(--image-5); /* Applies the fifth image as the background */
+}
+.top {
+    transform: rotateX(90deg) translateZ(var(--cubeSideWidth, calc(var(--cubeBaseWidth, 150px) / 2))); /* Rotates the top face 90° clockwise around the X-axis and moves it forward */
+    background-image: var(--image-6); /* Applies the sixth image as the background */
+}
+/* Cheeky comments under flipbox */
+.flipBoxMsgBox {
+    text-align: center; /* Centers the text horizontally inside the message box */
+    color: darkblue;
+}
+/* ✅ 2026-03-13 🧩 [SJ-CUBE-CSS-01] Removed an unused message-container helper class.
+   The live app styles the outer message wrapper elsewhere; this module only owns the caption text itself. */
+ 

@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<!-- ✅ 30Jun26d 🧮 [SJP-CALC-PREPAINT-HIDE-01] ROOT CAUSE FIX for "Calculator X jumps to top":
+     Previous fixes (30Jun26a/b/c) corrected the scroll-restore CHOREOGRAPHY but missed that
+     this is a FULL DOCUMENT RELOAD (window.location.href, not BFCache/history.back -- incognito
+     breaks history.back; see sjCalculatorShell.js publicPreviewMode branch). On a full reload
+     the browser paints the page at scroll position 0 first. The actual scroll-restore logic in
+     sjCalculatorLaunch.js only runs once its script tag is reached, ~700 lines down near the
+     end of the body -- by which point the browser has already rendered at least one visible
+     frame at the top. That frame IS the "jump to top" the user sees; every later scrollTo()
+     call is technically correct but runs after the flash has already been seen. Every other
+     Live/Timed demo uses an iframe drawer on the SAME already-scrolled document (no reload, no
+     flash), which is why only the calculator close exhibits this.
+     Fix: if sessionStorage shows we're returning from a calculator session, hide the html
+     element here -- the earliest point any script can run -- before any content paints.
+     sjCalculatorLaunch.js reveals it again (visibility:visible) once the real scroll restore
+     has actually been applied. A safety-timeout fallback guarantees the page is never stuck
+     invisible if that reveal fails to run for any reason. -->
+<script>
+(function () {
+  try {
+    // ✅ 30Jun30g [SJP-CALC-CROSSORIGIN-RETURN-01] Capture everything needed from the URL HERE,
+    // in the very first script that runs, into an in-memory global. This is the single source
+    // of truth every later script should read from — re-parsing window.location.search later
+    // is unreliable because sjCalculatorLaunch.js's cleanup strips these params from the URL
+    // bar on DOMContentLoaded, before some later checks (e.g. the entry-cloud 350ms check) run.
+    var qp;
+    try { qp = new URLSearchParams(window.location.search); } catch (e) { qp = null; }
+    var urlSaysCalcReturn = !!(qp && qp.get('sjCalcReturn') === '1');
+    window.__sjpCalcReturnInfo = {
+      isCalcReturn: urlSaysCalcReturn,
+      returnY: (qp && urlSaysCalcReturn) ? parseInt(qp.get('sjReturnY') || '0', 10) : 0,
+      reopenToc: !!(qp && qp.get('sjReopenCalcToc') === '1')
+    };
+
+    var isCalcReturn = urlSaysCalcReturn || ((sessionStorage.getItem('SJ_CALC_SAVED_Y') !== null
+      || sessionStorage.getItem('SJ_CALC_RETURN_Y') !== null)
+      && sessionStorage.getItem('SJ_CALC_PREPAINT_CONSUMED') === null);
+
+    // ✅ 02Jul26 🧮 [SJP-CALC-RETURN-COORDINATE-01]
+    // A public Unit Convertor exit is a full cross-origin navigation back to p.html.
+    // Hold the public page off-screen until its saved position AND the Calculator List drawer
+    // are restored together. This prevents the old grey → top-of-page → rapid-scroll sequence.
+    // We hide only page content (not the document canvas) so the transition is a brief black
+    // bridge instead of a blank grey screen. p.js releases this hold after opening the list.
+    if (isCalcReturn && window.__sjpCalcReturnInfo && window.__sjpCalcReturnInfo.reopenToc) {
+      document.documentElement.classList.add('sjp-calc-return-hold');
+      window.__sjpCalcReturnHoldActive = true;
+      // Safety net: never leave the visitor on the holding canvas if a later script fails.
+      setTimeout(function () {
+        try {
+          if (window.__sjpCalcReturnHoldActive) {
+            document.documentElement.classList.remove('sjp-calc-return-hold');
+            window.__sjpCalcReturnHoldActive = false;
+          }
+        } catch (e) {}
+      }, 3000);
+    }
+  } catch (e) {}
+}());
+</script>
+<!-- ✅ 27Jun26a 🧩 [SJP-PHASE1-DRAWER-FOUC-01] Critical drawer positioning before sjDrawerStyles.css finishes loading. -->
+<style>
+  /* Calculator-return bridge: do not reveal the page at scroll position 0 while the
+     public calculator shell returns from book.sourjoe.com. */
+  html.sjp-calc-return-hold,
+  html.sjp-calc-return-hold body { background: #101010 !important; }
+  html.sjp-calc-return-hold body > * { visibility: hidden !important; }
+  .overlay { visibility: hidden; opacity: 0; }
+  .drawer { position: fixed; transform: translateX(100%); transition: none; display: flex; flex-direction: column; }
+  .drawer-left { left: 0; top: 0; transform: translateX(-100%); }
+  .drawer-right { right: 0; top: 0; transform: translateX(100%); }
+  .drawer-top { top: 0; left: var(--drawerShiftWidth, 0); transform: translateY(-100%); }
+  .drawer-bottom { bottom: 0; left: var(--drawerShiftWidth, 0); transform: translateY(100%); }
+  .drawer.active { transform: translate(0, 0) !important; }
+  .overlay.visible { visibility: visible; opacity: 1; }
+</style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>Sourjoe | Sourdough Bread Baking App, Lessons, Recipes &amp; Calculators</title>
+<meta name="description" content="Learn sourdough with Sourjoe's interactive baking guide, recipes, calculators, videos, tools, and step-by-step support for better bread."/>
+<meta name="robots" content="index, follow"/>
+<link rel="canonical" href="https://sourjoe.com/"/>
+<meta property="og:type" content="website"/>
+<meta property="og:site_name" content="Sourjoe"/>
+<meta property="og:title" content="Sourjoe | Sourdough Bread Baking App, Lessons, Recipes &amp; Calculators"/>
+<meta property="og:description" content="Explore Sourjoe's public preview: sourdough lessons, recipes, calculators, videos, and practical tools for better bread."/>
+<meta property="og:url" content="https://sourjoe.com/"/>
+<meta property="og:image" content="https://sourjoe.com/sjMedia0/sjICONS/logoSOURJOETRANSPARENT_Cropped_31Aug21.png"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="Sourjoe | Sourdough Bread Baking App"/>
+<meta name="twitter:description" content="Interactive sourdough lessons, recipes, calculators, videos, and practical tools for better bread."/>
+<meta name="twitter:image" content="https://sourjoe.com/sjMedia0/sjICONS/logoSOURJOETRANSPARENT_Cropped_31Aug21.png"/>
+<link rel="preconnect" href="https://sjmedia0.w3spaces.com"/>
+<link rel="preload" as="image" href="https://sjmedia0.w3spaces.com/sjNewsletterPICS/sjNewsletterHeader.png" fetchpriority="high"/>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://sourjoe.com/#organization",
+      "name": "Sourjoe",
+      "url": "https://sourjoe.com/",
+      "logo": "https://sourjoe.com/sjMedia0/sjICONS/logoSOURJOETRANSPARENT_Cropped_31Aug21.png",
+      "sameAs": [
+        "https://www.youtube.com/channel/UCPsAzE7_Q_U5TRL0xbjYrYQ",
+        "https://www.instagram.com/sourjoeofficial/",
+        "https://www.facebook.com/sourjoeofficial"
+      ]
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://sourjoe.com/#website",
+      "name": "Sourjoe",
+      "url": "https://sourjoe.com/",
+      "publisher": { "@id": "https://sourjoe.com/#organization" }
+    }
+  ]
+}
+</script>
+<link href="./sjRabbitHoleLink.css?v=20260629_phase5f" rel="stylesheet"/>
+<link href="./sjLearnStyles.css?v=20260629_phase5f" rel="stylesheet"/>
+<link href="./sjDrawerStyles.css?v=20260629_phase5f" rel="stylesheet"/>
+<link href="./sjCubeStyles.css?v=000" rel="stylesheet"/>
+<link href="./sjRecipes.css?v=20260626_printLogoFix1" rel="stylesheet"/>
+<link href="./sjMathStyles.css?v=20260608_calcPass3c_strongIcons" rel="stylesheet"/>
+<link href="./pjb-steps.css?v=20260517_recipeStepPreview3" rel="stylesheet"/>
+<link href="./sjBubbles.css?v=20260608_pass3c_strongHelpDots" rel="stylesheet"/>
+<link href="./p1.css?v=20260702_minorHousekeeping2" rel="stylesheet"/>
+</head>
+<body class="sjp-guided-cues sjp-welcome-in-view">
+<main>
+
+<!-- ==================== HEADER ==================== -->
+<div class="header-container" style="display: block;">
+<div class="header-top-div">
+<div class="header-rail">
+<div class="header-top-center-container">
+<div class="left-box back-to-recipes-box"><a aria-label="Sourjoe public preview home" class="sjp-logo-home-link" href="#lead-box" onclick="sjpGoHome(event);" title="Go to top of public preview"><img alt="Sourjoe logo" class="header-icon-top-sjlogo" src="https://sjmedia0.w3spaces.com/sjICONS/logoSOURJOETRANSPARENT_Cropped_31Aug21.png"/></a><a class="sjp-top-home-link sjp-top-recipes-link link-style" href="#recipesIntro" onclick="sjpGoRecipesPreview(event);" title="Go to Recipes preview panel">Recipes</a><a aria-label="Close all open panels and return to top" class="sjp-top-up-arrow-link" href="#lead-box" id="sjpTopUpArrow" onclick="sjpGoUpArrow(event);" title="Close all and return to top"><svg aria-hidden="true" focusable="false" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;display:block;"><polygon points="16,5 27,20 21,20 21,28 11,28 11,20 5,20" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/></svg></a></div>
+<a aria-label="Open or close the Preview Guide" class="sjp-top-start-arrow-link sjp-top-preview-guide-link" href="#lead-box" id="sjpTopStartHereArrow" onclick="sjpGoStartHere(event);" title="Open or close the Preview Guide">
+<img alt="" aria-hidden="true" class="sjp-preview-eye-img sjp-compass-clean-img" src="https://sjmedia0.w3spaces.com/sjICONS/iconCompassWhiteClean.svg?v=20260605_pass17d_compassRemote"/>
+</a>
+<div class="center-box type-header"><p id="mainTitle" style="display: block;">SOURJOE</p></div>
+<div class="right-box" id="openMainTOC"><button aria-label="Open table of contents" class="header-icon-top-menu sj-app-hamburger" onclick="open_drawer('drawer-right', 'toc', document.getElementById('TOC-main-title'), document.getElementById('TOC-main-content'));" type="button"><span></span><span></span><span></span></button></div>
+</div>
+</div>
+</div>
+<div class="header-bottom-div">
+<span class="clampTest" id="debug" style="display: none; margin: auto; text-align: center; border: 1px solid red;">Joe</span>
+<div class="header-rail">
+<div class="header-bottom-center-container"><div class="left-box sjp-lower-left"><a class="sjp-auth-button sjp-auth-button--signin" href="https://app.sourjoe.com/login">SIGN IN</a></div><div class="center-box type-header sjp-lower-socials">
+<a aria-label="Email Sourjoe" class="sjp-social-link sjp-social-link--email" href="mailto:info@sourjoe.com" title="Email Sourjoe">
+  <svg aria-hidden="true" class="sjp-brand-svg sjp-brand-email" viewBox="0 0 48 48" focusable="false">
+    <circle class="sjp-email-bg" cx="24" cy="24" r="20"></circle>
+    <rect class="sjp-email-envelope" x="12.5" y="16" width="23" height="16" rx="2.5"></rect>
+    <path class="sjp-email-flap" d="M14 18.5 L24 25.7 L34 18.5"></path>
+    <path class="sjp-email-flap" d="M14 31 L21.2 24.7"></path>
+    <path class="sjp-email-flap" d="M34 31 L26.8 24.7"></path>
+  </svg>
+</a>
+<a aria-label="YouTube" class="sjp-social-link sjp-social-link--youtube" href="https://www.youtube.com/channel/UCPsAzE7_Q_U5TRL0xbjYrYQ" rel="noopener noreferrer" target="_blank" title="YouTube">
+  <svg aria-hidden="true" class="sjp-brand-svg sjp-brand-youtube" viewBox="0 0 48 48" focusable="false">
+    <rect class="sjp-youtube-bg" x="5" y="12" width="38" height="24" rx="7"></rect>
+    <path class="sjp-youtube-play" d="M21 19.2 L31.8 24 L21 28.8 Z"></path>
+  </svg>
+</a>
+<a aria-label="Instagram" class="sjp-social-link sjp-social-link--instagram" href="https://www.instagram.com/sourjoeofficial/" rel="noopener noreferrer" target="_blank" title="Instagram">
+  <svg aria-hidden="true" class="sjp-brand-svg sjp-brand-instagram" viewBox="0 0 48 48" focusable="false">
+    <defs>
+      <linearGradient id="sjpInstagramGradient" x1="8" y1="42" x2="40" y2="6" gradientUnits="userSpaceOnUse">
+        <stop offset="0" stop-color="#feda75"></stop>
+        <stop offset="0.28" stop-color="#fa7e1e"></stop>
+        <stop offset="0.55" stop-color="#d62976"></stop>
+        <stop offset="0.78" stop-color="#962fbf"></stop>
+        <stop offset="1" stop-color="#4f5bd5"></stop>
+      </linearGradient>
+    </defs>
+    <rect class="sjp-instagram-bg" x="7" y="7" width="34" height="34" rx="10"></rect>
+    <rect class="sjp-instagram-camera" x="16" y="16" width="16" height="16" rx="5"></rect>
+    <circle class="sjp-instagram-lens" cx="24" cy="24" r="4.8"></circle>
+    <circle class="sjp-instagram-dot" cx="32.2" cy="15.8" r="2.1"></circle>
+  </svg>
+</a>
+<a aria-label="Facebook" class="sjp-social-link sjp-social-link--facebook" href="https://www.facebook.com/sourjoeofficial" rel="noopener noreferrer" target="_blank" title="Facebook">
+  <svg aria-hidden="true" class="sjp-brand-svg sjp-brand-facebook" viewBox="0 0 48 48" focusable="false">
+    <circle class="sjp-facebook-bg" cx="24" cy="24" r="20"></circle>
+    <path class="sjp-facebook-f" d="M27.7 24.8h5l.8-5.8h-5.8v-3.2c0-1.7.5-2.9 3-2.9h3.1V7.7c-.5-.1-2.4-.2-4.6-.2-4.6 0-7.8 2.8-7.8 8v3.5h-5.2v5.8h5.2v15.4h6.3V24.8z"></path>
+  </svg>
+</a>
+</div><div class="right-box sjp-lower-right"><a class="sjp-auth-button sjp-auth-button--signup" href="#plans" onclick="collapseAndScroll('plans'); return false;">SIGN UP</a></div></div>
+</div>
+</div>
+</div>
+<!-- ==================== END HEADER ==================== -->
+
+<span id="tiptop" style="position: absolute; top: 0; padding-bottom: 100px;"> </span>
+<div class="sjp-compat-hidden" id="no-results">No Search Results</div>
+
+<!-- ==================== WELCOME PANEL ==================== -->
+<div class="lead-parent sjp-public-welcome" id="lead-box">
+<div class="lead-child sjp-welcome-auth-title-row" style="width: 100%;">
+<a class="sjp-auth-button sjp-auth-button--signin sjp-auth-button--welcome sjp-welcome-auth-signin" href="https://app.sourjoe.com/login">SIGN IN</a>
+<div class="lead-title">Welcome to Sourjoe!</div>
+<a class="sjp-auth-button sjp-auth-button--signup sjp-auth-button--welcome sjp-welcome-auth-signup" href="#plans" onclick="collapseAndScroll('plans'); return false;">SIGN UP</a>
+</div>
+<div class="lead-child sjp-welcome-main-row" style="width: 100%;">
+<div class="sjp-welcome-hero-row sjp-welcome-cube-column">
+<div class="cube-container-parent">
+<div class="cube-container">
+<div class="cube">
+<div class="side front"></div>
+<div class="side back"></div>
+<div class="side right"></div>
+<div class="side left"></div>
+<div class="side top"></div>
+<div class="side bottom"></div>
+</div>
+</div>
+</div>
+<div class="messageContainer">
+<p class="flipBoxMsgBox" id="flipBoxMsg"></p>
+</div>
+</div>
+<div class="sjp-welcome-intro-copy">
+<p><span class="general-subject-title">Sourjoe is your home-sourdough command centre:</span> tested recipes, bake-session guidance, calculators, bread education, and practical tools in one curated app.</p>
+<p>This Preview mimics the real Sourjoe experience so you can explore the depth, guidance, and teaching style before signing up.</p>
+</div>
+</div>
+<div class="lead-child sjp-welcome-copy sjp-welcome-after-copy" style="width: 100%;">
+<p class="sjp-toc-definition sjp-toc-definition--rev15 sjp-welcome-order-note"><strong>Start with buttons 1-3 in order</strong></p>
+<div class="sjp-welcome-link-row" aria-label="Public preview guide links">
+<button class="sjp-welcome-link link-style" type="button" onclick="sjpOpenPublicWelcomeDrawer('how');"><span class="sjp-welcome-link-number" aria-hidden="true">1</span><span class="sjp-welcome-link-text">How to use this Preview site</span></button>
+<button class="sjp-welcome-link link-style" type="button" onclick="sjpOpenPublicWelcomeDrawer('about');"><span class="sjp-welcome-link-number" aria-hidden="true">2</span><span class="sjp-welcome-link-text">About Sourjoe</span></button>
+<button class="sjp-welcome-link link-style" type="button" onclick="sjpOpenPublicWelcomeDrawer('gives');"><span class="sjp-welcome-link-number" aria-hidden="true">3</span><span class="sjp-welcome-link-text">What the Sourjoe App gives you</span></button>
+</div>
+<div class="sjp-welcome-helper-strip" aria-label="Welcome panel reference and helper controls">
+<div class="sjp-welcome-reference-row" aria-label="Chapter Guide reference link">
+<span class="sjb-helpDot sjp-sjb-welcome-reference" data-sjb="welcome-reference-chapter-guide" data-sjb-message="Detailed guide showing structure and purpose of the various Chapters." behaviour-sjb="enabled" tabindex="0" aria-label="Chapter Guide information">?</span>
+<span class="sjp-welcome-reference-text">Reference : <a class="sjp-welcome-reference-link link-style" href="https://book.sourjoe.com/sjseo-start-here.html" data-sj-book-path="sjseo-start-here.html">Chapter Guide</a></span>
+</div>
+<div class="sjb-toggleRow sjp-helper-toggle-row" id="sjbHelperToggleRow">
+<span class="sjb-toggleLabel">Helper Messages</span>
+<label class="sjb-switch" aria-label="Helper Messages toggle">
+<input type="checkbox" id="sjbHelperToggle" checked/>
+<span class="sjb-slider" aria-hidden="true"></span>
+</label>
+<span class="sjb-toggleState" id="sjbHelperToggleState">ON</span>
+<span class="sjb-helpDot" data-sjb="bubbleExplainSwitch" behaviour-sjb="enabled" tabindex="0" aria-label="Helper message">?</span>
+</div>
+</div>
+</div>
+</div>
+<!-- ==================== END WELCOME PANEL ==================== -->
+
+<!-- ==================== CHAPTER CARDS ==================== -->
+
+<!--  ====================== START Chapter: Start Here  ==================== -->
+<div class="content-section content-section-style content-section-chapter" data-group="startOfsection" id="startHereIntro">
+<div class="content-section-title">
+<div class="center-title-container">
+<div class="left-box"></div>
+<div class="center-box">&ldquo;START HERE&rdquo; Guide</div>
+<div class="right-box type-content-title-right" id="starthereButton">
+<img alt="Menu Icon" class="left-box content-title-menu" onclick="open_drawer('drawer-right', 'toc', document.getElementById('TOC-starthere-title'), document.getElementById('TOC-starthere-content'));" src="https://sjmedia0.w3spaces.com/sjICONS/iconMenuBlue.png"/>
+</div>
+</div>
+</div>
+<div class="content-section-verbiage">
+<div class="sjp-chapter-copy-shell">
+<p class="sjp-public-note"><strong>Public preview:</strong> START HERE remains mostly live so visitors can see how Sourjoe guides beginners. Recipe workflow links are shown as locked previews.</p>
+<div class="sjp-start-here-grid" aria-label="Start Here recommended learning path">
+<div class="sjp-start-here-pair sjp-start-here-pair-book">
+<div class="sjp-start-here-box sjp-start-here-copybox">
+<p class="sjp-start-here-box-title general-subject-title">In the Book:</p>
+<p>If you are a <strong>novice</strong> sourdough baker, we recommend working through the following sections in order. If you're an intermediate or experienced baker, you can probably skip these chapters, but a quick review never hurts.</p>
+</div>
+<div class="sjp-start-here-box sjp-start-here-linkbox">
+<ul class="sjp-start-here-link-list">
+<li><span class="link-style" onclick="scrollToTarget('essentialsIntro',100);">Essentials</span></li>
+<li><span class="link-style" onclick="scrollToTarget('leavenIntro',100);">Starter &amp; Leaven</span></li>
+<li><span class="link-style" onclick="scrollToTarget('processIntro',100);">Baker's Process</span></li>
+<li><span class="link-style" onclick="scrollToTarget('referenceIntro',100);">Glossary A to Z</span></li>
+</ul>
+</div>
+</div>
+<div class="sjp-start-here-pair sjp-start-here-pair-recipes">
+<div class="sjp-start-here-box sjp-start-here-copybox">
+<p class="sjp-start-here-box-title general-subject-title">In Recipes:</p>
+<p>Once you have read the basics outlined above, you are now ready to start on your sourdough journey. These links will take you to the Recipes page.</p>
+</div>
+<div class="sjp-start-here-box sjp-start-here-linkbox">
+<ul class="sjp-start-here-link-list">
+<li><span class="link-style sjp-locked-inline" data-sjp-lock="true" data-sjp-lock-message="Create your Starter Recipe is part of the full Sourjoe app. Use Sign In or Sign Up to enter the app.">Create your Starter <span aria-hidden="true" class="sjp-inline-lock-icon">🔒</span></span></li>
+<li><span class="link-style sjp-locked-inline" data-sjp-lock="true" data-sjp-lock-message="Prepare Leaven Recipe is part of the full Sourjoe app. Use Sign In or Sign Up to enter the app.">Prepare Leaven <span aria-hidden="true" class="sjp-inline-lock-icon">🔒</span></span></li>
+<li><span class="link-style sjp-locked-inline" data-sjp-lock="true" data-sjp-lock-message="My First Bake Recipe is part of the full Sourjoe app. Use Sign In or Sign Up to enter the app.">My First Bake <span aria-hidden="true" class="sjp-inline-lock-icon">🔒</span></span></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!--  ====================== END Chapter: Start Here  ==================== -->
+
+<!--  ====================== START Chapter: Essentials  ==================== -->
+<div class="content-section content-section-style content-section-chapter" data-group="startOfsection" id="essentialsIntro">
+<div class="content-section-title">
+<div class="center-title-container">
+<div class="left-box"></div>
+<div class="center-box">ESSENTIALS</div>
+<div class="right-box type-content-title-right" id="essentialsButton">
+<img alt="Menu Icon" class="left-box content-title-menu" onclick="open_drawer('drawer-right', 'toc', document.getElementById('TOC-essentials-title'), document.getElementById('TOC-essentials-content'));" src="https://sjmedia0.w3spaces.com/sjICONS/iconMenuBlue.png"/>
+</div>
+</div>
+</div>
+<div class="content-section-verbiage">
+<div class="sjp-chapter-copy-shell">
+<p class="sjp-public-note"><strong>Public preview:</strong> This chapter shows the scope of core ingredients and tools. Essential Tools is the live demo section below.</p>
+<img alt="Essentials chapter sketch" class="responsive-img responsive-img-left sjp-chapter-wrap-img" src="https://sjmedia0.w3spaces.com/sjICONS/sketchEssentialsChapterImage.png"/>
+<p>There are dozens of Ingredients and Tools used in the art of artisanal sourdough baking. Luckily for the Home Baker, there are only a handful of essential Ingredients and Tools required. This section outlines these essentials, and the Reference section expands on the lists. If you are a beginner at sourdough baking, make sure you stock-up on the essentials and read this section before making a mess in the kitchen.</p>
+</div>
+</div>
+</div>
+<!--  ====================== END Chapter: Essentials  ==================== -->
+
+<!--  ====================== START Chapter: Culture, Starter & Leaven  ==================== -->
+<div class="content-section content-section-style content-section-chapter" data-group="startOfsection" id="leavenIntro">
+<div class="content-section-title">
+<div class="center-title-container">
+<div class="left-box"></div>
+<div class="center-box">CULTURE, STARTER &amp; LEAVEN</div>
+<div class="right-box type-content-title-right" id="leavenButton">
+<img alt="Menu Icon" class="left-box content-title-menu" onclick="open_drawer('drawer-right', 'toc', document.getElementById('TOC-leaven-title'), document.getElementById('TOC-leaven-content'));" src="https://sjmedia0.w3spaces.com/sjICONS/iconMenuBlue.png"/>
+</div>
+</div>
+</div>
+<div class="content-section-verbiage">
+<div class="sjp-chapter-copy-shell">
+<p class="sjp-public-note"><strong>Public preview:</strong> This chapter is shown as a scope preview. The full Book opens the Culture, Starter, and Leaven sections from this chapter TOC.</p>
+<p>The prime ingredient in bread baking is the leavening agent. In modern bread baking, the leavening agent is most commonly commercial Yeast. This class of yeast is highly specialized to rise bread quickly and consistently. It makes the bread that most people are accustomed to. This is unfortunate in that the bread is not fermented slowly which makes &lsquo;real&rsquo; bread more delicious and nutritious. Commercial Yeast bread is still tasty, but because it lacks the fermenting power of natural yeast and bacteria working together, the properties of the resulting bread are not so healthful.</p>
+<p>If you are a novice home bread baker, do not be put off by stories of mysterious and complex processes to make your own starter and leaven &mdash; read the sections of this chapter and be patient. Yes, it takes up to six days to initiate your starter, but from that point on, you will have a vibrant symbiotic colony of bacteria and yeast (a SCOBY), that if fed regularly, will live as long as you!</p>
+<div class="leaven-gallery-parent">
+<div class="leaven-gallery-child"><img alt="Culture Stage 1" src="https://sjmedia0.w3spaces.com/sjPICS/leavenCulture.png"/></div>
+<div class="leaven-gallery-child"><img alt="Starter Stage 2" src="https://sjmedia0.w3spaces.com/sjPICS/leavenStarter.png"/></div>
+<div class="leaven-gallery-child"><img alt="Leaven Stage 3" src="https://sjmedia0.w3spaces.com/sjPICS/leavenLeaven.png"/></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!--  ====================== END Chapter: Culture, Starter & Leaven  ==================== -->
+
+<!--  ====================== START Chapter: Baker's Process  ==================== -->
+<div class="content-section content-section-style content-section-chapter" data-group="startOfsection" id="processIntro">
+<div class="content-section-title">
+<div class="center-title-container">
+<div class="left-box"></div>
+<div class="center-box">BAKER'S PROCESS</div>
+<div class="right-box type-content-title-right" id="processButton">
+<img alt="Menu Icon" class="left-box content-title-menu" onclick="open_drawer('drawer-right', 'toc', document.getElementById('TOC-process-title'), document.getElementById('TOC-process-content'));" src="https://sjmedia0.w3spaces.com/sjICONS/iconMenuBlue.png"/>
+</div>
+</div>
+</div>
+<div class="content-section-verbiage">
+<div class="sjp-chapter-copy-shell">
+<p class="sjp-public-note"><strong>Public preview:</strong> Baker's Process shows the seven-stage framework. Initial Mix is the live sample section below.</p>
+<img alt="Boule on Peel" class="responsive-img responsive-img-left" src="https://sjmedia0.w3spaces.com/sjPICS/bouleOnPeel.png"/>
+<p>If baking bread was a book, these are the chapters with which every loaf of bread is told, er&hellip; made. The chapters range in size and complexity but never in order, even between each recipe. We developed this system of thinking because it not only helps you gauge where you are in the process, but what to expect next, and ultimately help you in crafting your own recipes.</p>
+<p>There are seven chapters. Only seven? Well, yes. We spent a lot of time trying to decide how to categorize all these different steps and whether or not it was even worth it. After all, the sheer variety in something as simple as flour, water, salt, and starter is immense! How could you possibly funnel them all into the same seven section process? We&rsquo;re going to go over each of these chapters, why they&rsquo;re important, why we broke them up this way, and why it&rsquo;s helpful from beginners to pros.</p>
+</div>
+</div>
+</div>
+</div>
+<!--  ====================== END Chapter: Baker's Process  ==================== -->
+
+<!--  ====================== START Chapter: Reference  ==================== -->
+<div class="content-section content-section-style content-section-chapter" data-group="startOfsection" id="referenceIntro">
+<div class="content-section-title">
+<div class="center-title-container">
+<div class="left-box"></div>
+<div class="center-box">REFERENCE</div>
+<div class="right-box content-title-right" id="referenceMoreButton">
+<img alt="Menu Icon" class="left-box content-title-menu" onclick="open_drawer('drawer-right', 'toc', document.getElementById('TOC-reference-title'), document.getElementById('TOC-reference-content'));" src="https://sjmedia0.w3spaces.com/sjICONS/iconMenuBlue.png"/>
+</div>
+</div>
+</div>
+<div class="content-section-verbiage">
+<div class="sjp-chapter-copy-shell">
+<p class="sjp-public-note"><strong>Public preview:</strong> Reference shows the scope of glossary, tools, grains, and breads. Glossary A &amp; B is the live sample.</p>
+<img alt="Reference chapter sketch" class="responsive-img responsive-img-left sjp-chapter-wrap-img" src="https://sjmedia0.w3spaces.com/sjICONS/sketchReferenceChapterImage.png"/>
+<p>The Reference chapter provides a quick background to common sourdough baking terms. Scroll through the list or use the search tools in the header. Links to related Wikipedia articles are given for some items. We have made the Reference section a little more in-depth than a simple one sentence explanation. For newcomers to sourdough baking, reading through the entire Reference section is a good idea.</p>
+</div>
+</div>
+</div>
+</div>
+<!--  ====================== END Chapter: Reference  ==================== -->
+
+<!--  ====================== START Chapter: Recipe Stats + Preview  ====================  -->
+<div class="content-section content-section-style content-section-chapter" data-group="startOfsection" id="recipesIntro">
+<div class="content-section-title">
+<div class="center-title-container">
+<div class="left-box">
+</div>
+<div class="center-box">
+                  RECIPE STATS
+                  
+</div>
+<div class="right-box type-content-title-right" id="recipeIntroButton">
+<!--- <a style="display: block"> -->
+<img alt="Menu Icon" class="right-box content-title-menu" onclick="
+                          open_drawer('drawer-right', 'toc',
+                          document.getElementById('TOC-factoid-title'), 
+                          document.getElementById('TOC-factoid-content'));
+                          " src="https://sjmedia0.w3spaces.com/sjICONS/iconMenuBlue.png"/>
+</div>
+</div>
+</div>
+<div class="content-section-verbiage">
+<!-- ✅ 2026-05-09 🧩 [SJP-CHAPTER-INNER-WIDTH-01] Inner chapter copy rail matches Welcome copy width. -->
+<div class="sjp-chapter-copy-shell"><p class="sjp-public-note"><strong>Public preview:</strong> Recipe Facts remain visible as a sample of the recipe-reference style. Full recipe workflows live in the Sourjoe app.</p>
+<p> Recipe Factoids chapter includes Nutrition and bread-nerd facts for all Sourjoe Recipes.
+              Each Recipe card in the App has a link to these factoid cards.  In some cases, a more 
+              detailed description of the Recipe or bread results is given.  Live and Learn!
+          </p>
+<p id="morerecipeIntroMsg" style="display: none;">
+</p>
+<div id="sj-recipe-module-container">
+</div>
+
+</div><!-- /[SJP-CHAPTER-INNER-WIDTH-01] --></div>
+</div>
+<!-- ========      END     Chapter: Recipes   Topic: Introduction   ========  -->
+<!-- ✅ 29Jun26e 🧩 [SJP-RECIPE-IMAGES-OWN-SECTION-01]
+     Recipe images and step preview — own standalone section between Recipe Stats and Calculator Tools. -->
+<div class="content-section content-section-style" id="appRecipeStepPreview" aria-label="Sample Sourjoe Recipes">
+<div class="content-section-verbiage">
+<div class="formula-card sjp-recipe-step-preview-card" aria-label="Preview of the Sourjoe Recipes section">
+<p class="sjp-public-note sjp-recipe-list-preview-copy">
+  Here is a sample of the Recipes section. Recipes are added and/or updated regularly. There are 'Beginner', 'Intermediate' and 'Advanced' recipes to choose from.
+</p>
+<figure class="sjp-recipe-list-preview-figure" aria-label="Sample list of Sourjoe recipes">
+  <img class="sjp-recipe-list-preview-image" src="https://sjMedia0.w3spaces.com/sjPICS/publicRecipesListPreview.png" alt="Sample Sourjoe recipe list showing Beginner and Intermediate recipes" loading="eager" decoding="async">
+</figure>
+<p class="sjp-public-note sjp-recipe-card-preview-copy">
+  All Recipes are organized as recipe cards. Example below. Multiple recipes can be in progress in the app.
+</p>
+<figure class="sjp-recipe-card-preview-figure" aria-label="Sample Sourjoe recipe card">
+  <img class="sjp-recipe-card-preview-image" src="https://sjMedia0.w3spaces.com/sjPICS/public50percentWWRecipeCard.png" alt="Sample Sourjoe recipe card showing recipe organization" loading="eager" decoding="async">
+</figure>
+<p class="sjp-public-note sjp-recipe-step-preview-title">
+  Preview of a Recipe Step as it appears in Recipes section of app.sourjoe.com. Every Step in every Recipe conforms to this structure:
+</p>
+<div class="sj2-step" data-sj2-step="">
+    <div class="sj2-ctrl">
+        <button type="button" class="sj2-button sj2-button--details" data-sj2-toggle="details" data-sj2-label="Details">Details</button>
+        <button type="button" class="sj2-button sj2-button--explore" data-sj2-toggle="explore" data-sj2-label="Explore">Explore</button>
+    </div>
+    <div class="sj2-video">
+        <div class="sj2-embed">
+            <iframe src="https://customer-wulggzlzr0mt8qia.cloudflarestream.com/8a9b0363d192f1a2f7eb79b2293a1018/iframe?autoplay=true&amp;muted=true&amp;loop=true&amp;controls=true" allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen="true" loading="lazy"></iframe>
+        </div>
+    </div>
+    <div class="sj2-pane sj2-pane--details" data-sj2-panel="details" hidden="">
+        <div class="sj2-txt">
+            <div class="sj2-head-blue">Step Details</div>
+            <ul>
+                <li>Mix all Recipe Flour, Recipe Water and Leaven.
+                    <ul><li>We recommend dissolving the Leaven in the Recipe Water first, then adding the Flour.</li></ul>
+                </li>
+                <li><strong>Do not incorporate Salt yet.</strong></li>
+                <li>At this stage, the dough will be shaggy and sticky.</li>
+                <li>We recommend having a small bowl of water handy to dip your fingers/hand into for moisture to avoid a sticky mess.</li>
+            </ul>
+        </div>
+    </div>
+    <div class="sj2-pane sj2-pane--explore" data-sj2-panel="explore" hidden="">
+        <div class="sj2-head-green">Explore and Learn</div>
+        <div class="sj2-links">
+            <a href="#processIntro" onclick="sjpTocOpenSection('processMix', 'Initial Mix'); return false;">Baker's Process Step = Initial Mix</a>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+</div>
+<!-- END [SJP-RECIPE-IMAGES-OWN-SECTION-01] -->
+
+
+
+
+<!--  ====================== START Chapter: Calculator Tools  ==================== -->
+<div class="content-section content-section-style content-section-chapter" data-group="startOfsection" id="calculatorIntro">
+<div class="content-section-title">
+<div class="center-title-container">
+<div class="left-box"></div>
+<div class="center-box">CALCULATOR Tools</div>
+<div class="right-box content-title-right" id="calculatorIntroButton">
+<img alt="Menu Icon" class="left-box content-title-menu sjp-calc-toc-icon" onclick="return sjOpenCalculatorTocDrawer(event);" src="https://sjmedia0.w3spaces.com/sjICONS/iconMenuBlue.png"/>
+</div>
+</div>
+</div>
+<div class="content-section-verbiage">
+<div class="sjp-chapter-copy-shell">
+<p class="sjp-public-note"><strong>Live demo:</strong> The Unit Convertor is active in the Calculator Chooser as the public calculator sample.</p>
+<img alt="CalculatorIcon" class="responsive-img responsive-img-left sjp-calc-toc-icon" onclick="return sjOpenCalculatorTocDrawer(event);" role="button" tabindex="0" src="https://sjmedia0.w3spaces.com/sjICONS/iconCalculatorBlue.png" style="width: 75px; cursor: pointer;"/>
+<p>This suite of sourdough baking oriented calculators are great tools for the home baker. Use these calculators to learn about the entity the calculator is made to calculate. Run &lsquo;what-if&rsquo; scenarios when designing a custom recipe, like Hydration, Target Temperatures, etc. Click the calculator icon or Table of Contents icon on this panel to open the Calculator List.</p>
+</div>
+</div>
+</div>
+<!--  ====================== END Chapter: Calculator Tools  ==================== -->
+
+<!--  ====================== START Plans  ==================== -->
+<div class="content-section content-section-style content-section-chapter sjp-lead-like-card" data-group="startOfsection" id="plans"><div class="content-section-title"><div class="center-title-container"><div class="left-box"></div><div class="center-box">PLANS</div><div class="right-box type-content-title-right"></div></div></div><div class="content-section-verbiage">
+<div class="sjp-plan-grid sjp-plan-grid--conversion">
+<div class="sjp-plan-card sjp-plan-card--register"><h4><strong>Register</strong></h4>
+<ul class="sjp-plan-list">
+<li><span class="sjp-plan-emphasis">No Credit Card Required to Register</span></li>
+<li>Once registered, you will have 7 days of full access for free.</li>
+<li>After 7 days, you will receive an email with a link to subscribe.</li>
+<li>If you choose not to subscribe within 7 days of receiving the email, we will remove your account and thank you for trying Sourjoe.</li>
+</ul>
+<div class="sjp-plan-button-wrap"><a class="sjp-plan-button" href="https://app.sourjoe.com/register">REGISTER</a></div></div>
+<div class="sjp-plan-card sjp-plan-card--subscribe"><h4><strong>Subscription</strong></h4>
+<ul class="sjp-plan-list">
+<li>Secure <strong class="sjp-plan-emphasis">STRIPE</strong> checkout.</li>
+<li>Multiple Currency Plans.</li>
+<li>Monthly, yearly, and longer-term plans available.</li>
+<li>Cancel or change plans at any time by using the Manage Subscription button at <a href="https://stripe.sourjoe.com">stripe.sourjoe.com</a>.</li>
+</ul>
+<div class="sjp-plan-button-wrap"><a class="sjp-plan-button" href="https://stripe.sourjoe.com">SUBSCRIBE</a></div></div>
+</div>
+</div></div>
+<!--  ====================== END Plans  ==================== -->
+
+<!-- ==================== DRAWER DATA ELEMENTS ==================== -->
+
+<!-- START 'Main' Table of Contents Drawer -->
+<div data-group="drawer-content" id="TOC-main-title" style="display: none;">
+<div><span class="general-subject-title TOC">Table of Contents</span></div>
+</div>
+<div data-group="drawer-content" id="TOC-main-content" style="display: none;">
+<p onclick="sjpMainTocGo('lead-box');"><span class="link-style">Welcome</span></p>
+<p id="start0" onclick="sjpMainTocGo('startHereIntro');"><span class="link-style">Start Here</span></p>
+<p id="essentials0" onclick="sjpMainTocGo('essentialsIntro');"><span class="link-style">Essentials</span></p>
+<p id="leaven0" onclick="sjpMainTocGo('leavenIntro');"><span class="link-style">Culture, Starter &amp; Leaven</span></p>
+<p id="process0" onclick="sjpMainTocGo('processIntro');"><span class="link-style">Baker's Process</span></p>
+<p id="reference0" onclick="sjpMainTocGo('referenceIntro');"><span class="link-style">Reference</span></p>
+<p id="recipes0" onclick="sjpMainTocGo('recipesIntro');"><span class="link-style">Recipe Facts</span></p>
+<p id="calculators0" onclick="sjpMainTocGo('calculatorIntro');"><span class="link-style">Calculators</span></p>
+<p onclick="sjpMainTocGo('plans');"><span class="link-style">Plans</span></p>
+</div>
+<!-- END 'Main' Table of Contents Drawer -->
+
+<!-- START 'Start Here' Table of Contents Drawer -->
+<div data-group="drawer-content" id="TOC-starthere-title" style="display: none;">
+<div><span class="general-subject-title TOC">Start Here List</span></div>
+</div>
+<div data-group="drawer-content" id="TOC-starthere-content" style="display: none;">
+<p class="sjp-toc-group-heading" aria-hidden="true">In the Book:</p>
+<p id="start1" onclick="sjpMainTocGo('essentialsIntro');"><span class="link-style">Essentials</span></p>
+<p id="start2" onclick="sjpMainTocGo('leavenIntro');"><span class="link-style">Starter &amp; Leaven</span></p>
+<p id="start3" onclick="sjpMainTocGo('processIntro');"><span class="link-style">Baker's Process</span></p>
+<p id="start4" onclick="sjpMainTocGo('referenceIntro');"><span class="link-style">Glossary A to Z</span></p>
+<p class="sjp-toc-group-heading" aria-hidden="true">In Recipes:</p>
+<p id="start5" class="sjp-locked-toc" data-sjp-lock="true" data-sjp-lock-message="Create your Starter Recipe is part of the full Sourjoe app. Use Sign In or Sign Up to enter the app."><span class="link-style">Create your Starter</span><span aria-hidden="true" class="sjp-lock-icon" title="Locked preview">🔒</span></p>
+<p id="start6" class="sjp-locked-toc" data-sjp-lock="true" data-sjp-lock-message="Prepare Leaven Recipe is part of the full Sourjoe app. Use Sign In or Sign Up to enter the app."><span class="link-style">Prepare Leaven</span><span aria-hidden="true" class="sjp-lock-icon" title="Locked preview">🔒</span></p>
+<p id="start7" class="sjp-locked-toc" data-sjp-lock="true" data-sjp-lock-message="My First Bake Recipe is part of the full Sourjoe app. Use Sign In or Sign Up to enter the app."><span class="link-style">My First Bake</span><span aria-hidden="true" class="sjp-lock-icon" title="Locked preview">🔒</span></p>
+</div>
+<!-- END 'Start Here' Table of Contents Drawer -->
+
+<!-- START 'Essentials' Table of Contents Drawer -->
+<div data-group="drawer-content" id="TOC-essentials-title" style="display: none;">
+<div><span class="general-subject-title TOC">Essentials</span></div>
+</div>
+<div data-group="drawer-content" id="TOC-essentials-content" style="display: none;">
+<p id="essentials1" onclick="sjpMainTocGo('essentialsIntro');"><span class="link-style">Essentials Intro</span></p>
+<p id="essentials2" onclick="sjpTocOpenSection('essentialsTools', 'Essential Tools');"><span class="link-style">Essential Tools</span><span class="sjp-toc-badge">Live demo</span></p>
+<p id="essentials3" onclick="sjpTocOpenSection('essentialsIngredients', 'Essential Ingredients');" class="sjp-locked-toc" data-sjp-lock="true" data-sjp-lock-message="Essential Ingredients is included in the full Sourjoe Book. This public preview opens a brief veiled preview, then returns you to the TOC."><span class="link-style">Essential Ingredients</span><span aria-hidden="true" class="sjp-lock-icon sjp-clock-icon" title="Timed preview">🕒</span></p>
+</div>
+<!-- END 'Essentials' Table of Contents Drawer -->
+
+<!-- START 'Starter and Leaven' Table of Contents Drawer -->
+<div data-group="drawer-content" id="TOC-leaven-title" style="display: none;">
+<div><span class="general-subject-title TOC">Culture, Starter &amp; Leaven</span></div>
+</div>
+<div data-group="drawer-content" id="TOC-leaven-content" style="display: none;">
+<p id="leavan0" onclick="sjpMainTocGo('leavenIntro');"><span class="link-style">Starter &amp; Leaven Intro</span></p>
+<p id="leavan1" class="sjp-locked-toc" data-sjp-lock="true" data-sjp-lock-message="Culture is part of the full Sourjoe Book. Sign in or sign up for access."><span class="link-style">Culture</span><span aria-hidden="true" class="sjp-lock-icon" title="Locked">🔒</span></p>
+<p id="leavan2" onclick="sjpTocOpenSection('leavenStarter', 'Starter');" class="sjp-locked-toc" data-sjp-lock="true" data-sjp-lock-message="Starter is included in the full Sourjoe Book. This public preview opens a brief veiled preview, then returns you to the TOC."><span class="link-style">Starter</span><span aria-hidden="true" class="sjp-lock-icon sjp-clock-icon" title="Timed preview">🕒</span></p>
+<p id="leavan3" class="sjp-locked-toc" data-sjp-lock="true" data-sjp-lock-message="Leaven is part of the full Sourjoe Book. Sign in or sign up for access."><span class="link-style">Leaven</span><span aria-hidden="true" class="sjp-lock-icon" title="Locked">🔒</span></p>
+</div>
+<!-- END 'Starter and Leaven' Table of Contents Drawer -->
+
+<!-- START 'Baker's Process' Table of Contents Drawer -->
+<div data-group="drawer-content" id="TOC-process-title" style="display: none;">
+<div><span class="general-subject-title TOC">Baker's Process</span></div>
+</div>
+<div data-group="drawer-content" id="TOC-process-content" style="display: none;">
+<p id="process1" onclick="sjpMainTocGo('processIntro');"><span class="link-style">Introduction</span></p>
+<p id="process2" onclick="sjpTocOpenSection('processPrep', 'Preparation');" class="sjp-locked-toc" data-sjp-lock="true" data-sjp-lock-message="Preparation is included in the full Sourjoe Book."><span class="link-style">Preparation</span><span aria-hidden="true" class="sjp-lock-icon sjp-clock-icon" title="Timed preview">🕒</span></p>
+<p id="process3" onclick="sjpTocOpenSection('processMix', 'Initial Mix');"><span class="link-style">Initial Mix</span><span class="sjp-toc-badge">Live demo</span></p>
+<p id="process4" class="sjp-locked-toc" data-sjp-lock="true" data-sjp-lock-message="Bulk Fermentation is part of the full Sourjoe Book. Sign in or sign up for access."><span class="link-style">Bulk Fermentation</span><span aria-hidden="true" class="sjp-lock-icon" title="Locked">🔒</span></p>
+<p id="process5" class="sjp-locked-toc" data-sjp-lock="true" data-sjp-lock-message="Divide &amp; Shape is part of the full Sourjoe Book. Sign in or sign up for access."><span class="link-style">Divide &amp; Shape</span><span aria-hidden="true" class="sjp-lock-icon" title="Locked">🔒</span></p>
+<p id="process6" class="sjp-locked-toc" data-sjp-lock="true" data-sjp-lock-message="Proof is part of the full Sourjoe Book. Sign in or sign up for access."><span class="link-style">Proof</span><span aria-hidden="true" class="sjp-lock-icon" title="Locked">🔒</span></p>
+<p id="process7" class="sjp-locked-toc" data-sjp-lock="true" data-sjp-lock-message="Bake is part of the full Sourjoe Book. Sign in or sign up for access."><span class="link-style">Bake</span><span aria-hidden="true" class="sjp-lock-icon" title="Locked">🔒</span></p>
+<p id="process8" class="sjp-locked-toc" data-sjp-lock="true" data-sjp-lock-message="Post Bake is part of the full Sourjoe Book. Sign in or sign up for access."><span class="link-style">Post Bake</span><span aria-hidden="true" class="sjp-lock-icon" title="Locked">🔒</span></p>
+</div>
+<!-- END 'Baker's Process' Table of Contents Drawer -->
+
+<!-- START 'Reference' Table of Contents Drawer -->
+<div data-group="drawer-content" id="TOC-reference-title" style="display: none;">
+<div><span class="general-subject-title TOC">Reference Sections</span></div>
+</div>
+<div data-group="drawer-content" id="TOC-reference-content" style="display: none;">
+<p id="referenceIntroToc0" onclick="sjpMainTocGo('referenceIntro');"><span class="link-style">Reference Intro</span></p>
+<p id="glossary0" onclick="sjpTocOpenSection('glossaryAtoZ', 'Glossary A to Z');"><span class="link-style">Glossary A to Z</span><span class="sjp-toc-badge">Live demo</span></p>
+<p id="tools0" class="sjp-locked-toc" data-sjp-lock="true" data-sjp-lock-message="Tools A to Z is part of the full Sourjoe Book. Sign in or sign up for access."><span class="link-style">Tools A to Z</span><span aria-hidden="true" class="sjp-lock-icon" title="Locked">🔒</span></p>
+<p id="grains0" class="sjp-locked-toc" data-sjp-lock="true" data-sjp-lock-message="Grains A to Z is part of the full Sourjoe Book. Sign in or sign up for access."><span class="link-style">Grains A to Z</span><span aria-hidden="true" class="sjp-lock-icon" title="Locked">🔒</span></p>
+<p id="breads0" class="sjp-locked-toc" data-sjp-lock="true" data-sjp-lock-message="Breads A to Z is part of the full Sourjoe Book. Sign in or sign up for access."><span class="link-style">Breads A to Z</span><span aria-hidden="true" class="sjp-lock-icon" title="Locked">🔒</span></p>
+</div>
+<!-- END 'Reference' Table of Contents Drawer -->
+
+<!-- START Recipe Facts Table of Contents Drawer -->
+<div data-group="drawer-content" id="TOC-factoid-title" style="display: none;">
+<div><span class="general-subject-title TOC">Recipe Facts</span></div>
+</div>
+<div data-group="drawer-content" id="TOC-factoid-content" style="display: none;">
+<p id="recipe2" onclick="sjpTocOpenSection('recipeFactoids', 'Recipe Facts &amp; Nutrition');" class="sjp-locked-toc" data-sjp-lock="true" data-sjp-lock-message="Recipe Facts is included in the full Sourjoe Book. This public preview opens a brief veiled preview, then returns you to the TOC."><span class="link-style">Recipe List</span><span aria-hidden="true" class="sjp-lock-icon sjp-clock-icon" title="Timed preview">🕒</span></p>
+</div>
+<!-- END Recipe Facts Table of Contents Drawer -->
+
+<!-- START Calculator Table of Contents Drawer -->
+<div class="persistent" data-group="drawer-content" id="TOC-calculator-title" style="display: none;">
+<div><span class="general-subject-title TOC">Calculator List</span></div>
+</div>
+<div class="persistent" data-group="drawer-content" id="TOC-calculator-content" style="display: none;">
+<p onclick="return sjLaunchCalculators(event, 'unitConvertor');"><span class="link-style">Unit Conversion Calculator</span><span class="sjp-toc-badge">Live demo</span></p>
+<p class="sjp-locked-toc" data-sjp-lock="true" data-sjp-lock-message="Baker's Math Calculator is available inside the full Sourjoe app. Use Sign In or Sign Up to enter the app."><span class="link-style">Baker's Math Calculator</span><span aria-hidden="true" class="sjp-lock-icon" title="Locked preview">🔒</span></p>
+<p class="sjp-locked-toc" data-sjp-lock="true" data-sjp-lock-message="Leaven Calculator is available inside the full Sourjoe app. Use Sign In or Sign Up to enter the app."><span class="link-style">Leaven Calculator</span><span aria-hidden="true" class="sjp-lock-icon" title="Locked preview">🔒</span></p>
+<p class="sjp-locked-toc" data-sjp-lock="true" data-sjp-lock-message="Bread Recipe Hydration Calculator is available inside the full Sourjoe app. Use Sign In or Sign Up to enter the app."><span class="link-style">Bread Recipe Hydration Calculator</span><span aria-hidden="true" class="sjp-lock-icon" title="Locked preview">🔒</span></p>
+<p class="sjp-locked-toc" data-sjp-lock="true" data-sjp-lock-message="Rise Time Calculator is available inside the full Sourjoe app. Use Sign In or Sign Up to enter the app."><span class="link-style">Rise Time Calculator</span><span aria-hidden="true" class="sjp-lock-icon" title="Locked preview">🔒</span></p>
+<p class="sjp-locked-toc" data-sjp-lock="true" data-sjp-lock-message="Rise Factor Calculator is available inside the full Sourjoe app. Use Sign In or Sign Up to enter the app."><span class="link-style">Rise Factor Calculator</span><span aria-hidden="true" class="sjp-lock-icon" title="Locked preview">🔒</span></p>
+<p class="sjp-locked-toc" data-sjp-lock="true" data-sjp-lock-message="Desired Dough Temperature (DDT) Calculator is available inside the full Sourjoe app. Use Sign In or Sign Up to enter the app."><span class="link-style">Desired Dough Temperature (DDT) Calculator</span><span aria-hidden="true" class="sjp-lock-icon" title="Locked preview">🔒</span></p>
+<p class="sjp-locked-toc" data-sjp-lock="true" data-sjp-lock-message="Desired Water Temperature Calculator is available inside the full Sourjoe app. Use Sign In or Sign Up to enter the app."><span class="link-style">Desired Water Temperature Calculator</span><span aria-hidden="true" class="sjp-lock-icon" title="Locked preview">🔒</span></p>
+</div>
+<!-- END Calculator Table of Contents Drawer -->
+
+<!-- START Public Welcome Drawer Content -->
+<div data-group="drawer-content" id="SJP-public-about-title" style="display: none;">
+<h4>About Sourjoe</h4>
+</div>
+<div data-group="drawer-content" id="SJP-public-about-content" style="display: none;">
+<div class="sjp-public-drawer-panel sjp-public-about-drawer">
+<div class="sjp-public-drawer-video">
+<iframe title="vimeo-player" src="https://player.vimeo.com/video/1039391543?h=904ffe2e0d" width="640" height="360" frameborder="0" referrerpolicy="strict-origin-when-cross-origin" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" allowfullscreen></iframe>
+</div>
+<div class="sjp-about-story-stack" aria-label="About Sourjoe story panels">
+<section class="sjp-about-story-row sjp-about-story-row--copy-left">
+<div class="sjp-about-story-cell sjp-about-story-cell--copy">
+<h3>About Us</h3>
+<p>We are a father (Joe) and son (Aaron) duo that have a shared passion for sourdough. Joe has spent his life tinkering with gadgets, developing software, and marvelling at the peculiarities of the natural world. When Aaron's not experimenting with fermentation, he's reading about it. When the family gets together and we all sit down to eat, us two tend to be the only ones left four hours later. Naturally, this is where the idea for SOURJOE was formed.</p>
+</div>
+<div class="sjp-about-story-cell sjp-about-story-cell--media">
+<img alt="Joe and Aaron reviewing sourdough in the Sourjoe kitchen" class="sjp-about-story-image" src="https://sjmedia0.w3spaces.com/sjPICS/publicAboutUsPic.png"/>
+</div>
+</section>
+<section class="sjp-about-story-row sjp-about-story-row--copy-left">
+<div class="sjp-about-story-cell sjp-about-story-cell--copy">
+<h3>Our Mission</h3>
+<p>From the beginning, we've had one main goal: bring the recipe to life in the home kitchen. The modern home baker has to sift through blogs, videos, articles, and message boards all while being inundated with ads and pop ups that jerk the page around. Recipe books are wonderful and gorgeous, but often unwieldy and cumbersome. SOURJOE is here to bridge the gap between all these media to give Users the best possible experience.</p>
+</div>
+<div class="sjp-about-story-cell sjp-about-story-cell--media">
+<img alt="Sourjoe loaves being photographed for recipe documentation" class="sjp-about-story-image" src="https://sjmedia0.w3spaces.com/sjPICS/publicOurMissionPic.png"/>
+</div>
+</section>
+<section class="sjp-about-story-row sjp-about-story-row--copy-left">
+<div class="sjp-about-story-cell sjp-about-story-cell--copy">
+<h3>Our Motto</h3>
+<p class="sjp-about-motto-line"><em>By home bakers, for home bakers.</em></p>
+<p>It's that simple. We're committed to making this App useful and accessible to all home kitchens and all home bakers, from young to old, beginner to pro. There's a reason why in many languages the word <em>'bread'</em> is synonymous with the word <em>'life.'</em></p>
+</div>
+<div class="sjp-about-story-cell sjp-about-story-cell--media">
+<img alt="Sourjoe pan loaf and sliced bread" class="sjp-about-story-image" src="https://sjmedia0.w3spaces.com/sjPICS/publicOurMottoPic.png"/>
+</div>
+</section>
+</div></div>
+</div>
+
+<div data-group="drawer-content" id="SJP-public-gives-title" style="display: none;">
+<h4>What the Sourjoe App Gives You</h4>
+</div>
+<div data-group="drawer-content" id="SJP-public-gives-content" style="display: none;">
+<div class="sjp-public-drawer-panel sjp-public-gives-drawer">
+<p class="sjp-drawer-lede">Sourjoe is designed to be useful while you bake and helpful when you want to learn why each step matters.</p>
+<div class="sjp-feature-grid">
+<section class="sjp-feature-list sjp-feature-list--is">
+<h3>What Sourjoe is</h3>
+<ul>
+<li>No Credit Card Required for Trial</li>
+<li>Tested recipes</li>
+<li>Looping instructional videos per step</li>
+<li>Detailed recipe step guidance</li>
+<li>Optional educational links for each step</li>
+<li>SMS timer alerts</li>
+<li>A 'living' home sourdough baking book</li>
+<li>Preview/review steps</li>
+<li>Printable nutritional labels</li>
+<li>Sourdough-related calculator tools</li>
+<li>Detailed recipe facts for the sourdough nerd in you</li>
+<li>Human email support</li>
+</ul>
+</section>
+<section class="sjp-feature-list sjp-feature-list--not">
+<h3>What Sourjoe is not</h3>
+<ul>
+<li>Pop-up ads</li>
+<li>Annoying &ldquo;buy this thingy&rdquo; solicitations</li>
+<li>Email inbox inundation</li>
+<li>Your data shared with third parties</li>
+<li>A no-support app</li>
+</ul>
+</section>
+</div>
+</div>
+</div>
+
+<div data-group="drawer-content" id="SJP-public-how-title" style="display: none;">
+<h4>How to Use This Preview</h4>
+</div>
+<div data-group="drawer-content" id="SJP-public-how-content" style="display: none;">
+<div class="sjp-public-drawer-panel sjp-public-how-drawer">
+<p class="sjp-drawer-lede">This public page is a guided exhibit of the Sourjoe app, not a normal brochure page.</p>
+<ul class="sjp-how-list sjp-how-list--with-icons">
+<li><span class="sjp-guide-line-symbol sjp-guide-line-symbol--preview-eye" aria-hidden="true"><img alt="" aria-hidden="true" class="sjp-preview-eye-img sjp-preview-eye-img--guide sjp-compass-clean-img" src="https://sjmedia0.w3spaces.com/sjICONS/iconCompassWhiteClean.svg?v=20260605_pass17d_compassRemote"/></span><span class="sjp-guide-line-text"><strong>Click the compass icon</strong> in the top header to open or close this Preview Guide.</span></li>
+<li><span class="sjp-guide-line-symbol sjp-guide-line-symbol--uparrow" aria-hidden="true"><svg viewBox="0 0 32 32" role="img" focusable="false"><polygon points="16,5 27,20 21,20 21,28 11,28 11,20 5,20"></polygon></svg></span><span class="sjp-guide-line-text"><strong>Click the up-arrow icon</strong> in the top header to close any open panels and return to the top of the page.</span></li>
+<li><span class="sjb-helpDot sjp-info-anchor--guide" data-sjb="how-use-info-icon" behaviour-sjb="enabled" tabindex="0" aria-label="More information">?</span><span class="sjp-guide-line-text"><strong>Click on the info icon</strong> to get guidance on public-preview controls.</span></li>
+<li><span class="sjp-guide-helper-switch-sample" aria-hidden="true"><span class="sjb-switch sjp-guide-helper-switch"><input type="checkbox" checked disabled tabindex="-1"/><span class="sjb-slider"></span></span></span><span class="sjp-guide-line-text"><strong>Use the Helper Messages switch</strong> to turn the guidance bubbles on or off.</span></li>
+<li><span class="sjp-toc-badge sjp-guide-line-badge--live" aria-hidden="true">Live demo</span><span class="sjp-guide-line-text"><strong>Choose Live demo items</strong> to try working examples from the real app experience.</span></li>
+<li><span class="sjp-guide-line-symbol sjp-guide-line-symbol--clock" aria-hidden="true"><svg viewBox="0 0 32 32" role="img" focusable="false"><circle cx="16" cy="16" r="10.5"></circle><path d="M16 9.5v7l5 3"></path><path d="M11.5 5.4l-2.2 2.2"></path><path d="M20.5 5.4l2.2 2.2"></path></svg></span><span class="sjp-guide-line-text"><strong>Click clock-marked preview items</strong> to see member-only sections briefly through the public preview veil.</span></li>
+<li><span class="sjp-guide-line-symbol sjp-guide-line-symbol--lock" aria-hidden="true"><svg viewBox="0 0 32 32" role="img" focusable="false"><path class="sjp-guide-lock-shackle" d="M10.5 14v-3.5a5.5 5.5 0 0 1 11 0V14"></path><rect class="sjp-guide-lock-body" x="8.5" y="13" width="15" height="12" rx="2.4"></rect><circle class="sjp-guide-lock-dot" cx="16" cy="18" r="1.4"></circle><path class="sjp-guide-lock-slot" d="M16 19.2v3"></path></svg></span><span class="sjp-guide-line-text"><strong>Click padlock-marked recipe items</strong> to see a short timed message without opening a private preview.</span></li>
+<li><span class="sjp-guide-line-badge sjp-guide-line-badge--signin" aria-hidden="true">Sign In</span><span class="sjp-guide-line-text"><strong>Use Sign In or Sign Up</strong> in the lower fixed header when you are ready to enter the app.</span></li>
+</ul>
+</div>
+</div>
+<!-- END Public Welcome Drawer Content -->
+
+<!-- Overlay and Drawers -->
+<div class="overlay" onclick="close_drawers()"></div>
+<div class="drawer drawer-left"><div class="drawer-header"><div class="drawer-title"></div><button onclick="close_drawers()" type="button">X</button></div><div class="drawer-content"></div></div>
+<div class="drawer drawer-right"><div class="drawer-header"><div class="drawer-title"></div><button onclick="close_drawers()" type="button">X</button></div><div class="drawer-content"></div></div>
+<div class="drawer drawer-top"><div class="drawer-header"><div class="drawer-title"></div><button onclick="close_drawers()" type="button">X</button></div><div class="drawer-content"></div></div>
+<div class="drawer drawer-bottom"><div class="drawer-header"><div class="drawer-title"></div><button onclick="close_drawers()" type="button">X</button></div><div class="drawer-content"></div></div>
+
+</main>
+
+<!-- ✅ 27Jun26b 🧩 [SJP-PHASE1-SCRIPTS-01] New p.html script references. -->
+<script src="./sjEnvironment.js?v=20260627_phase0_p0path1"></script>
+<script src="./sjRabbitHoleLink.js?v=20260608_rhTopPin2e"></script>
+<script src="./sjRecipes.js?v=20260626_printBraceFix3"></script>
+<script src="./sjBubbles.js?v=20260530_pass14d_lineSafeHelpers"></script>
+<script src="./sjDrawerScripts.js?v=20260630f"></script>
+<script src="./sjCubeScripts.js?v=000"></script>
+<script src="./sjCalculatorLaunch.js?v=20260702_calcreturn1"></script>
+<script src="./pjb-steps.js?v=20260517_recipeStepPreview3"></script>
+<script src="./p1.js?v=20260702_calcreturn1"></script>
+<!-- 🧩 [SJ-PNG-LIB] html2canvas for Nutrition PNG export -->
+<script crossorigin="anonymous" defer="" src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js">
+</script>
+</body>
+</html>

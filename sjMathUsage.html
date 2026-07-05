@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>sjMath Usage</title>
+  <link rel="stylesheet" href="./sjMathStyles.css" />
+  <script src="./sjMathScripts.js" defer></script>
+  <style>
+    body { margin: 0; font-family: Arial, Helvetica, sans-serif; background: #f8fafc; color: #0f172a; }
+    .page { max-width: 860px; margin: 0 auto; padding: 24px; }
+    .demo-shell { background: white; border: 1px solid #cbd5e1; border-radius: 14px; padding: 18px; box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06); }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <h1>sjMath Usage</h1>
+    <p>This page demonstrates the <strong>Unit Convertor</strong> module. The markup below matches the DOM IDs expected by <code>sjMathScripts.js</code>, so the reusable engine can drive the fields exactly as it does inside sjLearn.</p>
+    <div class="demo-shell">
+      <div class="sj-math sj-uc" id="BakersMathCalc">
+        <form autocomplete="off" class="sj-uc-form">
+          <div class="sj-uc-titleRow"><div class="sj-uc-titleSlot"></div><div class="sj-uc-titleMid"><span class="sj-uc-titleText">Choose Ingredient:</span></div><div class="sj-uc-titleSlot"></div></div>
+          <div class="sj-uc-row"><div class="sj-uc-cell"><select class="sj-uc-select" id="Ingredient" name="CupsSpoonsDisplay" onchange="handleChooseIngredient();"><option value="125">CUSTOM</option><option value="127">BREAD FLOUR</option><option selected value="125">AP FLOUR</option><option value="102">RYE FLOUR</option><option value="227">WATER</option><option value="277">SALT</option><option value="224">LEAVEN</option></select></div><div class="sj-uc-cell"><input class="sj-uc-input sj-uc-input--xPerCup" id="xPerCup" inputmode="decimal" min="1" onchange="handleGramsPerCup();" onfocus="this.select();" onkeyup="handleGramsPerCup();" type="number" value="125" /><span class="sj-uc-unit" id="xPerCupUnit">g/Cup</span></div></div>
+          <div class="sj-uc-titleRow"><div class="sj-uc-titleSlot"></div><div class="sj-uc-titleMid"><span class="sj-uc-titleText">Enter Amount:</span></div><div class="sj-uc-titleSlot"></div></div>
+          <div class="sj-uc-panel" id="MetricRow"><div class="sj-uc-panelTitle sj-uc-grid2"><div>Kilograms</div><div>Grams</div></div><div class="sj-uc-panelFields sj-uc-grid2"><div class="sj-uc-field"><input class="sj-uc-input" id="kilos" inputmode="decimal" min="0" onchange="handleKilos();" onfocus="this.select();" onkeyup="handleKilos();" type="number" value="0" /></div><div class="sj-uc-field"><input class="sj-uc-input" id="grams" inputmode="decimal" min="0" onchange="handleGrams();" onfocus="this.select();" onkeyup="handleGrams();" type="number" value="500" /></div></div><div class="sj-uc-summary"><span id="metricSummary">0.50</span>&nbsp;Kilograms</div></div>
+          <div class="sj-uc-panel" id="ImperialRow"><div class="sj-uc-panelTitle sj-uc-grid2"><div>Pounds</div><div>Ounces</div></div><div class="sj-uc-panelFields sj-uc-grid2"><div class="sj-uc-field"><input class="sj-uc-input" id="pounds" inputmode="decimal" min="0" onchange="handlePounds();" onfocus="this.select();" onkeyup="handlePounds();" type="number" value="1" /></div><div class="sj-uc-field"><input class="sj-uc-input" id="ounces" inputmode="decimal" min="0" step="0.1" onchange="handleOunces();" onfocus="this.select();" onkeyup="handleOunces();" type="number" value="1.6" /></div></div><div class="sj-uc-summary"><span id="imperialSummary">1.13</span>&nbsp;Pounds</div></div>
+          <div class="sj-uc-panel"><div class="sj-uc-panelTitle sj-uc-grid3 sj-uc-panelTitle--volume"><div>Cups</div><div>Tablespoons</div><div>Teaspoons</div></div><div class="sj-uc-volumeFields"><div class="sj-uc-volField"><div class="sj-uc-volLabel">Cups</div><div class="sj-uc-volBox"><span><input class="sj-uc-inputGreen" id="CupsInput" inputmode="decimal" max="99" min="0" onchange="handleCups();" onfocus="this.select();" onkeyup="handleCups();" type="number" value="4" /></span><span><select class="sj-uc-selectGreen" id="cupsFrac" onchange="handleCups();" onkeyup="handleCups();"><option value="0.5000">½</option><option value="0.3333">⅓</option><option value="0.2500">¼</option><option selected value="0">--</option></select></span></div></div><div class="sj-uc-volField"><div class="sj-uc-volLabel">Tablespoons</div><div class="sj-uc-volBox"><span><input class="sj-uc-inputGreen" id="tbspInput" inputmode="decimal" max="99" min="0" onchange="handleTbsp();" onfocus="this.select();" onkeyup="handleTbsp();" type="number" value="0" /></span><span><select class="sj-uc-selectGreen" id="tbspFrac" onchange="handleTbsp();" onkeyup="handleTbsp();"><option value="0.5000">½</option><option selected value="0">--</option></select></span></div></div><div class="sj-uc-volField"><div class="sj-uc-volLabel">Teaspoons</div><div class="sj-uc-volBox"><span><input class="sj-uc-inputGreen" id="tspInput" inputmode="decimal" max="99" min="0" onchange="handleTsp();" onfocus="this.select();" onkeyup="handleTsp();" type="number" value="0" /></span><span><select class="sj-uc-selectGreen" id="tspFrac" onchange="handleTsp();" onkeyup="handleTsp();"><option value="0.5000">½</option><option value="0.2500">¼</option><option value="0.1250">⅛</option><option selected value="0">--</option></select></span></div></div></div></div>
+          <div class="sj-uc-menu" id="MenuBar"><div><input class="sj-uc-btn" id="Reset" onclick="sjInitValues(); RefreshDisplay();" type="button" value="RESET" /></div><div><input class="sj-uc-btn" id="RefreshButtonDisplay" onclick="RefreshDisplay();" type="button" value="OPTIMIZE" /></div><div class="sj-uc-residual" id="residual">Accuracy: 0.5 grams (0.1 % of Amount)</div></div>
+          <input hidden id="gramsP" type="number" value="500.000" />
+          <input hidden id="ouncesP" type="number" value="1.600" />
+          <p class="sj-uc-debug" id="test"></p>
+        </form>
+      </div>
+    </div>
+  </div>
+  <script>window.addEventListener('DOMContentLoaded', function () { if (typeof sjInitValues === 'function') { sjInitValues(); } });</script>
+</body>
+</html>

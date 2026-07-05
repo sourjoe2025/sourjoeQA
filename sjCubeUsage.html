@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>sjCube Usage</title>
+  <link rel="stylesheet" href="./sjCubeStyles.css" />
+  <script src="./sjCubeScripts.js" defer></script>
+  <style>
+    :root { --cubeBaseWidth: 150px; --cubeSideWidth: calc(var(--cubeBaseWidth) / 2); }
+    body { margin: 0; font-family: Arial, Helvetica, sans-serif; background: linear-gradient(180deg, #eff6ff 0%, #ffffff 100%); color: #0f172a; }
+    .page { max-width: 760px; margin: 0 auto; padding: 24px; text-align: center; }
+    .demo-shell { background: #fff; border: 1px solid #cbd5e1; border-radius: 14px; padding: 18px; box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06); }
+    .messageContainer { min-height: 80px; display: flex; align-items: center; justify-content: center; margin-top: 10px; }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <h1>sjCube Usage</h1>
+    <p>This page demonstrates the rotating SourJoe cube using only <code>sjCubeStyles.css</code> and <code>sjCubeScripts.js</code>. The six faces are driven by CSS custom properties that the script swaps as each image set advances.</p>
+    <div class="demo-shell">
+      <div class="cube-container-parent">
+        <div class="cube-container">
+          <div class="cube">
+            <div class="side front"></div>
+            <div class="side back"></div>
+            <div class="side right"></div>
+            <div class="side left"></div>
+            <div class="side top"></div>
+            <div class="side bottom"></div>
+          </div>
+        </div>
+      </div>
+      <div class="messageContainer"><p class="flipBoxMsgBox" id="flipBoxMsg"></p></div>
+    </div>
+  </div>
+</body>
+</html>

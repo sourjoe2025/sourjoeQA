@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>sjDrawer Usage</title>
+
+  <!--
+    This standalone page demonstrates how to use the sjDrawer module.
+    It depends only on:
+      1) sjDrawerStyles.css
+      2) sjDrawerScripts.js
+
+    The hidden source nodes below are moved INTO a drawer when opened,
+    then restored to their original parent when the drawer closes.
+  -->
+  <script>var isSearching = false;</script>
+  <link rel="stylesheet" href="./sjDrawerStyles.css" />
+  <script src="./sjDrawerScripts.js" defer></script>
+
+  <style>
+    :root {
+      --drawerBaseWidth: auto;
+      --drawerShiftWidth: calc((100% - var(--drawerBaseWidth)) / 2);
+      --drawerBaseHeight: auto;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #f8fafc;
+      color: #0f172a;
+    }
+
+    .page {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+
+    .button-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin: 18px 0 24px;
+    }
+
+    .demo-btn {
+      border: 1px solid #94a3b8;
+      background: white;
+      border-radius: 8px;
+      padding: 10px 14px;
+      cursor: pointer;
+      font: inherit;
+    }
+
+    .demo-card {
+      background: white;
+      border: 1px solid #cbd5e1;
+      border-radius: 12px;
+      padding: 18px;
+      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+    }
+
+    .drawer-close {
+      border: 1px solid rgba(255,255,255,0.65);
+      background: transparent;
+      color: inherit;
+      border-radius: 999px;
+      width: 28px;
+      height: 28px;
+      cursor: pointer;
+      font-size: 18px;
+      line-height: 1;
+    }
+
+    .demo-list {
+      margin: 0;
+      padding-left: 18px;
+    }
+
+    .demo-note {
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      border-radius: 10px;
+      padding: 10px 12px;
+      margin-top: 12px;
+    }
+
+    .demo-links {
+      display: grid;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .demo-links a {
+      color: #bfdbfe;
+      text-decoration: none;
+      border-bottom: 1px dashed rgba(191, 219, 254, 0.55);
+      padding-bottom: 4px;
+    }
+
+    .demo-links a:hover {
+      color: #ffffff;
+      border-bottom-color: rgba(255,255,255,0.75);
+    }
+
+    .drawer-theme-card {
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      background: white;
+    }
+
+    .media-block {
+      width: 100%;
+      display: block;
+      background: #000;
+    }
+
+    .media-caption {
+      padding: 14px 16px;
+      line-height: 1.55;
+    }
+
+    .toc-theme {
+      line-height: 1.55;
+      color: #e2e8f0;
+    }
+
+    .toc-theme h3,
+    .toc-theme h4 {
+      margin-top: 0;
+      color: #ffffff;
+    }
+
+    .top-theme,
+    .left-theme,
+    .bottom-theme {
+      line-height: 1.6;
+    }
+
+    iframe {
+      background: #fff;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <h1>sjDrawer Usage</h1>
+
+    <p>
+      This page demonstrates four different drawer directions using the same core
+      <code>open_drawer(...)</code> API. Each button opens a different drawer with a different content theme.
+    </p>
+
+    <!--
+      One button per drawer direction, as requested:
+      - Left   = video + lorem ipsum
+      - Right  = TOC-style content with links
+      - Top    = pure lorem ipsum / text content
+      - Bottom = image + lorem ipsum
+    -->
+    <div class="button-row">
+      <button class="demo-btn" type="button"
+        onclick="open_drawer('drawer-left', 'utility', document.getElementById('demoLeftTitle'), document.getElementById('demoLeftContent'), '88vh');">
+        Open left video drawer
+      </button>
+
+      <button class="demo-btn" type="button"
+        onclick="open_drawer('drawer-right', 'toc', document.getElementById('demoRightTitle'), document.getElementById('demoRightContent'));">
+        Open right TOC drawer
+      </button>
+
+      <button class="demo-btn" type="button"
+        onclick="open_drawer('drawer-top', 'info', document.getElementById('demoTopTitle'), document.getElementById('demoTopContent'), '48vh');">
+        Open top text drawer
+      </button>
+
+      <button class="demo-btn" type="button"
+        onclick="open_drawer('drawer-bottom', 'utility', document.getElementById('demoBottomTitle'), document.getElementById('demoBottomContent'), '72vh');">
+        Open bottom image drawer
+      </button>
+    </div>
+
+    <div class="demo-card">
+      <h2>How this module works</h2>
+      <ol class="demo-list">
+        <li>Keep source title/content blocks in the page, usually hidden.</li>
+        <li>Call <code>open_drawer(whichDrawer, drawerType, titleNode, contentNode, optionalHeight)</code>.</li>
+        <li>The module moves those real nodes into the active drawer.</li>
+        <li>When the drawer closes, the nodes are restored to their original hidden container.</li>
+      </ol>
+
+      <div class="demo-note">
+        Click the grey overlay or the × button in the drawer header to close.
+        This page intentionally shows the four main directions separately so future coders can copy the pattern they need.
+      </div>
+    </div>
+  </div>
+
+  <!-- Overlay used by sjDrawer -->
+  <div class="overlay" onclick="close_drawers()"></div>
+
+  <!--
+    All four drawer shells exist in the DOM all the time.
+    sjDrawer injects the chosen title/content into the matching shell.
+  -->
+  <div class="drawer drawer-left">
+    <div class="drawer-header">
+      <div class="drawer-title"></div>
+      <button class="drawer-close" type="button" onclick="close_drawers()" aria-label="Close drawer">×</button>
+    </div>
+    <div class="drawer-content"></div>
+  </div>
+
+  <div class="drawer drawer-right">
+    <div class="drawer-header">
+      <div class="drawer-title"></div>
+      <button class="drawer-close" type="button" onclick="close_drawers()" aria-label="Close drawer">×</button>
+    </div>
+    <div class="drawer-content"></div>
+  </div>
+
+  <div class="drawer drawer-top">
+    <div class="drawer-header">
+      <div class="drawer-title"></div>
+      <button class="drawer-close" type="button" onclick="close_drawers()" aria-label="Close drawer">×</button>
+    </div>
+    <div class="drawer-content"></div>
+  </div>
+
+  <div class="drawer drawer-bottom">
+    <div class="drawer-header">
+      <div class="drawer-title"></div>
+      <button class="drawer-close" type="button" onclick="close_drawers()" aria-label="Close drawer">×</button>
+    </div>
+    <div class="drawer-content"></div>
+  </div>
+
+  <!--
+    Hidden source nodes.
+    sjDrawer MOVES these nodes into the live drawer, so interactive content remains interactive.
+  -->
+  <div style="display:none;">
+
+    <!-- LEFT DRAWER: video + text -->
+    <div data-group="drawer-content" id="demoLeftTitle">
+      <div><strong>Left Drawer • Video Theme</strong></div>
+    </div>
+
+    <div data-group="drawer-content" id="demoLeftContent" class="left-theme">
+      <div class="drawer-theme-card">
+        <video class="media-block" controls playsinline muted preload="metadata" poster="data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='960' height='540' viewBox='0 0 960 540'%3E%3Crect width='960' height='540' fill='%230f172a'/%3E%3Ccircle cx='480' cy='270' r='68' fill='%23ffffff' fill-opacity='0.12'/%3E%3Cpolygon points='455,225 455,315 535,270' fill='%23ffffff'/%3E%3Ctext x='480' y='370' text-anchor='middle' font-family='Arial' font-size='28' fill='%23cbd5e1'%3EsjDrawer video demo%3C/text%3E%3C/svg%3E">
+          <source src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+        <div class="media-caption">
+          <p><strong>Example use case:</strong> a left-side utility or media panel.</p>
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer faucibus, nunc sed feugiat posuere, nulla magna dictum metus, vel luctus nunc dui eu lorem.</p>
+          <p>Vivamus gravida magna sed neque malesuada, eget dignissim dui imperdiet. Sed facilisis, sem vitae faucibus commodo, enim nibh pretium sapien, sit amet suscipit nunc velit ut orci.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT DRAWER: TOC style -->
+    <div data-group="drawer-content" id="demoRightTitle">
+      <div><strong>Right Drawer • Table of Contents Theme</strong></div>
+    </div>
+
+    <div data-group="drawer-content" id="demoRightContent" class="toc-theme">
+      <h3>Project Sections</h3>
+      <div class="demo-links">
+        <a href="#drawer-intro">1. Introduction</a>
+        <a href="#drawer-install">2. Installation</a>
+        <a href="#drawer-api">3. API Overview</a>
+        <a href="#drawer-patterns">4. Integration Patterns</a>
+        <a href="#drawer-accessibility">5. Accessibility Notes</a>
+        <a href="#drawer-debugging">6. Debugging Checklist</a>
+      </div>
+      <div class="demo-note" style="margin-top:16px;background:rgba(255,255,255,0.08);border-color:rgba(255,255,255,0.14);color:#e2e8f0;">
+        This simulates a chapter/section TOC drawer. The links are placeholders here, but the visual pattern matches a real navigation drawer.
+      </div>
+    </div>
+
+    <!-- TOP DRAWER: text only -->
+    <div data-group="drawer-content" id="demoTopTitle">
+      <div><strong>Top Drawer • Text Theme</strong></div>
+    </div>
+
+    <div data-group="drawer-content" id="demoTopContent" class="top-theme">
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque interdum, nisi nec iaculis faucibus, libero erat bibendum neque, vitae dapibus velit mauris id metus.</p>
+      <p>Aliquam erat volutpat. Morbi pretium lorem vitae lorem facilisis, non condimentum mauris suscipit. Vestibulum sed turpis arcu. Ut convallis lectus id dignissim dignissim.</p>
+      <p>Praesent consequat, augue id aliquet bibendum, augue nisl sagittis ipsum, a varius turpis nulla vitae arcu. Nam vehicula massa nec justo porta, sit amet luctus lacus luctus.</p>
+    </div>
+
+    <!-- BOTTOM DRAWER: image + text -->
+    <div data-group="drawer-content" id="demoBottomTitle">
+      <div><strong>Bottom Drawer • Image Theme</strong></div>
+    </div>
+
+    <div data-group="drawer-content" id="demoBottomContent" class="bottom-theme">
+      <div class="drawer-theme-card">
+        <img
+          class="media-block"
+          alt="Demo landscape illustration"
+          src="data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1200' height='720' viewBox='0 0 1200 720'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' x2='0' y1='0' y2='1'%3E%3Cstop offset='0%25' stop-color='%23dbeafe'/%3E%3Cstop offset='100%25' stop-color='%23e2e8f0'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='1200' height='720' fill='url(%23g)'/%3E%3Crect y='470' width='1200' height='250' fill='%2394a3b8'/%3E%3Cpath d='M0 500 L210 330 L360 420 L570 250 L770 420 L940 300 L1200 520 L1200 720 L0 720 Z' fill='%23475569'/%3E%3Ccircle cx='985' cy='145' r='52' fill='%23fbbf24'/%3E%3Ctext x='600' y='660' text-anchor='middle' font-family='Arial' font-size='34' fill='%230f172a'%3EsjDrawer bottom image demo%3C/text%3E%3C/svg%3E" />
+        <div class="media-caption">
+          <p><strong>Example use case:</strong> rich explanatory content, image panels, or calculator/result sections.</p>
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eget velit ut nisi porttitor suscipit. Phasellus dapibus purus at nisl hendrerit, vel posuere neque tempor.</p>
+          <p>Donec sit amet feugiat nisi. Curabitur auctor, nisl at volutpat feugiat, sapien dolor mollis nunc, non ultricies massa nibh quis nisl.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

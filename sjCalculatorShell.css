@@ -1,0 +1,454 @@
+/* =========================================================================================
+   sjCalculatorShell.css
+
+   ✅ 2026-06-12 🧮 [SJ-CALC-PASS5-SHELL-CSS-01]
+   Standalone calculator session.
+
+   ✅ 2026-06-12 🧮 [SJ-CALC-PASS5C-STYLE-01]
+   Narrow styling pass:
+   - Make top black header span full viewport while keeping inner controls at 940px.
+   - Change standalone session background to the Book overlay grey.
+   - Restore calculator panel body/header visual treatment to the original white/section style.
+   - Remove extra vertical gap so calculator section header starts directly under shell header.
+   ========================================================================================= */
+
+:root {
+  --sjcalc-shell-max: 940px;
+  --sjcalc-shell-header-height: 64px;
+  --sjcalc-shell-bg: rgba(169, 169, 169, 0.70);
+}
+
+html.sjcalc-standalone,
+html.sjcalc-standalone body {
+  min-height: 100%;
+  margin: 0;
+  background: var(--sjcalc-shell-bg) !important;
+}
+
+body.sjcalc-standalone-body {
+  font-family: Arial, Helvetica, sans-serif;
+  color: #123146;
+  overflow-x: hidden;
+}
+
+.sjcalc-session {
+  min-height: 100vh;
+  background: var(--sjcalc-shell-bg);
+  padding: calc(var(--sjcalc-shell-header-height) + env(safe-area-inset-top)) 12px max(22px, env(safe-area-inset-bottom));
+  box-sizing: border-box;
+}
+
+.sjcalc-shell-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1500;
+  width: 100%;
+  min-height: calc(var(--sjcalc-shell-header-height) + env(safe-area-inset-top));
+  margin: 0;
+  padding: env(safe-area-inset-top) 12px 0;
+  background: #000;
+  box-sizing: border-box;
+}
+
+.sjcalc-shell-bar-inner {
+  width: min(var(--sjcalc-shell-max), 100%);
+  min-height: var(--sjcalc-shell-header-height);
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  box-sizing: border-box;
+}
+
+.sjcalc-shell-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #fff;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  min-width: 0;
+}
+
+.sjcalc-shell-logo img {
+  width: 38px;
+  height: 38px;
+  object-fit: contain;
+  flex: 0 0 auto;
+}
+
+.sjcalc-shell-logo span {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sjcalc-shell-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  flex: 0 0 auto;
+}
+
+.sjcalc-shell-btn,
+.sjcalc-shell-x {
+  appearance: none;
+  border: 2px solid #bde8ff;
+  background: #fff;
+  color: #123146;
+  border-radius: 999px;
+  font-weight: 800;
+  cursor: pointer;
+  line-height: 1;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.35);
+}
+
+.sjcalc-shell-btn {
+  padding: 10px 14px;
+  font-size: 0.9rem;
+}
+
+.sjcalc-shell-x {
+  width: 42px;
+  height: 42px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+}
+
+.sjcalc-shell-btn:hover,
+.sjcalc-shell-btn:focus-visible,
+.sjcalc-shell-x:hover,
+.sjcalc-shell-x:focus-visible {
+  outline: none;
+  background: #e8f7ff;
+}
+
+.sjcalc-shell-card {
+  max-width: var(--sjcalc-shell-max);
+  margin: 14px auto 26px;
+  background: #fff;
+  border: 4px solid #bde8ff;
+  border-radius: 18px;
+  box-shadow: 0 12px 32px rgba(0,0,0,0.35);
+  box-sizing: border-box;
+}
+
+.sjcalc-shell-toc {
+  padding: 22px 18px 26px;
+  text-align: center;
+}
+
+.sjcalc-shell-title {
+  margin: 0 0 16px;
+  color: #0c5e92;
+  font-size: clamp(1.35rem, 2.5vw, 2rem);
+  font-weight: 900;
+  letter-spacing: 0.02em;
+}
+
+.sjcalc-shell-note {
+  max-width: 720px;
+  margin: 0 auto 18px;
+  font-size: 1rem;
+  line-height: 1.45;
+}
+
+.sjcalc-shell-list {
+  width: min(520px, 100%);
+  margin: 0 auto;
+  display: grid;
+  gap: 10px;
+}
+
+.sjcalc-shell-list button {
+  appearance: none;
+  width: 100%;
+  padding: 12px 14px;
+  border: 2px solid #bde8ff;
+  border-radius: 14px;
+  background: #f8fdff;
+  color: #0c5e92;
+  font-size: 1rem;
+  font-weight: 800;
+  cursor: pointer;
+  text-align: center;
+}
+
+.sjcalc-shell-list button:hover,
+.sjcalc-shell-list button:focus-visible {
+  outline: none;
+  background: #e8f7ff;
+}
+
+.sjcalc-workspace {
+  max-width: var(--sjcalc-shell-max);
+  margin: 0 auto 28px;
+}
+
+.sjcalc-workspace > .content-section {
+  display: none;
+  width: 100% !important;
+  max-width: var(--sjcalc-shell-max) !important;
+  margin: 0 auto 26px !important;
+  background: #fff !important;
+  box-sizing: border-box;
+}
+
+.sjcalc-workspace > .content-section.sjcalc-shell-active {
+  display: block !important;
+}
+
+/* Standalone mode uses the original calculator panel header/body styling, but not the in-book controls. */
+.sjcalc-workspace .content-section-title {
+  top: calc(var(--sjcalc-shell-header-height) + env(safe-area-inset-top)) !important;
+  margin-top: 0 !important;
+  background-color: #e6f4ed;
+  border-bottom-color: #75ba75;
+}
+
+.sjcalc-workspace .content-section-verbiage,
+.sjcalc-workspace .content-section-moreMsg {
+  background: #fff !important;
+}
+
+.sjcalc-workspace .content-section-title .right-box.content-title-right,
+.sjcalc-workspace .content-section-title .moreButton {
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+/* In standalone mode the Rabbit Hole launcher must always be reachable. */
+.sjcalc-workspace .content-section-moreMsg {
+  display: block !important;
+}
+
+.sjcalc-workspace .sjRabbitHole-wrap[hidden] {
+  display: block !important;
+}
+
+.sjcalc-workspace .content-section-verbiage {
+  box-sizing: border-box;
+}
+
+.sjcalc-blocked {
+  max-width: 760px;
+  margin: 12vh auto 0;
+  padding: 22px;
+  background: #fff;
+  border: 4px solid #bde8ff;
+  border-radius: 18px;
+  text-align: center;
+  box-shadow: 0 12px 32px rgba(0,0,0,0.35);
+}
+
+.sjcalc-blocked h1 {
+  margin-top: 0;
+  color: #0c5e92;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+@media (max-width: 700px) {
+  :root {
+    --sjcalc-shell-header-height: 60px;
+  }
+
+  .sjcalc-session {
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+
+  .sjcalc-shell-bar {
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+
+  .sjcalc-shell-logo span {
+    font-size: 0.9rem;
+  }
+
+  .sjcalc-shell-btn {
+    padding: 9px 11px;
+    font-size: 0.82rem;
+  }
+
+  .sjcalc-shell-x {
+    width: 40px;
+    height: 40px;
+  }
+
+  .sjcalc-shell-card {
+    border-radius: 14px;
+  }
+
+  .sjcalc-shell-toc {
+    padding: 18px 10px 20px;
+  }
+}
+
+
+/* Public preview calculator chooser: Unit Convertor live, full-suite calculators timed/veiled. */
+.sjcalc-public-preview .sjcalc-shell-list button.sjcalc-shell-live-demo::after {
+  content: 'Live demo';
+  display: inline-block;
+  margin-left: 10px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: #dff6e7;
+  color: #146b2f;
+  font-size: 0.78rem;
+  font-weight: 900;
+  vertical-align: middle;
+}
+
+.sjcalc-shell-list button.sjcalc-shell-locked {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  border-color: #d3d6da;
+  background: #f1f3f5;
+  color: #59616b;
+  cursor: pointer;
+}
+
+.sjcalc-shell-list button.sjcalc-shell-locked:hover,
+.sjcalc-shell-list button.sjcalc-shell-locked:focus-visible {
+  background: #eceff2;
+}
+
+.sjcalc-shell-lock {
+  flex: 0 0 auto;
+  font-size: 1.05em;
+  line-height: 1;
+}
+
+.sjcalc-public-lock-notice {
+  max-width: 720px;
+  margin: 0 auto 16px;
+  padding: 12px 14px;
+  border: 2px solid #f0c84b;
+  border-radius: 12px;
+  background: #fff8d8;
+  color: #4d3b00;
+  font-size: 0.98rem;
+  line-height: 1.42;
+  text-align: left;
+  box-sizing: border-box;
+}
+
+.sjcalc-public-lock-notice[hidden] {
+  display: none !important;
+}
+
+
+/* ✅ 2026-06-16 🧮 [SJCALC-PUBLIC-TIMED-VEIL-01]
+   Locked public calculators now open as short, veiled previews instead of inert padlocks. */
+.sjcalc-public-preview-veil {
+  position: fixed;
+  top: calc(var(--sjcalc-shell-header-height) + env(safe-area-inset-top));
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1300;
+  display: none;
+  background: rgba(169, 169, 169, 0.58);
+  cursor: not-allowed;
+}
+
+.sjcalc-public-preview-veil.sjcalc-public-preview-veil--visible {
+  display: block;
+}
+
+.sjcalc-public-calculator-preview-active .sjcalc-workspace {
+  filter: blur(0.4px);
+  user-select: none;
+}
+
+.sjcalc-public-calculator-preview-active .sjcalc-workspace * {
+  pointer-events: none !important;
+}
+
+.sjcalc-public-preview-notice {
+  position: fixed;
+  left: 50%;
+  right: auto;
+  bottom: calc(env(safe-area-inset-bottom) + 16px);
+  transform: translateX(-50%);
+  z-index: 1700;
+  width: min(720px, calc(100vw - 24px));
+  box-sizing: border-box;
+  padding: 12px 14px;
+  border: 2px solid #f0c84b;
+  border-radius: 14px;
+  background: #fff8d8;
+  color: #4d3b00;
+  box-shadow: 0 10px 26px rgba(0,0,0,0.35);
+  font-size: 0.98rem;
+  line-height: 1.35;
+}
+
+.sjcalc-public-preview-notice[hidden] {
+  display: none !important;
+}
+
+.sjcalc-public-preview-notice__topline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.sjcalc-public-preview-notice__message {
+  flex: 1 1 auto;
+  font-weight: 800;
+}
+
+.sjcalc-public-preview-notice__countdown {
+  margin-top: 6px;
+  font-weight: 900;
+  text-align: center;
+}
+
+.sjcalc-public-preview-notice__close {
+  flex: 0 0 auto;
+  appearance: none;
+  border: 2px solid #4d3b00;
+  border-radius: 999px;
+  background: #fff;
+  color: #4d3b00;
+  padding: 7px 12px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.sjcalc-public-preview-notice__close:hover,
+.sjcalc-public-preview-notice__close:focus-visible {
+  outline: none;
+  background: #ffeeb0;
+}
+
+@media (max-width: 700px) {
+  .sjcalc-public-preview-notice {
+    bottom: calc(env(safe-area-inset-bottom) + 10px);
+    padding: 10px 10px;
+    font-size: 0.9rem;
+  }
+
+  .sjcalc-public-preview-notice__topline {
+    align-items: flex-start;
+  }
+
+  .sjcalc-public-preview-notice__close {
+    padding: 7px 10px;
+  }
+}

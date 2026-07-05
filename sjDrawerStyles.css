@@ -1,0 +1,351 @@
+/* include the following global variables in main :root css
+:root {
+    --drawerBaseWidth: auto;
+    --drawerShiftWidth: calc((100% - var(--drawerBaseWidth)) / 2); 
+    --drawerBaseHeight: auto;
+  }
+*/
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(169, 169, 169, 0.7);
+  z-index: 2000;
+  /* 🧩 [SJ-DRW-CSS-LOCK-01] 2026-02-07 - Stop scroll/pan gestures from "falling through" the veil */
+  touch-action: none;          /* blocks touch panning on the veil itself */
+  overscroll-behavior: none;   /* blocks scroll chaining (where supported) */
+  visibility: hidden; /* Hide initially */
+  opacity: 0;
+  transition: opacity 1s ease, visibility 0s 0.5s; /* Transition opacity and delay visibility change */
+}
+
+.overlay.visible {
+  visibility: visible;
+  opacity: 1;
+  transition: opacity 0.5s ease; /* Transition opacity */
+}
+
+    .drawer {
+      position: fixed;
+      background-color: #cfe2ff;
+      color: black;
+      z-index: 2001;
+      transition: transform 0.3s ease-in-out;
+      display: flex;
+      flex-direction: column;
+      transform: translateX(100%);
+      width:  var(--drawerBaseWidth);
+      height: var(--drawerBaseHeight);
+      max-height: 100%;
+    }
+
+    .drawer-left,
+    .drawer-right {
+      width: var(--drawerBaseWidth);
+      height: auto;
+      top: 0;
+    }
+
+    .drawer-left {
+      left: 0;
+      transform: translateX(-100%);
+    }
+
+    .drawer-right {
+      right: 0;
+      transform: translateX(100%);
+    }
+
+    .drawer-top,
+    .drawer-bottom {
+      height: var(--drawerBaseHeight);
+      width: var(--drawerBaseWidth);
+      left:  var(--drawerShiftWidth); /* half of width */
+    }
+
+    .drawer-top {
+      top: 0;
+      transform: translateY(-100%);
+    }
+
+    .drawer-bottom {
+      bottom: 0;
+      transform: translateY(100%);
+
+    }
+    .drawer-header {
+      background-color: #086dfc;
+      color: white;
+      height: 40px;
+      padding: 10px;
+      font-size: 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .drawer-content {
+      padding: 15px;
+      overflow-y: auto;
+      flex: 1;
+      min-height: 0; /* ✅ 29Jun26e flex fix: content fills space after header */
+      width: 100%;
+      margin: auto;
+      display: flex;
+      justify-content: flex-start;  /* ✅ 29Jun26f left-align by default, avoid right-justify flash */
+      align-items: flex-start;
+    }
+
+/* 2026-02-07 SJ-DRAWER-UX-02: Desktop bottom-drawer uses full height + breathing room at bottom */
+/* - Keeps tablet/phone behavior unchanged (rules are desktop-only).
+   - Prevents the content from looking "too short" on large screens.
+   - Adds comfortable empty space at the bottom of the scroll area (last lines aren’t flush to the edge). */
+.drawer-bottom .drawer-content {
+  justify-content: flex-start;  /* top-align content (override the global centering) */
+  align-items: flex-start;
+  flex-direction: column;
+}
+
+/* Right-side TOC drawer: left-align content so chapter links don't appear right-justified */
+.drawer-right.drawer-type-toc .drawer-content {
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex-direction: column;
+}
+
+/* =========================================================================================
+   🧩 [SJ-DRW-CSS-URL-01] 14Feb26 - Full-height iframe drawer (Wikipedia, etc.)
+   - Desktop-only drawer-height rules (utility "dead space") must NOT constrain iframe drawers.
+   - Remove padding + scrollbars so the iframe feels truly "full screen".
+   ========================================================================================= */
+/* ✅ 30Jun26p 🧮 [SJP-LIVEDEMO-FRAME-01] Phase 5 tweak: give this drawer the same visible
+   light-blue frame + white interior treatment as the calculator drawers (see
+   .drawer-bottom.drawer-type-calculator above) instead of a flat white drawer with no border. */
+.drawer-bottom.drawer-type-url {
+  background-color: #cfe2ff;
+  border: 3px solid #cfe2ff;
+  border-bottom: 0;
+  border-radius: 10px 10px 0 0;
+  box-sizing: border-box;
+}
+
+.drawer-bottom.drawer-type-url .drawer-content {
+  padding: 0;           /* no inset around the iframe */
+  overflow: hidden;     /* avoid nested scrollbars */
+  flex: 1;              /* fill remaining space under the header */
+  height: auto;         /* override global height:100% */
+  width: 100%;
+  justify-content: flex-start;
+  align-items: stretch;
+  /* ✅ 30Jun26l 🧮 [SJP-LIVEDEMO-CONTENT-BG-01] Phase 5 New-2 fix: this drawer type is used
+     for both Live demos (Essential Tools, Initial Mix, Glossary A-Z) and Timed previews —
+     it had no background-color override, so it fell through to the base .drawer rule's
+     light blue (#cfe2ff). The calculator drawers already override to white for their
+     content area (see .drawer-top.drawer-type-calculator-toc .drawer-content and
+     .drawer-bottom.drawer-type-calculator .drawer-content above); match that here. */
+  background-color: #fff;
+  /* ✅ 30Jun26p 🧮 [SJP-LIVEDEMO-FRAME-01] Inner light-blue border so the white content sits
+     inside a visible frame instead of edge-to-edge white with no boundary. */
+  border: 2px solid #a9d6ff;
+  border-top: 0;
+  box-sizing: border-box;
+}
+
+.drawer-bottom.drawer-type-url .drawer-content iframe {
+  flex: 1;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+
+@media (min-width: 1024px) {
+  .drawer-bottom:not(.drawer-type-url) {
+    height: 75vh;               /* raise the drawer higher on large screens */
+  }
+  .drawer-bottom:not(.drawer-type-url) .drawer-content {
+    padding-bottom: 20vh;       /* “dead space” ~ bottom 20% */
+  }
+}
+
+/* ✅ 2026-03-13 🧩 [SJ-DRW-CSS-02] Consolidated duplicate transform/debug rules.
+   Keeping a single active-state transform here avoids override noise and removes the temporary red debug border. */
+.drawer.active {
+  transform: translate(0, 0) !important;
+}
+
+
+/* ✅ 2026-06-09 🧮 [SJ-CALC-PASS4B-TOP-LIST-FIT-CONTENT-01]
+   Calculator List top drawer:
+   - Opens from the top, but the drawer panel no longer uses the wide 940px calculator rail.
+   - Width is based on the widest visible TOC line/title plus drawer padding, capped to the viewport.
+   - The drawer itself remains centered on screen. */
+.drawer-top.drawer-type-calculator-toc {
+  width: max-content !important;
+  min-width: min(320px, 94vw);
+  max-width: 94vw !important;
+  left: 50% !important;
+  height: auto !important;
+  max-height: 100vh !important;
+  background-color: #cfe2ff;
+  border: 3px solid #cfe2ff;
+  border-top: 0;
+  border-radius: 0 0 10px 10px;
+  box-sizing: border-box;
+  overflow: hidden;
+  transform: translate(-50%, -100%) !important;
+}
+
+.drawer-top.drawer-type-calculator-toc.active {
+  transform: translate(-50%, 0) !important;
+}
+
+.drawer-top.drawer-type-calculator-toc .drawer-header {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.drawer-top.drawer-type-calculator-toc .drawer-title {
+  width: auto;
+  max-width: calc(94vw - 76px);
+  text-align: center;
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+.drawer-top.drawer-type-calculator-toc .drawer-content {
+  flex: 0 1 auto;
+  width: auto;
+  height: auto;
+  max-height: calc(100vh - 60px);
+  max-width: 100%;
+  padding: 16px 24px 18px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  justify-content: center;
+  align-items: flex-start;
+  background-color: #fff;
+  border: 2px solid #a9d6ff;
+  border-top: 0;
+  box-sizing: border-box;
+}
+
+.drawer-top.drawer-type-calculator-toc #TOC-calculator-content {
+  width: max-content;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+.drawer-top.drawer-type-calculator-toc #TOC-calculator-content p {
+  margin: 0.48rem auto;
+  white-space: nowrap;
+}
+
+@media (max-width: 430px) {
+  .drawer-top.drawer-type-calculator-toc .drawer-title,
+  .drawer-top.drawer-type-calculator-toc #TOC-calculator-content p {
+    white-space: normal;
+  }
+}
+
+/* ✅ 2026-06-08 🧮 [SJ-CALC-PASS2D-DRAWER-CSS-01]
+   Calculator drawer: full-height bottom drawer, 940px max width from JS mapping,
+   white calculator interior, and a visible light-blue frame/border. */
+.drawer-bottom.drawer-type-calculator {
+  height: 100vh !important;
+  max-height: 100vh !important;
+  background-color: #cfe2ff;
+  border: 3px solid #cfe2ff;
+  border-bottom: 0;
+  border-radius: 10px 10px 0 0;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.drawer-bottom.drawer-type-calculator .drawer-content {
+  flex: 1;
+  height: auto;
+  padding: 12px;
+  padding-bottom: 24px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  justify-content: flex-start;
+  align-items: stretch;
+  background-color: #fff;
+  border: 2px solid #a9d6ff;
+  border-top: 0;
+  box-sizing: border-box;
+}
+
+.drawer-bottom.drawer-type-calculator .drawer-title {
+  width: 100%;
+  text-align: center;
+  font-weight: bold;
+}
+
+@media (min-width: 1024px) {
+  .drawer-bottom.drawer-type-calculator {
+    height: 100vh !important;
+  }
+  .drawer-bottom.drawer-type-calculator .drawer-content {
+    padding-bottom: 24px;
+  }
+}
+
+/* ✅ 2026-06-08 🧮 [SJ-CALC-PASS2G-DRAWER-MOBILE-TOP-01]
+   Mobile/tablet browser chrome fix for calculator drawers.
+   - Keep desktop calculator drawers true 100vh.
+   - On touch/tablet layouts, push the full-height calculator drawer below the
+     browser navigation/header chrome so the drawer title bar and X remain reachable.
+   - Use top+bottom instead of fixed height on touch devices; this avoids hiding the
+     drawer header under Safari/Chrome UI while preserving the bottom-drawer behavior. */
+@media (pointer: coarse), (hover: none), (max-width: 1024px) {
+  .drawer-bottom.drawer-type-calculator {
+    top: calc(56px + env(safe-area-inset-top, 0px)) !important;
+    bottom: 0 !important;
+    height: auto !important;
+    max-height: none !important;
+  }
+
+  .drawer-bottom.drawer-type-calculator .drawer-header {
+    flex: 0 0 auto;
+  }
+
+  .drawer-bottom.drawer-type-calculator .drawer-content {
+    min-height: 0;
+  }
+}
+
+
+/* ✅ 2026-06-09 🧭 [SJ-SEARCH-CALC-UI-CLEARANCE-CSS-01]
+   Search + Calculator reveal coexistence:
+   - Pass4f correctly opens calculator drawers/rabbit-hole content when a Search hit lives there.
+   - The full-height calculator drawer/veil then covered the Search Next/Previous/X controls.
+   - While Search is active, keep the Book header/search controls above drawer layers and
+     reserve the header band so the calculator bottom drawer starts BELOW the Search controls.
+   - This affects calculator drawers only during an active Search session. Normal calculator
+     drawer behavior remains unchanged. */
+html.sj-search-active .header-container {
+  z-index: 4005 !important;
+}
+
+html.sj-search-active .overlay.visible {
+  z-index: 1990;
+}
+
+html.sj-search-active .drawer-bottom.drawer-type-calculator {
+  top: calc(var(--appTop, 0px) + 100px) !important;
+  bottom: 0 !important;
+  height: auto !important;
+  max-height: none !important;
+}
+
+html.sj-search-active .drawer-bottom.drawer-type-calculator .drawer-content {
+  min-height: 0;
+}

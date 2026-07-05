@@ -1,0 +1,3808 @@
+/* ============================================================================================
+   🧩 15Feb26 - :root consolidation + redundancy cleanup (no behavior change intended)
+   [SJ-ROOT-REF-15Feb26]
+   - Consolidated multiple global :root blocks into ONE base block
+   - Kept legacy iOS constant() safe-area fallback via @supports
+   - Removed redundant/legacy vars: --sat-top and the old --app-top-only flow
+   - Standardized on --appTop as the single source-of-truth; kept --app-top as an alias for compatibility
+   ============================================================================================ */
+
+:root {
+  --sjContentPad: 20px; /* [SJ-WIDTH-01] shared content column padding */
+  --sjRhHalo: 10px;      /* [SJ-WIDTH-02] Rabbit Hole halo spread */
+  --sjRhHalo2: 20px;     /* [SJ-WIDTH-03] 2x halo (used for width math) */
+
+  --cubeBaseWidth: 150px;  /* Global variable defining the base width of the cube */
+  --cubeSideWidth: calc(var(--cubeBaseWidth) / 2);  /* Global variable for half the cube width, used for positioning sides */
+
+  --drawerBaseWidth: 50%;  /* used for Top & Bottom Drawers */
+  --drawerShiftWidth: calc((100% - var(--drawerBaseWidth)) / 2); /* Center Top & Bottom Drawers horizontally */
+  --drawerBaseHeight: 90%;
+
+  /* ==========================================================
+     🧩 [SJ-SAFE-TOP-01] Safe-top / browser UI offsets (mobile)
+     ----------------------------------------------------------
+     - --safeTop: iOS safe-area inset (env / constant fallback)
+     - --vvTop:   Chrome VisualViewport offsetTop (set in JS)
+     - --fallbackTop: extra pad for Chrome portrait edge-cases (set in JS)
+     - --appTop: effective top offset used by sticky headers + body padding
+     ========================================================== */
+  --safeTop: env(safe-area-inset-top, 0px);
+  --vvTop: 0px;        /* JS updates this */
+  --fallbackTop: 0px;  /* JS updates this */
+  --appTop: max(var(--safeTop), var(--vvTop), var(--fallbackTop));
+
+  /* 🧩 [SJ-SAFE-TOP-02] Back-compat alias (older rules used --app-top) */
+  --app-top: var(--appTop);
+}
+
+ /* Legacy iOS fallback (rare, but harmless) */
+@supports (padding-top: constant(safe-area-inset-top)) {
+  :root {
+    --safeTop: constant(safe-area-inset-top);
+  }
+}
+
+/*
+*{
+    border: 1px solid red;
+}
+*/
+.clampTest,
+.lead-parent,
+.content-section-style,
+.header-rail {
+  width: clamp(
+    68%,               /* min at large screens */
+    calc(-9vw + 693px), /* fluid from 700px→900px */
+    90%                /* max at small screens */
+  );
+}
+
+body {
+  font-family: Arial, sans-serif;
+  line-height: 1.6;
+  margin: 0;
+  padding: 0;
+
+  /* ✅ push entire app below browser UI */
+  padding-top: var(--appTop);
+}
+/* ✅ 12Apr26 🧩 [SJ-END-BOOK-BUFFER-01]
+   Replaces the visible dummyDiv with invisible end-of-book scroll buffer.
+   This gives the last section enough trailing scroll room so it can still
+   be positioned near the top of the screen under the fixed/sticky headers. */
+main {
+  padding-bottom: 100vh;   /* fallback */
+  padding-bottom: 100dvh;  /* modern mobile viewport */
+}
+
+
+#no-results {
+    text-align: center;
+    margin: 20px;
+    display: none;
+    color: red;
+    font-weight: bold;
+  }
+#search {
+    padding-right: 5px; /* Space for the clear button */
+    width: 100%;
+  }
+.matchCountDisplay {
+  font-size: clamp(14px, calc(11px + 1.5vw), 18px); /* vw 360px to 1440px */
+  color: rgb(48, 146, 239);
+  font-weight: bold;
+  border: none;
+  margin: 7px;
+  background-color: #f8f9fb;
+}
+.highlight {
+    background-color: rgb(255, 255, 0); /*yellow*/
+  }
+:root {
+  --sjGlossarySearchCueColor: rgb(255, 255, 0);
+}
+
+.highlight.active {
+  background-color: orange;  /* Or any color that contrasts with your muted highlight */
+}
+
+/* ✅ 2026-03-13 🧩 [SJ-GLOSS-SEARCH-CUE-07]
+   Search cue for Glossary term lines when the actual match lives inside a still-closed Glossary rabbit hole.
+   Border-only treatment keeps the term readable without flooding the whole background. */
+.glossary-search-hit {
+  display: inline-block;
+  padding: 0 4px;
+  border-radius: 6px;
+  box-shadow: 0 0 0 2px var(--sjGlossarySearchCueColor);
+}
+
+/* ✅ 2026-03-13 🧩 [SJ-GLOSS-SEARCH-CUE-10]
+   When Next/Prev lands on a hidden Glossary rabbit-hole hit, mirror the orange active state on the visible term cue. */
+.glossary-search-hit.glossary-search-hit-active {
+  box-shadow: 0 0 0 2px orange;
+}
+
+.header-container {
+  width: 100%;
+  text-align: center;
+  position: sticky;
+  top: var(--appTop); /* ✅ key change */
+  left: 0;
+  z-index: 1000; /* ✅ 2026-03-24 🧩 [SJ-RHL-HOST-CSS-03A] Restore legacy fixed-header stack so overlays can veil it naturally */
+}
+
+.header-top-div, 
+.header-bottom-div {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+  }
+/* ✅ 2026-04-25 🧩 [SJ-BOOK-HEADER-HEIGHT-01]
+   Resize the fixed Book header rows without changing the baked-in total header stack height.
+   - Top black header: 60px for larger SourJoe/app-like branding.
+   - Bottom light navigation/search header: 40px.
+   - Combined fixed header height remains 100px, preserving existing scroll/hash offsets. */
+.header-top-div {
+  height: 60px;
+  background-color: #212429;
+  }
+.header-bottom-div {
+  height: 40px;
+  background-color: #f8f9fb;
+  border-bottom: 1px solid #d0d2d2;
+}
+/* Left Arrow and Main Menu icon in top div of header */
+.header-icon-top-back,
+.header-icon-top-menu,
+.header-icon-bottom {
+  width: clamp(25px, calc(7px + 6vw), 37px); /* vw 300px to 500px+ */
+}
+
+/* 🧩 [SJ-HEADER-RECIPES-LINK] NEW: SourJoe logo + "Back to Recipes" link (replaces back arrow) */
+.back-to-recipes-box {
+  justify-content: flex-start;   /* left aligned inside the 10% box */
+}
+.back-to-recipes-link {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 6px;
+  height: 100%;
+  width: 100%;
+  text-decoration: none;
+  cursor: pointer;
+}
+/* ✅ 2026-04-25 🧩 [SJ-BOOK-HEADER-SCALE-01]
+   First-pass header scale tuning after changing the row split from 50/50 to 60/40. */
+.header-icon-top-sjlogo {
+  width: clamp(40px, calc(18px + 4.8vw), 56px); /* Fill most of the new 60px top row */
+  height: auto;
+  max-height: 56px;
+  background: white;            /* helps the transparent logo pop on dark header */
+  border-radius: 6px;
+  padding: 2px;                 /* 2px top/bottom visual margin target */
+}
+.back-to-recipes-text {
+  color: white;
+  font-weight: bold;
+  font-size: clamp(11px, calc(6px + 1.15vw), 17px); /* ✅ 2026-04-25 [SJ-BOOK-HEADER-SCALE-02B] Smaller mobile floor to prevent Recipes/title collision */
+  line-height: 1.05;
+  text-align: left;
+  white-space: normal;          /* ✅ allow wrap on very small screens */
+}
+.back-to-recipes-link:focus-visible {
+  outline: 2px solid white;
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+.magnifyingGlass {
+  width: clamp(25px, calc(7px + 5vw), 34px); /* ✅ 2026-04-25 [SJ-BOOK-HEADER-SCALE-03] Fit 40px lower row comfortably */
+}
+/* Left Arrow icon in top div of fixed geader */
+.header-icon-top-back {
+  border: 2px solid white;
+  border-radius: 50%;  
+}
+/* Main Menu icon in top div of fixed header */
+.header-icon-top-menu {
+  /* ✅ 2026-04-29 🧩 [SJ-BOOK-TOC-ICON-06]
+     Final size correction: match the app.sourjoe.com header hamburger more closely.
+     The previous Book version was still visually too large/tall. Keep the whole button
+     compact and nudge it left so it sits inside the Welcome-pane/header rail. */
+  width: 48px;
+  height: 40px;
+  max-width: 48px;
+  max-height: 40px;
+  margin-right: 14px;
+}
+
+/* ✅ 2026-04-25 🧩 [SJ-BOOK-HEADER-APP-HAMBURGER-02]
+   CSS-drawn app-style hamburger: dark button, light border, rounded corners, three muted horizontal lines. */
+.sj-app-hamburger {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  border: 2px solid rgba(255,255,255,0.48);
+  border-radius: 7px;
+  background: #212429;
+  padding: 0;
+  cursor: pointer;
+  box-shadow: none;
+}
+.sj-app-hamburger span {
+  display: block;
+  width: 25px;
+  height: 2px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.50);
+}
+.sj-app-hamburger:focus-visible {
+  outline: 2px solid white;
+  outline-offset: 2px;
+}
+
+/* ✅ 2026-04-29 🧩 [SJ-BOOK-TOC-ICON-07]
+   Keep active/open TOC state from changing the icon size or adding a shadow.
+   User preference: match the normal app icon shape; no active shadow needed here. */
+body.sj-main-toc-open #openMainTOC .sj-app-hamburger,
+#openMainTOC .sj-app-hamburger.sj-toc-icon-active,
+body:has(.drawer-right.active) #openMainTOC .sj-app-hamburger {
+  border-color: rgba(255,255,255,0.48);
+  background: #212429;
+  box-shadow: none;
+}
+
+/* Gray & Blue back-to-top Arrows and Search mangnifying glass + X close blue & yellow */
+.header-icon-bottom {
+  width: clamp(22px, calc(8px + 4vw), 30px); /* ✅ 2026-04-25 [SJ-BOOK-HEADER-SCALE-05] Smaller icons for 40px lower row */
+  max-height: 30px;
+  margin: 0 10px;                 /* ✅ 2026-04-25 [SJ-BOOK-HEADER-ALIGN-02] vertically center icons in 40px row; slightly wider horizontal spread */
+}
+
+/* ✅ 2026-04-25 🧩 [SJ-BOOK-HEADER-UPARROW-CENTER-01]
+   Nudge only the boxed/top arrow down a touch so it reads visually centered in the 40px lower header. */
+#iconTopGray .header-icon-bottom,
+#iconTop .header-icon-bottom {
+  transform: translateY(2px);
+}
+.center-container,
+.header-top-center-container,
+.header-bottom-center-container
+/* .center-title-container 7Jun25 deletion*/ {
+  width: 80%;
+  margin: auto;
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  height: 100%;
+  font-size: clamp(8px,calc(4.57px + 1.14vw),16px);
+}
+/* 7Jun25 addition*/
+.center-title-container {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 100%;
+  font-size: clamp(16px,calc(2px + 3.8vw),26px);  /* ✅ 2026-04-25 [SJ-BOOK-HEADER-SCALE-06] larger Book title/search row text */
+}
+
+.moreButton {
+  border: 1px solid white;
+  border-radius: 7px;
+  color: white;
+  font-weight: bold;
+  font-size: clamp(11px, calc(6px + 1.67vw), 16px);  /* vw 300px to 600px */
+  background-color: RGB(20, 137, 84);
+  height: 30px;
+  padding: 0 8px; /* 7Jun25 addition */
+  width: clamp(
+    40px,               /* min width at small screens */
+    calc(3vw + 31px),  /* fluid from 300px→800px */
+    55px                /* max width at large screens */
+  );
+  cursor: pointer;
+}
+
+.left-box, .right-box, .center-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* text-align: center; 7Jun25 deletion*/
+  }
+
+/* 🧩 [SJ-ICON-20260126] Normalize submenu icon footprint (Chapter + NON-Chapter)
+   - Prevent the ellipsis icon (taller aspect ratio) from blowing up in height
+   - Prevent the chapter submenu icon from overflowing its header
+   - Ensures submenu icons never render taller than the standard top-menu icon
+*/
+img.left-box.content-title-menu[src*="iconBlueSubMenu.png"],
+img.left-box.content-title-menu[src*="iconMenuBlue.png"],
+img.left-box.content-title-menu[src*="iconBlueSubMenuEllipsis.png"],
+img.right-box.content-title-menu[src*="iconBlueSubMenu.png"],
+img.right-box.content-title-menu[src*="iconMenuBlue.png"],
+img.right-box.content-title-menu[src*="iconBlueSubMenuEllipsis.png"] {
+  width: clamp(25px, calc(10px + 5vw), 35px);
+  height: clamp(25px, calc(10px + 5vw), 35px);
+  max-height: clamp(25px, calc(10px + 5vw), 35px);
+  object-fit: contain;
+  display: block;
+}
+
+/* 🧩 [SJ-ICON-20260127] Bullet-proof menu icon sizing (class-based fallback)
+   - Some icons (e.g., iconMenuBlue.png) can appear huge if a filename-based selector is missed
+   - This ensures ANY image using .content-title-menu is constrained to the standard footprint
+*/
+img.content-title-menu{
+  width: clamp(25px, calc(10px + 5vw), 35px) !important;
+  height: clamp(25px, calc(10px + 5vw), 35px) !important;
+  max-height: clamp(25px, calc(10px + 5vw), 35px) !important;
+  object-fit: contain;
+  display: block;
+}
+
+/* ✅ 30Jun26k 🧮 [SJP-CALC-TOC-ICON-ACTIVE-01] Phase 5 New-1: give the Calculator Tools
+   icons (menu icon + calculator image) the same "engaged" cue as the main Book TOC
+   hamburger (see body.sj-main-toc-open rule above) while the Calculator TOC drawer is
+   open. These are plain <img> icons with no padded button box behind them, so a
+   border/background swap (like the hamburger gets) would clip oddly — a drop-shadow
+   glow reads correctly on any icon shape without needing extra padding/markup. */
+.sjp-calc-toc-icon.sjp-calc-toc-icon-active {
+  filter: drop-shadow(0 0 4px rgba(20, 137, 84, 0.85)) drop-shadow(0 0 1px rgba(20, 137, 84, 0.9));
+}
+
+/* ✅ 30Jun26q 🧮 [SJP-TOC-ICONS-BLOCKED-DEMO-01] Phase 5 tweak: while a Live/Timed demo is
+   open (body.sjp-demo-toc-blocked, toggled by sjSetTocIconsBlockedForDemo in
+   sjDrawerScripts.js), fully disable both TOC entry points — clicking either while a demo
+   is showing led to a 100%-veiled section with no way back to where the user was.
+   pointer-events:none blocks mouse/touch; the .disabled attribute (main TOC button) and
+   tabindex="-1" (calculator icons, set in JS) block keyboard activation. More/Less buttons
+   and Rabbit Hole icons are deliberately NOT included here — they stay usable during
+   previews. */
+body.sjp-demo-toc-blocked #openMainTOC .sj-app-hamburger,
+body.sjp-demo-toc-blocked .sjp-calc-toc-icon {
+  pointer-events: none;
+  opacity: 0.42;
+  filter: grayscale(0.85);
+  cursor: not-allowed;
+}
+
+
+.center-box {
+  flex: 1; /* 7Jun25 addition */
+  font-size: clamp(12px, calc(5px + 1.85vw), 24px);  /* ✅ 2026-04-25 [SJ-BOOK-HEADER-SCALE-07B] Lower mobile floor to prevent Recipes/title collision */
+  font-weight: bold;
+  text-align: center;
+  /* width: clamp(50%, calc(90% - 2.78vw), 80%); /* vw 360px to 1440px, reverse 7Jun25 deletion */
+  }
+.center-box.type-header {
+  color: white;
+  height: 95%;
+  }
+.left-box, .right-box {
+  flex: 0 0  auto; /* 7Jun25 addition */
+  width: clamp(60px, calc(-15px + 25vw), 110px);  /* vw 360px to 500px */
+}
+.center-box input {
+  display: none; 
+  margin: auto; 
+  border: 1px solid yellow; 
+  height: 100%;
+  font-size: clamp(16px, calc(14.67px + 0.37vw), 20px); /* vw 360px to 1440px */
+  text-align: center;
+}
+/* ====== LAYOUT FIXES BELOW 13Jun25 ====== */
+/* These changes make bottom header items scrunch together */
+/* 1. Top row: keep the TITLE truly centered even with "Recipes" on the left */
+/* ✅ 04Mar26 🧩 [SJ-HEADER-CENTER-02] Balanced left/center/right widths across ALL screen sizes */
+.header-top-center-container .left-box   { flex: 0 0 25%; width: 25%; }
+.header-top-center-container .center-box { flex: 0 0 50%; width: 50%; }
+.header-top-center-container .right-box  { flex: 0 0 25%; width: 25%; }
+
+/* ✅ 04Mar26 🧩 [SJ-HEADER-WRAP-WIDTH-01]
+   Keep the TOP header title/search *aligned* with the BOTTOM nav/search row.
+   IMPORTANT UPDATE:
+   Your 60% / 80% / 100% targets must be **relative to the chapter/section rail**
+   (not the full viewport). So we introduce a .header-rail that uses the same
+   width clamp as your chapter/section containers, then size the 3-box header
+   containers as a % of that rail.
+   NOTE: This does NOT change the 25/50/25 inner box split above.
+*/
+.header-rail {
+  margin: 0 auto;               /* center the rail inside the full-width sticky header */
+  height: 100%;                 /* match header row height */
+  display: flex;                /* allows inner container to be centered */
+  justify-content: center;
+  align-items: center;
+}
+.header-top-center-container,
+.header-bottom-center-container {
+  width: 60%;
+  margin: 0 auto; /* center the 3-box container inside the rail */
+}
+
+/* ✅ 2026-04-25 🧩 [SJ-BOOK-HEADER-ALIGN-01]
+   Step 2: Let the TOP black header use the full content rail.
+   This aligns the SourJoe logo/Recipes group with the left edge of the welcome panel
+   and aligns the hamburger TOC icon with the right edge of the welcome panel on PC widths.
+   The bottom navigation/search row intentionally keeps its narrower centered grouping. */
+.header-top-center-container {
+  width: 100%;
+}
+.header-top-center-container .left-box {
+  justify-content: flex-start;
+}
+.header-top-center-container .right-box {
+  justify-content: flex-end;
+}
+/* 2. Bottom row: auto‐sized, spaced, centered */
+.header-bottom-center-container {
+  /* keep your original justify-content and align-items */
+  gap: 1.35rem;     /* ✅ 2026-04-25 [SJ-BOOK-HEADER-SCALE-08] spread lower-row groups slightly */
+}
+.header-bottom-center-container .left-box,
+.header-bottom-center-container .center-box,
+.header-bottom-center-container .right-box {
+  flex: 0 0 auto;    /* size to content */
+  width: auto;       /* override any clamp widths */
+}
+/* ====== LAYOUT FIXES ABOVE 13Jun25 ====== */
+
+* { 
+    box-sizing: border-box;
+}
+.lead-parent {
+  font-size: 1em;
+  margin: auto;
+  padding: 15px;
+  display: flex;
+  align-items: center; /* Centers content vertically */
+  flex-wrap: wrap;
+  margin-top: 15px;
+  border: 3px solid #71a3c1;
+  background-color: #cfe2ff;
+  border-radius: 5px;
+  /* width: 90%; */
+}
+.lead-child {
+  width: 50%; /* Default: Each child takes 50% of the parent width */
+  padding: 0px 20px;
+  background-color: #cfe2ff;
+  color: darkblue;
+  margin: auto;
+}
+.lead-title {
+  text-align: center;
+  font-weight: bold;
+  color: darkblue;
+  font-size: 24px;
+  font-size: clamp(20px, calc(17.6px + 0.8vw), 24px);  /* vw 300px to 800px */
+}
+.lead-box-verbiage {
+  width: 90%;
+  padding: 5px;
+  margin: auto;
+  color: darkblue;
+}
+.separator-line  {
+    width: 90%;
+    border-bottom: 1.5px solid #71a3c1;
+    margin: auto;
+    margin-top: 20px;
+    text-align: center;
+}
+
+.messageContainer { /* for flipBoxMsg so page does not jerk as message changes */
+  height: 70px;
+  margin-top: 10px;
+}
+/* Responsive design: Stack children vertically on small screens */
+@media  only screen and (max-width: 800px) {
+    .lead-child {
+        width: 100%; /* 100 Full width on small screens */
+    }
+}
+.link-style {                     /* used for any text oriented links */
+  font-weight: bold;              /* Makes the text bold */
+  text-decoration: underline;     /* Adds an underline */
+  color: blue;                  /* Sets the text color to blue */
+  cursor: pointer;                /* Changes the cursor to a pointer on hover */
+  display: inline;
+}
+.vertical-stack {
+  flex-direction: column;  /* ✅ Stack children vertically */
+}
+.inline-vertical-center {
+  display: inline-flex;
+  align-items: center;    /* ✅ Vertically center the image + text */
+  gap: 6px;               /* ✅ Space between image and text */
+}
+.list-icon {
+  width: 100px;
+  height: auto;             /* ✅ Maintains aspect ratio */
+  display: block;
+}
+/* Styles for the main content sections */
+.content-section { /* Partial Style for content sections PLUS searchable class */
+  margin: auto; /* Centers the section horizontally */
+  margin-top: 15px; /* Adds space above the section */
+}
+.content-section-style {  /* Used by sections for stlye in conjunction with content-section above */
+  border: 1.5px solid #75ba75; /* Adds a green border around the section */
+  border-radius: 5px; /* Rounds the corners of the section for a softer look */
+  /* width: 68%; /* Sets the width to 68% of the parent container, making it responsive */
+}
+/* Adjusts the border width for elements with the 'content-section-chapter' class */
+.content-section-chapter {
+  border-width: 3px; /* Increases border thickness to 3px */
+}
+
+/* Styles for the title area within content sections */
+.content-section-title {
+  background-color: #e6f4ed; /* Sets a light green background color for contrast */
+  position: sticky; /* Keeps the title visible while scrolling */
+  top: calc(var(--appTop) + 100px); /* ✅ 15Feb26B [SJ-MOBILE-HEADER-03] Respect browser UI offset */
+  /*width: 100%; /* Makes the title span the full width of its parent container 7Jun25 deletion*/
+  margin: 0.5px; /* 17Jun25 need a slight spacing all around to avoid border crash for some reason!*/
+  height: auto; /* allow tall titles / embedded headers */
+  min-height: 40px;  /* keep old visual height as minimum */
+  padding: 10px; /* Adds spacing inside the title area for better readability */
+  border-bottom: 1.5px solid #75ba75; /* Adds a green bottom border for separation */
+  border-radius: 5px; /* Rounds the corners slightly for a refined appearance */
+  font-size: 3em; /* Sets a readable font size */
+  font-weight: bold; /* Makes the title text bold */
+  color: Gray; /* Changes text color to gray for a subtle contrast */
+  display: flex; /* 7Jun25 addition */
+  z-index: 100; /* ✅ 2026-03-24 🧩 [SJ-RHL-HOST-CSS-04A] Restore legacy sticky-title stack so it scrolls under the fixed header and under the veil */
+}
+/* Styles for the main content text area */
+.content-section-verbiage {
+  /* ✅ 15Feb26C [SJ-PAD-01] Centralize horizontal padding so Rabbit panels can compute safely */
+  --sjPadX: 20px;  /* default section inner padding */
+  padding-left: var(--sjPadX);  /* Adds space to the left for better text alignment */
+  padding-right: var(--sjPadX); /* Adds space to the right to prevent text from touching the edge */
+  padding-bottom: 5px; /* Adds a little space at the bottom for better spacing */
+  font-size: 1em; /* Sets a standard font size */
+  overflow: hidden; /* Prevents content from overflowing the section */
+  overflow-y: auto; /* Enables vertical scrolling when content exceeds max-height */
+}
+/* Styles for the main content text area */
+.content-section-moreMsg {
+  padding-bottom: 5px; /* Adds a little space at the bottom for better spacing */
+  font-size: 1em; /* Sets a standard font size */
+  overflow: hidden; /* Prevents content from overflowing the section */
+  overflow-y: auto; /* Enables vertical scrolling when content exceeds max-height */
+  display: none; /* the 'more' content is initially hidden then expanded by More... button */
+}
+
+
+
+
+
+/* ============================================================================================
+   ✅ 16Feb26 🧩 [SJ-INTRO-SPLIT-01] Reusable "Intro Row" layout (Image ~33% + Verbiage ~67%)
+   - Used for Essential Ingredients POC (and reusable elsewhere)
+   - Desktop/tablet: side-by-side
+   - Phones: stacks cleanly, image first then text
+   ============================================================================================ */
+.sjIntroSplit{
+  display: flex;
+  gap: 18px;
+  align-items: flex-start;
+  width: 100%;
+}
+.sjIntroSplit-media{
+  flex: 0 0 33%;
+  max-width: 33%;
+}
+.sjIntroSplit-img{
+  width: 100%;
+  height: auto;
+  display: block;
+}
+.sjIntroSplit-copy{
+  flex: 1 1 67%;
+  min-width: 0; /* prevents overflow on narrow screens */
+}
+@media (max-width: 760px){
+  .sjIntroSplit{
+    flex-direction: column;
+    gap: 12px;
+  }
+  .sjIntroSplit-media{
+    flex: 0 0 auto;
+    max-width: 100%;
+  }
+}
+
+/* ✅ 16Feb26 🧩 [SJ-INTRO-WRAP-01] Division (1) common pattern: intro image with text wrap
+   - Wraps an intro image on the left (typically ~33%) with flowing text
+   - Uses existing .responsive-img + .responsive-img-left float behavior
+   - This wrapper contains floats so following content doesn't "hug" the image
+*/
+.sjIntroWrap{
+  display: flow-root; /* contains floated image */
+  width: 100%;
+}
+.sjIntroWrap-img{
+  /* (float + sizing handled by .responsive-img and .responsive-img-left) */
+}
+
+/* Ensures each section properly wraps around its content */
+.content-section-verbiage > div,
+.content-section-moreMsg > div {
+  overflow: hidden;  /*Forces the div to contain floated elements (like images) */
+  padding-bottom: 10px; /* Adds spacing below each section for readability */
+  border-bottom: 1px solid #ddd; /* Adds a subtle separator between sections */
+  margin: auto; /* Centers the div horizontally within its container */
+  margin-top: 10px;  /*Adds spacing above each section */
+}
+
+/* ============================================================================================
+   🐇 07Feb26 - Section divider rule (baby-step fix #1)
+   [SJ-LINES-01] Rabbit Hole blocks should NOT have the faint divider line underneath.
+   - The generic rule above adds a divider to ALL direct-child <div> blocks.
+   - Each Rabbit Hole wrapper is also a direct-child <div> (class="sjRabbitHole-wrap"),
+     so it was incorrectly receiving a bottom divider.
+   ============================================================================================ */
+.content-section-verbiage > div.sjRabbitHole-wrap,
+.content-section-moreMsg  > div.sjRabbitHole-wrap{
+  border-bottom: none;
+}
+
+/* ============================================================================================
+   🐇 07Feb26 - Section divider rule (baby-step fix #1B)
+   [SJ-LINES-01B] Some sections wrap ALL content (including moreMsg + Rabbit Hole) inside a single
+   .content-section-verbiage > div wrapper (e.g., Culture, Starter).
+   That wrapper was still receiving the generic divider border-bottom, which shows up as a line under
+   the Rabbit Hole icon/panel.
+   Fix: if a direct-child DIV contains a Rabbit Hole component anywhere inside it, suppress its divider.
+   NOTE: Uses :has() (supported in modern Chrome/Edge/Safari).
+   ============================================================================================ */
+.content-section-verbiage > div:has(.sjRabbitHole-wrap){
+  border-bottom: none;
+}
+
+
+/* ============================================================================================
+   ✅ 2026-03-24 🧩 [SJ-RHL-HOST-CSS-01] Host styles for sjRabbitHoleLink rabbit-icon conversions
+   - Pure sjrhl markup now powers selected non-Glossary Rabbit Holes.
+   - These host-side classes preserve the familiar rabbit-icon look without reusing legacy
+     .sjRabbitHole-* classes on converted blocks.
+   ============================================================================================ */
+
+.content-section-verbiage > div.sjrhl-host-wrap,
+.content-section-moreMsg  > div.sjrhl-host-wrap{
+  border-bottom: none;
+}
+
+.content-section-verbiage > div:has(.sjrhl-host-wrap){
+  border-bottom: none;
+}
+
+.sjrhl-host-wrap{
+  width: 100%;
+  display: block;
+  margin: 10px 0 6px 0;
+}
+
+.sjrhl-trigger.sjrhl-host-rabbit{
+  display: block !important;
+  margin: 0 auto !important;
+  width: clamp(73px, 4.73vw, 105px) !important;
+  height: clamp(73px, 4.73vw, 105px) !important;
+  min-width: clamp(73px, 4.73vw, 105px) !important;
+  min-height: clamp(73px, 4.73vw, 105px) !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  white-space: nowrap !important;
+  text-indent: -9999px !important;
+  text-align: left !important;
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("https://sjmedia0.w3spaces.com/sjICONS/rabbitHoleMORE.png") !important;
+  background-repeat: no-repeat !important;
+  background-position: center center !important;
+  background-size: contain !important;
+  background-color: transparent !important;
+  color: transparent !important;
+  font-size: 0 !important;
+  line-height: 0 !important;
+  border: 0 !important;
+  text-decoration: none !important;
+  user-select: none;
+  cursor: pointer;
+  transition: transform 0.12s ease, filter 0.12s ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .sjrhl-trigger.sjrhl-host-rabbit:hover{
+    animation: sjRabbitBounce 0.55s ease;
+    filter: saturate(1.05) contrast(1.05);
+  }
+}
+
+.sjrhl-trigger.sjrhl-host-rabbit:active{
+  transform: translateY(0px);
+}
+
+.sjrhl-trigger.sjrhl-host-rabbit:focus-visible{
+  outline: 2px solid rgba(20,137,84,0.75);
+  outline-offset: 4px;
+  border-radius: 10px;
+}
+
+.sjrhl-trigger.sjrhl-host-rabbit[aria-expanded="true"],
+.sjrhl-trigger.sjrhl-host-rabbit[data-rabbit-state="open"]{
+  background-image: url("https://sjmedia0.w3spaces.com/sjICONS/rabbitHoleLESS.png") !important;
+  filter: none;
+}
+
+/* ============================================================================================
+   ✅ 2026-04-29 🧩 [SJ-RHL-TEXT-COLOR-02] Rabbit Hole title / subtitle colors
+   - Applies only to NON-GLOSSARY Rabbit Hole panels opened from the rabbit icon system.
+   - Main Rabbit Hole panel titles use the same bold green visual family as glossary terms,
+     without adding underline/link styling.
+   - Standalone Rabbit Hole subtitles directly under those titles use the same bold blue visual
+     family as the Glossary Rabbit Hole detail headings (Background / Science Fact / etc.).
+   - Bold emphasis inside normal paragraphs/list items is left as normal bold body text.
+   ============================================================================================ */
+
+.sjrhl-panel[data-sjrhl-panel]:not(.glossary-panel) h3,
+.sjRabbitHole-panel:not(.glossary-panel) h3{
+  color: darkgreen !important;
+  font-weight: 700 !important;
+  text-decoration: none !important;
+}
+
+.sjrhl-panel[data-sjrhl-panel]:not(.glossary-panel) > strong,
+.sjRabbitHole-panel:not(.glossary-panel) > strong{
+  display: block;
+  color: mediumblue !important;
+  font-weight: 700 !important;
+  text-decoration: none !important;
+  margin: 10px 0 4px 0;
+}
+
+.sjrhl-panel[data-sjrhl-panel]:not(.glossary-panel) p strong,
+.sjrhl-panel[data-sjrhl-panel]:not(.glossary-panel) li strong,
+.sjRabbitHole-panel:not(.glossary-panel) p strong,
+.sjRabbitHole-panel:not(.glossary-panel) li strong{
+  color: inherit !important;
+  font-weight: 700 !important;
+}
+
+
+
+
+
+
+/* Styles for images within content sections */
+.responsive-img {
+  width: 33%; /* Sets a default width of 125px */
+  height: auto; /* Maintains the image's original aspect ratio */
+  margin-top: 5px; /* Adds spacing above the image */
+  margin-bottom: 5px; /* Adds spacing below the image */
+}
+.responsive-img-right {
+  float: right; /* Allows text to wrap around the image */
+  margin-right: 0px; /* Creates space between the image and the text on the right */
+  margin-left: 15px; /* Ensures the image aligns with the left side of the container */
+}
+.responsive-img-left {
+  float: left; /* Allows text to wrap around the image */
+  margin-right: 15px; /* Creates space between the image and the text on the right */
+  margin-left: 0px; /* Ensures the image aligns with the left side of the container */
+}
+.responsive-img-center {
+  display: block;
+  margin: 5px auto;
+  max-width: 100%;
+  height: auto;
+}
+
+
+
+/* ============ Tools section image normalization ============ */
+/* Keeps tool images consistent in size/position, and avoids giant/tall outliers */
+#toolsAtoZ .responsive-img {
+  width: clamp(140px, 18vw, 230px);   /* bigger on PC */
+  max-width: 45%;
+  max-height: 185px;                  /* allows slightly taller images */
+  height: auto;
+  object-fit: contain;
+  display: block;
+  margin-top: 0px;
+}
+
+
+
+/* ✅ 16Feb26 🧩 [SJ-INTRO-SKETCH-TOOLS-AZ-01] Tools A→Z intro sketch: override section-specific image sizing
+   - Fixes: Tools A→Z intro sketch appearing smaller than other section sketches
+   - Keeps per-tool images inside Tools A→Z unaffected (they do NOT carry .sjIntroWrap-img) */
+#toolsAtoZ .sjIntroWrap-img{
+  width: var(--sjIntroSketchW, 33%);
+  max-width: 33%;
+  height: auto;
+  max-height: none;
+  object-fit: unset;
+}
+/* On small screens, remove floats so content doesn't get "crushed" */
+@media screen and (max-width: 575px) {
+  #toolsAtoZ .responsive-img-left,
+  #toolsAtoZ .responsive-img-right {
+    float: none;
+    width: min(200px, 72%);     /* smaller on phone */
+    max-width: 72%;
+    max-height: 150px;          /* prevents “too tall” phone images */
+    margin: 8px auto 12px auto;
+  }
+}
+
+/* Styles for a specific image used in the book stack */
+.sjBookStack {
+  width: 80px; /* Sets a fixed width for the book stack image */
+  height: auto; /* Maintains the original aspect ratio */
+  margin-left: 20px; /* Adds left margin to position the image properly */
+}
+
+/* Styles for general subject titles */
+.general-subject-title {
+  font-weight: bold; /* Makes the title text bold */
+  font-size: larger; /* Increases font size for emphasis */
+  color: darkgreen; /* Sets the text color to dark green for visual distinction */
+}
+.banner {
+  width: 100%;
+  background-color: #f8f9fb;
+  border: 1px solid darkgray;
+  text-align: center;
+}
+.TOC {
+  color: white; /* Sets the text color to white for TOC Titles */
+}
+/* Styles for subtitles in content sections */
+.general-subject-subtitle {
+  font-weight: bold; /* Makes subtitle text bold */
+  color: darkgreen; /* Sets the text color to dark green for visual distinction */
+}
+/* Styles for subtitles in Glossary Rabbit Hole sections */
+.rabbitHole-subject-subtitle {
+  font-weight: bold; /* Makes subtitle text bold */
+  color: mediumblue; /* Sets the text color to dark green for visual distinction */
+  margin-left: 5px;
+
+  /* 15Feb26 [SJ-GLOSS-RH-SPACING-01]
+     Tighten the vertical spacing around Glossary Rabbit Hole subsection titles.
+     Goal:
+       - Small "paragraph-ish" gap ABOVE the title
+       - Very small "sentence-ish" gap BELOW the title (close to the related verbiage)
+     Notes:
+       - These titles are <h4> elements, so browser default margins are large unless overridden. */
+  margin-top: 4px;
+  margin-bottom: 2px;
+  line-height: 1.15;
+  padding: 0;
+}
+/* Enable smooth scrolling behavior for anchor links */
+html {
+  scroll-behavior: smooth; /* When clicking an anchor link, the page scrolls smoothly instead of jumping instantly */
+}
+
+/* Clearfix method to prevent layout issues with floated elements */
+.clearfix::after {
+  content: ""; /* Creates an empty pseudo-element after elements with the .clearfix class */
+  display: block; /* Makes the pseudo-element behave like a block-level element */
+  clear: both; /* Ensures the parent element fully contains floated children */
+}
+/* Allows child divs within parent to grow/shrink/align */
+.flex-parent {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap; /* Allows children to wrap to the next line */
+  gap: 5px; /* Optional: adds space between items */
+  padding: 5px;
+}
+.flex-child {
+  padding: 5px;
+  text-align: center;
+  flex: 1 1 200px;  /* flex-basis of 200px and grow/shrink as needed */
+  max-width: 300px;
+  height: 200px;    /* fixed height for consistency */
+  overflow: hidden; /* hide any overflow from the image */
+}
+.flex-child img {
+  width: 100%;
+  object-fit: cover; /* image covers the container, cropping if needed */
+  display: block;    /* remove inline spacing issues */
+  border-radius: 6px;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
+  aspect-ratio: 4 / 3;  /* or 1 / 1 for squares, or 16 / 9 for widescreen */
+  height: auto;         /* Let aspect ratio handle height */
+}
+/* FLEX CONTAINER */
+.flex-parent-general {
+  display: flex;
+  flex-wrap: wrap;       /* allow children to wrap */
+  gap: 1rem;             /* space between items */
+  padding: 1rem;
+}
+
+/* FLEX ITEMS */
+.flex-child-general {
+  flex: 1 1 200px;       /* base width 200px; shrink or grow as needed */
+  padding: 0.5rem;
+  box-sizing: border-box;
+  /* establish a block formatting context so floats are contained */
+  overflow: auto;
+  background: #f9f9f9;   /* just for visual demo */
+  border-radius: 4px;
+}
+
+/* COMMON IMAGE STYLING */
+.img-base {
+  width: 150px;          /* or whatever you like */
+  height: auto;
+  border-radius: 6px;
+  box-shadow: 0 0 6px rgba(0,0,0,0.1);
+  object-fit: cover;
+  display: block;        /* remove inline-img gaps */
+}
+
+/* FLOAT UTILITIES for img-base*/
+.float-left {
+  float: left;
+  margin: 0 1em 1em 0;   /* text wraps on right and below */
+}
+
+.float-right {
+  float: right;
+  margin: 1em 0 0 1em;   /* text wraps on left and above */
+}
+
+/* Styles for multi-colum lists */
+.list-container {
+  display: flex;
+  flex-wrap: wrap;              /* ✅ allows wrap on smaller screens */
+  justify-content: center;      /* ✅ center across row */
+  gap: 10px;                    /* ✅ space between columns */
+  padding: 10px;
+}
+.column {
+  padding: 10px 16px;
+  min-width: 240px; /* Prevents columns from shrinking too soon */
+  min-width: 140px;             /* ✅ controls how narrow columns get */
+  flex: 1 1 200px;              /* ✅ flexible responsive columns */
+}
+.column ul {
+  text-align: center;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.column li {
+  white-space: nowrap;
+  font-size: clamp(0.8rem, calc(1vw + 0.6rem), 1.2rem);
+  padding: 4px 0;
+}
+
+/* ✅ 16Feb26 🧩 [SJ-TOOLS-COLS-02]
+   Essential Tools: restore TRUE 2-column layout for sketches+links on wider screens.
+   Fix: previous flex-basis math + column padding caused early wrap (looked like 1 left column).
+   Approach: use CSS Grid for #toolsMoreMsg only (no impact to other lists).
+*/
+@media only screen and (min-width: 720px) {
+  #toolsMoreMsg .list-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 12px;
+    justify-content: stretch;
+    align-items: start;
+  }
+
+  /* Grid item wrappers */
+  #toolsMoreMsg .column {
+    width: 100%;
+    max-width: none;
+    box-sizing: border-box;
+  }
+}
+
+
+
+
+/* ✅ 16Feb26 🧩 [SJ-TOOLS-COLS-01] Essential Tools: FORCE 2 columns on wider screens
+   After the 3-division restructure, some layouts wrapped the two UL columns too early.
+   Scope is LIMITED to #toolsMoreMsg so other lists remain unchanged.
+*/
+
+
+/* 🧩 [SJ-REC-HEADER-FIX] Let the My First Bake header grow to fit sjRecipes */
+#recipeFactoids .content-section-title{
+  height:auto !important;                  /* override fixed sticky height */
+  padding:8px 0;                           /* space above/below blue header */
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+#recipeFactoids .center-title-container{
+  width:100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+/* Ensure inner sjRecipes header is just a centered block, not sticky */
+#recipeFactoids .header-wrap{
+  position:static;
+  top:auto;
+  margin:0 auto;
+  background:transparent;
+}
+
+@media only screen and (max-width: 1800px) {
+  /* ✅ 04Mar26 🧩 [SJ-HEADER-WRAP-WIDTH-02]
+     Large screens (default intent): 60% width container.
+     (This block is mostly a harmless reinforce; smaller breakpoints override below.)
+  */
+  .header-top-center-container,
+  .header-bottom-center-container {
+    width: 60%;
+  }
+}
+
+@media only screen and (min-width: 1000px) {
+  .lead-child {
+    width: 40%;
+  }
+}
+
+@media only screen and (max-width: 1000px) {
+  .responsive-img {
+    width: 50%; /* Sets a default width of 50% */
+  }
+  /* ✅ 04Mar26 🧩 [SJ-HEADER-WRAP-WIDTH-03] Medium screens: 80% */
+  .header-top-center-container,
+  .header-bottom-center-container {
+    width: 80%;
+  }
+}
+
+@media only screen and (max-width: 800px) {
+  .sjBookStack {
+    width: 50px;
+    margin-left: 30px;
+  }
+  .sjLogo {
+    width: 80px;
+    margin-right: 30px;
+  }
+  .sjLoneLoaf {
+    width: 90px;
+    margin-left: 20px;
+    margin-right: 20px;
+  }
+  /* ✅ 04Mar26 🧩 [SJ-HEADER-WRAP-WIDTH-04] Small screens: 100% */
+  .header-top-center-container,
+  .header-bottom-center-container {
+    width: 100%;
+  }
+}
+@media only screen and (max-width: 500px) {
+  /* ✅ 04Mar26 🧩 [SJ-HEADER-CENTER-02A] Keep same 25/50/25 split on small screens (can tweak later) */
+  .header-top-center-container .left-box   { flex: 0 0 25%; width: 25%; }
+  .header-top-center-container .center-box { flex: 0 0 50%; width: 50%; }
+  .header-top-center-container .right-box  { flex: 0 0 25%; width: 25%; }
+  
+.back-to-recipes-link { gap: 3px; }
+  .header-icon-top-sjlogo { width: clamp(34px, 12vw, 48px); } /* ✅ 2026-04-25 [SJ-BOOK-HEADER-MOBILE-LOGO-01] keep left group from bleeding into title */
+  .back-to-recipes-text { font-size: clamp(11px, 3.35vw, 15px); } /* ✅ 2026-04-25 [SJ-BOOK-HEADER-MOBILE-RECIPES-02] mobile portrait has full viewport width now, so restore a modest Recipes size bump */
+
+  .responsive-img {
+    width: 100%; /* 100% width for small screens */
+  }
+  .tagline {
+    font-size: 10px;
+  }
+  .list-container {
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+    gap: 0;
+  }
+
+  .column {
+    width: 100%;
+    max-width: none;
+    padding: 0;
+
+    display: flex;               /* ✅ NEW: makes the column a flex container */
+    justify-content: center;     /* ✅ NEW: centers the <ul> inside it */
+  }
+
+  .column ul {
+    text-align: center;
+  }
+
+  .column li {
+    padding: 6px 0;
+  }
+}
+
+@media only screen and (max-width: 400px) {
+  .header-icon-top {
+    width: 20px;
+  }
+  .center-box.type-header {
+    font-size: 14px; /* ✅ 2026-04-25 [SJ-BOOK-HEADER-MOBILE-TITLE-02] modest title size bump after mobile portrait full-viewport alignment */
+  }
+  :root {
+    --cubeBaseWidth: 140px; /* Global variable defining the base width of the cube */
+  }
+}
+
+
+/* ============================================================================================
+   📱 14Feb26 - Glossary (phone) list width + bullet alignment + wider glossary rabbit holes
+   [SJ-GLOSS-MOB-01]
+
+   Problem (phone view):
+   - Default <ul> indentation wastes horizontal space, so glossary bullets + term text feel too narrow.
+   - The bullet column sits too far to the right relative to the big A/B/C... letter heading.
+   - Glossary Rabbit Hole “envelope” boxes inherit the same left inset (because they live inside <ul><li>).
+
+   Fix (scoped to Glossary A→Z ONLY, and only on small screens):
+   - Reduce the glossary content side padding slightly.
+   - Allow overflow so list markers + RH halo shadows are not clipped.
+   - Reduce the <ul> left padding so bullets sit closer to the letter’s centerline.
+   - Tighten the Rabbit Hole halo margins just for the glossary to maximize usable width.
+   ============================================================================================ */
+
+@media screen and (max-width: 575px) {
+
+  /* 🟨 ADD: Smaller halo math ONLY inside Glossary, so RH envelopes can be wider on phones. */
+  #glossaryAtoZ{
+    --sjRhHalo: 6px;      /* was 10px globally */
+    --sjRhHalo2: 12px;    /* was 20px globally */
+  }
+
+  /* 🟨 ADD: Glossary doesn't need float-clipping; let markers + shadows paint fully. */
+  #glossaryAtoZ .content-section-verbiage{
+    /* ✅ 15Feb26C [SJ-PAD-01A] Glossary uses tighter padding; expose it via --sjPadX */
+    --sjPadX: 12px;       /* was 20px globally */
+    padding-left: var(--sjPadX);
+    padding-right: var(--sjPadX);
+    overflow: visible;
+    overflow-y: visible;
+  }
+
+  /* 🟨 ADD: Make the direct-child wrappers “shadow-safe” as well (prevents subtle clipping). */
+  #glossaryAtoZ .content-section-verbiage > div{
+    overflow: visible;
+  }
+
+  /* 🟨 ADD: Pull bullets left (wider list) so the marker column lands under the letter heading. */
+  #glossaryAtoZ ul{
+    margin-left: 0;
+    padding-left: 1.15em;         /* tighter than browser default (~40px) */
+  }
+
+  /* 🟨 ADD: Small spacing between glossary items for thumb-scrolling/readability. */
+  #glossaryAtoZ ul > li{
+    margin-bottom: 10px;
+  }
+}
+
+/* --- Leaven Gallery Styles --- */
+
+.leaven-gallery-parent {
+  display: flex;
+  flex-wrap: wrap;         /* Allows boxes to wrap to the next line */
+  justify-content: center; /* Keeps wrapped items centered */
+  gap: 6px;                /* Minimal margins between boxes */
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.leaven-gallery-child {
+  /* Formula: 33.333% width minus the gap size. 
+     This ensures 3 boxes fit perfectly on one line.
+  */
+  flex: 0 0 calc(33.333% - 6px);
+  
+  box-sizing: border-box;
+  text-align: center;
+  /* Optional: Add a border or background if you want visual separation */
+  /* border: 1px solid #ccc; */ 
+}
+
+/* Ensures images fill their box */
+.leaven-gallery-child img {
+  width: 100%;
+  height: auto;
+  display: block; 
+}
+
+/* --- Responsive Behavior --- */
+
+/* On screens smaller than 800px, show 2 per row */
+@media (max-width: 800px) {
+  .leaven-gallery-child {
+    flex: 0 0 calc(50% - 6px);
+  }
+}
+
+/* On screens smaller than 500px, show 1 per row (full width) */
+@media (max-width: 500px) {
+  .leaven-gallery-child {
+    flex: 0 0 100%;
+  }
+}
+
+
+/* ============================================================================================
+   🐇 23Jan26 - Rabbit Hole "More..." icon (Nerdy Deep Dive blocks)
+   [SJ-RH-CSS-01] Drop-in component: centered rabbit icon + hidden detail panel
+   - Icon scales conservatively (PC: subtle; mobile: a bit larger but not aggressive)
+   - Uses background-image so existing Search "expand/collapse all" logic stays intact
+   ============================================================================================ */
+
+.sjRabbitHole-wrap{
+  width: 100%;
+  display: block;
+  margin: 10px 0 6px 0;
+}
+
+.sjRabbitHole-button{
+  /* Center the icon inside the parent section */
+  display: block;
+  margin: 0 auto;
+
+  /* Conservative scaling */
+  width:  clamp(73px, 4.73vw, 105px);
+  height: clamp(73px, 4.73vw, 105px);
+
+  /* Rabbit icon */
+  background-image: url("https://sjmedia0.w3spaces.com/sjICONS/rabbitHoleMORE.png");
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+
+  /* Keep "More..." text for Search logic, but make it invisible */
+  color: transparent;
+  font-size: 0px;
+  line-height: 0px;
+
+  cursor: pointer;
+  user-select: none;
+
+  /* Subtle affordance */
+  transition: transform 0.12s ease, filter 0.12s ease;
+}
+
+/* --------------------------------------------------------------------------------------------
+   🐇 23Jan26 - Tiny "delight" bounce
+   [SJ-RH-CSS-02] Subtle, tasteful bounce on hover (PC) and click/tap (all devices)
+   -------------------------------------------------------------------------------------------- */
+
+@keyframes sjRabbitBounce {
+  0%   { transform: translateY(0px)  scale(1);    }
+  30%  { transform: translateY(-4px) scale(1.02); }
+  55%  { transform: translateY(0px)  scale(0.99); }
+  78%  { transform: translateY(-2px) scale(1.01); }
+  100% { transform: translateY(0px)  scale(1);    }
+}
+
+/* Hover bounce only on devices that actually hover (prevents weirdness on touch screens) */
+@media (hover: hover) and (pointer: fine) {
+  .sjRabbitHole-button:hover{
+    animation: sjRabbitBounce 0.55s ease;
+    filter: saturate(1.05) contrast(1.05);
+  }
+}
+
+/* Click/tap bounce is applied by JS via this class */
+.sjRabbitHole-bounce{
+  animation: sjRabbitBounce 0.55s ease;
+}
+
+.sjRabbitHole-button:active{
+  transform: translateY(0px);
+}
+
+.sjRabbitHole-button:focus-visible{
+  outline: 2px solid rgba(20,137,84,0.75);
+  outline-offset: 4px;
+  border-radius: 10px;
+}
+
+/* Optional: tiny visual cue when open */
+.sjRabbitHole-button[data-rabbit-state="open"]{
+  background-image: url("https://sjmedia0.w3spaces.com/sjICONS/rabbitHoleLESS.png");
+  filter: none;
+}
+
+
+.sjRabbitHole-panel{
+  display: none; /* default hidden */
+
+  /* 28Jan26 [SJ-WIDTH-04]
+     Keep Rabbit Hole box aligned with Section content width.
+     - Border box is slightly narrower than the content column by 2x halo so the halo can paint on all 4 sides.
+     - This makes the Section Verbiage, moreMsg, and Rabbit Hole boxes visually match on narrow screens. */
+  margin: 4px var(--sjRhHalo) 0 var(--sjRhHalo);
+  width: calc(100% - var(--sjRhHalo2));
+  max-width: 100%;
+  box-sizing: border-box;
+
+  /* Gentle separation from the main section content */
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid #75ba75; /* match chapter card border thickness */
+  background: rgba(255,255,255,0.80);
+
+  /* ✅ pale green “halo” around the nerd card */
+  box-shadow:
+    0 0 0 var(--sjRhHalo) rgba(117,186,117,0.18),
+    0 3px 12px rgba(117,186,117,0.22);
+}
+
+
+
+.sjRabbitHole-panel p{
+  margin: 0 0 10px 0;
+}
+
+/* ============================================================================================
+   🐇 15Feb26 - MAJOR SURGERY: Section "More/Less" → Rabbit icons
+   [SJ-MAJOR-SURGERY-CSS-01]
+   - Header toggle becomes a Rabbit icon (uses same MORE/LESS artwork as Nerd Mode)
+   - Hidden section content becomes a Rabbit-styled panel (.sjSectionRH-panel)
+   - moreMsg content is wrapped in .sjSectionRH-moreMsg and inserted at top of the panel
+   ============================================================================================ */
+
+/* Header Rabbit toggle (replaces the old green More/Less button) */
+.sjSectionRH-button{
+  border: none !important;
+  background-color: transparent !important;
+  padding: 0 !important;
+
+  width: clamp(30px, calc(10px + 4vw), 42px) !important;
+  height: clamp(30px, calc(10px + 4vw), 42px) !important;
+  min-width: clamp(30px, calc(10px + 4vw), 42px) !important;
+
+  border-radius: 10px;
+
+  background-image: url("https://sjmedia0.w3spaces.com/sjICONS/rabbitHoleMORE.png");
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+
+  /* Hide text tokens (Search logic uses aria-expanded, not visible text) */
+  color: transparent !important;
+  font-size: 0 !important;
+  line-height: 0 !important;
+
+  cursor: pointer;
+  user-select: none;
+}
+
+.sjSectionRH-button[data-rabbit-state="open"]{
+  background-image: url("https://sjmedia0.w3spaces.com/sjICONS/rabbitHoleLESS.png");
+}
+
+.sjSectionRH-button:focus-visible{
+  outline: 2px solid rgba(20,137,84,0.75);
+  outline-offset: 4px;
+}
+
+/* Section-level Rabbit panel (absorbs moreMsg + optional deep-dive content) */
+.sjSectionRH-panel{
+  display: none; /* default hidden */
+
+  /* ✅ 15Feb26B [SJ-RH-CSS-01] Add breathing-room above/below the Rabbit panel */
+  margin: 10px var(--sjRhHalo) 12px var(--sjRhHalo);
+
+  /* Match Nerd Mode geometry so widths stay visually aligned */
+  width: calc(100% - var(--sjRhHalo2));
+  max-width: 100%;
+  box-sizing: border-box;
+
+  /* ✅ 15Feb26C [SJ-RH-CSS-02] Decorative (non-clickable) Rabbit icon at top-center */
+  position: relative;
+  --sjSectionRHDecoSize: clamp(73px, 4.73vw, 105px); /* matches legacy clickable Rabbit icon size */
+
+  /* Extra top padding to reserve space for the decorative icon (no overlap with text) */
+  padding: calc(8px + var(--sjSectionRHDecoSize)) 14px 14px 14px;
+
+  border-radius: 12px;
+  border: 1px solid #75ba75;
+  background: rgba(255,255,255,0.80);
+
+  box-shadow:
+    0 0 0 var(--sjRhHalo) rgba(117,186,117,0.18),
+    0 3px 12px rgba(117,186,117,0.22);
+}
+
+.sjSectionRH-panel::before{
+  content: "";
+  position: absolute;
+  top: 2px;  /* ✅ 15Feb26C [SJ-RH-ICON-01] top-center */
+  left: 50%;
+  transform: translateX(-50%);
+
+  width: var(--sjSectionRHDecoSize);
+  height: var(--sjSectionRHDecoSize);
+
+  background-image: url("https://sjmedia0.w3spaces.com/sjICONS/rabbitHoleMORE.png");
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: 100% 100%;
+
+  pointer-events: none;  /* icon is purely visual */
+  user-select: none;
+  opacity: 0.95;
+}
+
+/* ✅ 15Feb26B [SJ-RH-CSS-03] Mobile: make the Rabbit panel as wide as possible */
+/* ✅ 15Feb26C [SJ-RH-WIDTH-01]
+   Responsive: make Section Rabbit panel as wide as possible WITHOUT overshooting the container.
+   - Uses --sjPadX (actual section padding) so special sections like Glossary (12px) stay aligned.
+   - Keeps the outer "halo" landing right at the container edge. */
+@media (max-width: 900px){
+  .sjSectionRH-panel{
+    margin-left:  calc(var(--sjRhHalo) - var(--sjPadX));
+    margin-right: calc(var(--sjRhHalo) - var(--sjPadX));
+    width: calc(100% + (var(--sjPadX) - var(--sjRhHalo)) + (var(--sjPadX) - var(--sjRhHalo)));
+  }
+}
+
+
+/* Prevent generic section-divider rule from drawing a faint line under the panel */
+.content-section-verbiage > div.sjSectionRH-panel{
+  border-bottom: none !important;
+  padding-bottom: 0 !important;
+  overflow: visible !important;
+}
+
+/* Optional separator between absorbed moreMsg content and deeper material */
+.sjSectionRH-sep{
+  border: 0;
+  height: 1px;
+  background: rgba(117,186,117,0.35);
+  margin: 10px 0;
+}
+
+/* Keep the old moreMsg "division" look inside the new panel (where applicable) */
+.sjSectionRH-moreMsg > div{
+  overflow: hidden;              /* contain floated images */
+  padding-bottom: 10px;
+  border-bottom: 1px solid #ddd; /* subtle divider like the legacy moreMsg */
+  margin: auto;
+  margin-top: 10px;
+}
+.sjSectionRH-moreMsg > div:last-child{
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+
+/* ============================================================================================
+   🐇 13Feb26 - Glossary Rabbit Hole "ENVELOPE" box
+   [SJ-GLOSS-RH-ENVELOPE-01]
+   Goal: When a glossary term opens, make ONE continuous Rabbit Hole box that includes:
+         - the glossary term line (hyperlink) + short definition
+         - the rabbit hole content panel below it
+   Approach:
+         - JS adds .sjGlossary-open to the owning <li>
+         - CSS draws the outer box on the <li>
+         - CSS flattens the inner .glossary-panel so we don't get "box inside a box"
+   ============================================================================================ */
+
+#glossaryAtoZ li.sjGlossary-open {
+  /* Use the same width/halo math as your Rabbit Hole cards so everything feels consistent */
+  margin: 8px var(--sjRhHalo) 14px var(--sjRhHalo);
+  width: calc(100% - var(--sjRhHalo2));
+  max-width: 100%;
+  box-sizing: border-box;
+
+  padding: 12px 14px;
+  border-radius: 12px;
+
+  /* Outer "Rabbit Hole" envelope */
+  border: 1px solid #75ba75;              /* match .sjRabbitHole-panel border thickness */
+  border-left: 3px solid #2980b9;         /* optional blue cue line on the OUTER envelope */
+  background: rgba(255,255,255,0.80);
+
+  /* Same soft halo look as the Rabbit Hole panel */
+  box-shadow:
+    0 0 0 var(--sjRhHalo) rgba(117,186,117,0.18),
+    0 3px 12px rgba(117,186,117,0.22);
+
+  /* ✅ 2026-04-28 🧩 [SJ-GLOSS-MODAL-CSS-01] Keep the open Glossary envelope ABOVE the full-screen veil.
+     - Manual Glossary opens are now modal-like: overlay covers header/page; only the active term remains above it.
+     - Search-driven opens still suppress the overlay from JS, so Search navigation remains usable. */
+  position: relative;
+  z-index: 2501;
+  max-height: calc(100dvh - 32px);
+  overflow: hidden;
+
+  /* IMPORTANT: your global li forces nowrap; turn wrapping back on inside the glossary envelope */
+  white-space: normal;
+}
+
+/* ============================================================================================
+   ✅ 2026-04-28 🧩 [SJ-GLOSS-MODAL-CSS-02] Glossary full-screen veil + background scroll lock
+   - Dedicated veil covers the full viewport, including Book headers and sticky section titles.
+   - The active Glossary <li> is lifted above the veil; everything else stays inactive underneath.
+   - JS adds the scroll-lock classes only for manual Glossary opens, not Search-driven opens.
+   ============================================================================================ */
+
+.sjGlossary-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(169, 169, 169, 0.70);
+  z-index: 2500;
+
+  /* Hidden by default */
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.25s ease, visibility 0s 0.25s;
+}
+
+.sjGlossary-overlay.visible {
+  visibility: visible;
+  opacity: 1;
+  transition: opacity 0.25s ease;
+}
+
+html.sjGlossary-scrollLock {
+  overflow: hidden !important;
+  overscroll-behavior: none;
+}
+
+body.sjGlossary-scrollLockBody {
+  /* ✅ 2026-04-28 🧩 [SJ-GLOSS-MODAL-CSS-04]
+     Do NOT use position: fixed here. Fixed-body locking prevented the opened Glossary
+     envelope from moving to its old just-under-header position. The JS event guards +
+     overflow lock prevent user background scrolling while preserving programmatic scroll. */
+  overflow: hidden !important;
+  overscroll-behavior: none;
+}
+
+#glossaryAtoZ li.sjGlossary-open {
+  position: relative;
+  z-index: 2501;
+}
+
+
+/* Flatten the INNER panel so the envelope looks like ONE box */
+#glossaryAtoZ li.sjGlossary-open > .sjRabbitHole-panel.glossary-panel {
+  margin: 10px 0 0 0 !important;
+  width: 100% !important;
+  max-width: 100% !important;
+
+  padding: 0 !important;
+  border: none !important;
+  border-left: none !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+
+  white-space: normal !important;
+  overflow: hidden !important;
+}
+
+/* ✅ 2026-04-28 🧩 [SJ-GLOSS-MODAL-CSS-03] Scroll only the detailed Glossary content.
+   - The term + one-line definition remain fixed in the open envelope.
+   - Background/Science/Role/Interesting sections live in the existing .sjGlossary-rhContent wrapper.
+   - JS sets an exact max-height per open term so long entries fit the visible viewport. */
+#glossaryAtoZ li.sjGlossary-open .sjGlossary-rhContent {
+  max-height: calc(100dvh - 190px);
+  overflow-y: auto;
+  overflow-x: hidden;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+
+  /* ✅ 2026-04-28 🧩 [SJ-GLOSS-RHCONTENT-TOP-BLUE-01]
+     Thin blue cue line belongs on the scrollable detail panel itself, not on the full Glossary envelope.
+     This is the div that contains Background / Science Fact / Role in Bread Making / Interesting Fact. */
+  border-top: 2px solid #2980b9;
+  padding-top: 7px;
+  padding-right: 8px;
+
+  box-sizing: border-box;
+}
+
+/* ============================================================================================
+   🐇 28Jan26 - Rabbit Hole halo fix (FINAL OVERRIDE - must be AFTER the generic overflow rules)
+   [SJ-RH-CSS-03] Prevent left/right shadow clipping inside Section "moreMsg".
+   - Keep float containment WITHOUT overflow clipping using flow-root.
+   - Give moreMsg the same side padding as main verbiage (20px).
+   ============================================================================================ */
+.content-section-moreMsg{
+  /* 28Jan26 [SJ-WIDTH-05]
+     Make Section Verbiage and moreMsg use the SAME content column width.
+     - Some sections place .content-section-moreMsg inside .content-section-verbiage (already padded).
+     - Others place it as a sibling (no padding).
+     So we pad by default, then CANCEL padding when nested to avoid double-inset on narrow screens. */
+  padding-left: var(--sjContentPad);
+  padding-right: var(--sjContentPad);
+
+  clear: both;             /* ✅ ensures moreMsg starts below floated images (Culture fix) */
+  overflow: visible;       /* override earlier overflow:hidden */
+  overflow-y: visible;     /* override earlier overflow-y:auto */
+}
+
+/* 28Jan26 [SJ-WIDTH-06] If moreMsg lives INSIDE .content-section-verbiage, don't double-pad. */
+.content-section-verbiage .content-section-moreMsg{
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.content-section-moreMsg > div{
+  overflow: visible;       /* override earlier overflow:hidden */
+  display: flow-root;      /* contains floated images without clipping shadows */
+}
+
+/* ============================================================================================
+   ✅ 2026-03-07 🧩 [SJ-RH-OVERLAY-CSS-01] General Rabbit Hole veil (dims background, lifts open panel)
+   - Used for NON-GLOSSARY Rabbit Holes only (Glossary has its own veil).
+   - Z-index: veil 1980, open panel 1981, drawers 2000+
+   ============================================================================================ */
+
+.sjRabbitHole-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(169, 169, 169, 0.70);
+  z-index: 1980;
+
+  /* Hidden by default */
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.25s ease, visibility 0s 0.25s;
+}
+
+.sjRabbitHole-overlay.visible {
+  visibility: visible;
+  opacity: 1;
+  transition: opacity 0.25s ease;
+}
+
+/* Lift an open Rabbit Hole panel above the veil */
+.sjRabbitHole-open {
+  position: relative;
+  z-index: 1981; /* veil is 1980; header is ~1000; drawers remain above at 2000+ */
+}
+
+/* ============================================================================================
+   ✅ 2026-03-07 🧩 [SJ-RH-OVERLAY-CSS-02] Keep OPEN Rabbit Hole pane crisp above veil
+   Problem: many Rabbit Hole panels use translucent backgrounds (inline rgba) so the grey veil
+            shows THROUGH them, making the panel look "veiled" even when it is above the overlay.
+   Fix: when a Rabbit Hole panel is open AND the veil is active, force an (almost) solid background.
+   ============================================================================================ */
+
+.sjRabbitHole-panel.sjRabbitHole-open{
+  position: relative;
+  z-index: 1985 !important;                 /* stronger lift above veil */
+  background-color: rgba(255,255,255,0.98) !important;  /* block the veil tint */
+}
+
+
+/* ✅ 2026-04-25 🧩 [SJ-BOOK-HEADER-RAIL-04]
+   Final header rail rule for Step 4.
+   - Default/all non-mobile-portrait views: top black header uses the same .header-rail width as the Welcome pane.
+   - This keeps SourJoe+Recipes aligned to the Welcome pane left edge and the TOC hamburger aligned to the Welcome pane right edge.
+   - Overrides older breakpoint rules that narrowed .header-top-center-container to 60%/80% and caused large-screen crunching. */
+.header-top-div > .header-rail {
+  width: clamp(
+    68%,
+    calc(-9vw + 693px),
+    90%
+  );
+}
+.header-top-div .header-top-center-container {
+  width: 100% !important;
+}
+.header-top-div .header-top-center-container .left-box {
+  justify-content: flex-start;
+}
+.header-top-div .header-top-center-container .right-box {
+  justify-content: flex-end;
+}
+
+/* ✅ 2026-04-25 🧩 [SJ-BOOK-HEADER-MOBILE-PORTRAIT-RAIL-01]
+   Mobile portrait exception only.
+   - Top black header uses the full viewport instead of the Welcome pane rail.
+   - Logo+Recipes sits flush left; hamburger sits flush right; title remains centered in the viewport. */
+@media only screen and (max-width: 500px) and (orientation: portrait) {
+  .header-top-div > .header-rail {
+    width: 100%;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+  .header-top-div .header-top-center-container {
+    width: 100% !important;
+  }
+  .header-top-center-container .left-box   { flex: 0 0 25%; width: 25%; }
+  .header-top-center-container .center-box { flex: 0 0 50%; width: 50%; }
+  .header-top-center-container .right-box  { flex: 0 0 25%; width: 25%; }
+  .back-to-recipes-link { gap: 3px; }
+  .header-icon-top-sjlogo { width: clamp(34px, 11vw, 46px); }
+  .back-to-recipes-text { font-size: clamp(9px, 3vw, 13px); }
+  .center-box.type-header { font-size: clamp(12px, 3.4vw, 14px); }
+}
+
+/* =================================================================================================
+   ✅ 2026-05-18 🧩 [SJ-CHAPTER-PSTYLE-CSS-01]
+   sjLearn Chapter intro styling port from p.html:
+   - Match the cleaner public-site chapter body rail without importing public-only preview notes.
+   - Keep full app links/helper bubbles intact.
+   - Prevent chapter sketch images from becoming oversized on desktop.
+   ================================================================================================= */
+
+/* START HERE pair-card layout, matched to the p.html chapter guide treatment. */
+.sjp-start-here-grid {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  align-items: stretch !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+  margin: 8px 0 4px 0 !important;
+}
+
+.sjp-start-here-box {
+  box-sizing: border-box !important;
+  min-width: 0 !important;
+  margin: 1px !important;
+  padding: clamp(10px, 1.5vw, 16px) !important;
+  border: none !important;
+  border-radius: 6px !important;
+  background: rgba(255, 255, 255, 0.46) !important;
+}
+
+.sjp-start-here-box p {
+  margin: 0 0 0.55em 0 !important;
+}
+
+.sjp-start-here-copybox {
+  display: flex !important;
+  align-items: center !important;
+}
+
+.sjp-start-here-linkbox {
+  text-align: center !important;
+}
+
+.sjp-start-here-linkbox .sjp-start-here-box-title,
+.sjp-start-here-linkbox .sjp-start-here-link-list {
+  text-align: center !important;
+}
+
+.sjp-start-here-copybox p:last-child,
+.sjp-start-here-linkbox p:last-child {
+  margin-bottom: 0 !important;
+}
+
+.sjp-start-here-box-title {
+  margin: 0 0 6px 0 !important;
+  color: darkgreen !important;
+  font-weight: bold !important;
+  font-size: larger !important;
+  text-align: left !important;
+}
+
+.sjp-start-here-link-list {
+  list-style: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.sjp-start-here-link-list li {
+  margin: 3px 0 !important;
+  padding: 0 !important;
+}
+
+/* p.html revision-5 START HERE pair cards: two compact pair cards, not a loose four-box grid. */
+#startHereIntro.content-section-chapter > .content-section-verbiage > .sjp-chapter-copy-shell {
+  max-width: 760px !important;
+}
+
+#startHereIntro .sjp-start-here-grid {
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  row-gap: clamp(10px, 1.7vw, 16px) !important;
+  margin: 8px auto 4px auto !important;
+}
+
+#startHereIntro .sjp-start-here-pair {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) minmax(238px, 290px) !important;
+  align-items: center !important;
+  column-gap: clamp(12px, 2.1vw, 22px) !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+  padding: clamp(12px, 1.8vw, 18px) clamp(14px, 2.2vw, 20px) !important;
+  border: 1px solid rgba(88, 174, 93, 0.24) !important;
+  border-radius: 12px !important;
+  background: rgba(232, 248, 236, 0.30) !important;
+}
+
+#startHereIntro .sjp-start-here-box {
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+}
+
+#startHereIntro .sjp-start-here-copybox {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  justify-content: center !important;
+}
+
+#startHereIntro .sjp-start-here-linkbox {
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  align-items: center !important;
+  text-align: center !important;
+}
+
+#startHereIntro .sjp-start-here-copybox .sjp-start-here-box-title {
+  width: 100% !important;
+  margin: 0 0 7px 0 !important;
+  text-align: left !important;
+}
+
+#startHereIntro .sjp-start-here-link-list li {
+  margin: 4px 0 !important;
+}
+
+/* Chapter intro inner rail: same width/float containment as p.html. */
+.content-section-chapter > .content-section-verbiage > .sjp-chapter-copy-shell {
+  width: 100% !important;
+  max-width: 940px !important;
+  margin: 0 auto !important;
+  padding: 0 20px !important;
+  border-bottom: none !important;
+  overflow: visible !important;
+  display: flow-root !important;
+  box-sizing: border-box !important;
+}
+
+.content-section-chapter .sjp-chapter-wrap-img {
+  height: auto !important;
+}
+
+/* Reference sketch balance: this is the specific visual correction shown in the p.html Reference panel. */
+@media only screen and (min-width: 1025px) {
+  #referenceIntro.content-section-chapter .sjp-chapter-wrap-img {
+    width: 28% !important;
+    max-width: 28% !important;
+    margin-right: clamp(24px, 3vw, 38px) !important;
+  }
+}
+
+@media only screen and (max-width: 760px) {
+  #startHereIntro.content-section-chapter > .content-section-verbiage > .sjp-chapter-copy-shell {
+    max-width: 100% !important;
+  }
+
+  #startHereIntro .sjp-start-here-pair {
+    grid-template-columns: 1fr !important;
+    row-gap: 8px !important;
+    padding: clamp(12px, 3.2vw, 16px) !important;
+  }
+
+  #startHereIntro .sjp-start-here-copybox,
+  #startHereIntro .sjp-start-here-linkbox {
+    display: block !important;
+  }
+
+  .content-section-chapter > .content-section-verbiage > .sjp-chapter-copy-shell {
+    max-width: 100% !important;
+  }
+}
+
+@media only screen and (orientation: portrait) and (min-width: 761px) and (max-width: 1024px) {
+  #startHereIntro .sjp-start-here-pair {
+    grid-template-columns: 1fr !important;
+    row-gap: 8px !important;
+  }
+
+  #startHereIntro .sjp-start-here-copybox,
+  #startHereIntro .sjp-start-here-linkbox {
+    display: block !important;
+  }
+}
+
+/* =================================================================================================
+   ✅ 2026-06-02 🧩 [SJ-PASS15D-START-HERE-PLUS-ALIGN-01]
+   sjLearn Pass15D:
+   - Match public-site START HERE link-row behaviour.
+   - Keep the two circled "+" helper-icon groups centered as whole link groups.
+   - Keep each circled "+" vertically centered with its matching link at every breakpoint.
+   ================================================================================================= */
+#startHereIntro .sjp-start-here-linkbox {
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  align-items: center !important;
+  text-align: left !important;
+}
+
+#startHereIntro .sjp-start-here-linkbox .sjp-start-here-link-list {
+  display: inline-flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  justify-content: center !important;
+  width: max-content !important;
+  max-width: 100% !important;
+  margin: 0 auto !important;
+  padding: 0 !important;
+  text-align: left !important;
+}
+
+#startHereIntro .sjp-start-here-link-list li {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 8px !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  margin: 4px 0 !important;
+  text-align: left !important;
+}
+
+#startHereIntro .sjp-start-here-link-list li > .sjb-helpDot:first-child {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex: 0 0 20px !important;
+  align-self: center !important;
+  width: 20px !important;
+  height: 20px !important;
+  min-width: 20px !important;
+  min-height: 20px !important;
+  margin: 0 !important;
+  line-height: 1 !important;
+  vertical-align: middle !important;
+}
+
+#startHereIntro .sjp-start-here-link-list li > .link-style,
+#startHereIntro .sjp-start-here-link-list li > a {
+  display: inline-flex !important;
+  align-items: center !important;
+  min-width: 0 !important;
+  text-align: left !important;
+}
+
+#startHereIntro .sjp-start-here-link-list li > a .link-style {
+  display: inline !important;
+}
+
+
+/* =================================================================================================
+   ✅ 2026-06-04 🧩 [SJL-PASS16-STARTER-RABBIT-IMAGES-01]
+   sjLearn Pass16:
+   - Add constrained, responsive images inside the Starter rabbit-hole panel.
+   - Desktop/tablet: image/text rows keep the image on the right without dominating the panel.
+   - Small screens: images stack above the related text and stay within the panel width.
+   ================================================================================================= */
+#RH-starter-01-panel .sjl-rh-media-row {
+  display: flex !important;
+  align-items: flex-start !important;
+  gap: 14px !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+#RH-starter-01-panel .sjl-rh-media-row--image-right {
+  flex-direction: row-reverse !important;
+}
+
+#RH-starter-01-panel .sjl-rh-media-row > ol,
+#RH-starter-01-panel .sjl-rh-media-row > ul {
+  flex: 1 1 auto !important;
+  min-width: 0 !important;
+  margin-top: 0 !important;
+}
+
+#RH-starter-01-panel .sjl-rh-figure {
+  box-sizing: border-box !important;
+  flex: 0 0 clamp(150px, 28%, 260px) !important;
+  max-width: 42% !important;
+  margin: 4px 0 10px 0 !important;
+  padding: 0 !important;
+  line-height: 0 !important;
+}
+
+#RH-starter-01-panel .sjl-rh-image {
+  display: block !important;
+  width: 100% !important;
+  height: auto !important;
+  max-height: 220px !important;
+  object-fit: contain !important;
+  border: 1px solid rgba(0, 0, 0, 0.12) !important;
+  border-radius: 7px !important;
+  background: #ffffff !important;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.10) !important;
+}
+
+#RH-starter-01-panel .sjl-rh-figure--starter-fix {
+  flex-basis: clamp(170px, 30%, 280px) !important;
+}
+
+@media (max-width: 720px) {
+  #RH-starter-01-panel .sjl-rh-media-row,
+  #RH-starter-01-panel .sjl-rh-media-row--image-right {
+    flex-direction: column !important;
+    gap: 8px !important;
+  }
+
+  #RH-starter-01-panel .sjl-rh-figure,
+  #RH-starter-01-panel .sjl-rh-figure--starter-fix {
+    flex: 0 0 auto !important;
+    width: min(100%, 360px) !important;
+    max-width: 100% !important;
+    margin: 8px auto 12px auto !important;
+  }
+
+  #RH-starter-01-panel .sjl-rh-image {
+    max-height: 240px !important;
+  }
+}
+
+@media (max-width: 420px) {
+  #RH-starter-01-panel .sjl-rh-image {
+    max-height: 210px !important;
+  }
+}
+
+
+/* =================================================================================================
+   ✅ 2026-06-04 🧩 [SJL-PASS16C-START-HERE-GROUP-CENTER-01]
+   sjLearn Pass16C:
+   - Keep each entire START HERE circled-plus link group vertically centered inside its pair card.
+   - The earlier rule centered each individual + icon with its link text; this rule stretches the
+     right-side link box to the full pair-card height so the whole list group is centered vertically too.
+   ================================================================================================= */
+#startHereIntro .sjp-start-here-pair {
+  align-items: stretch !important;
+}
+
+#startHereIntro .sjp-start-here-copybox,
+#startHereIntro .sjp-start-here-linkbox {
+  align-self: stretch !important;
+  min-height: 100% !important;
+}
+
+#startHereIntro .sjp-start-here-linkbox {
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  align-items: center !important;
+  height: 100% !important;
+  text-align: left !important;
+}
+
+#startHereIntro .sjp-start-here-linkbox .sjp-start-here-link-list {
+  display: inline-flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  justify-content: center !important;
+  margin-top: auto !important;
+  margin-bottom: auto !important;
+}
+
+/* =================================================================================================
+   ✅ 2026-06-04 🧩 [SJL-PASS16D-START-HERE-PLUS-RAIL-01]
+   sjLearn Pass16D:
+   - Normalize the START HERE right-side link column so both circled-plus groups share one vertical rail.
+   - Keep the whole link group vertically centered in each pair card.
+   - Avoid max-content centering, which moved the plus column differently for short vs long link text.
+   ================================================================================================= */
+#startHereIntro .sjp-start-here-pair {
+  grid-template-columns: minmax(0, 1fr) clamp(270px, 38%, 320px) !important;
+  align-items: stretch !important;
+}
+
+#startHereIntro .sjp-start-here-copybox,
+#startHereIntro .sjp-start-here-linkbox {
+  align-self: stretch !important;
+  min-height: 100% !important;
+}
+
+#startHereIntro .sjp-start-here-linkbox {
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  align-items: stretch !important;
+  height: 100% !important;
+  text-align: left !important;
+}
+
+#startHereIntro .sjp-start-here-linkbox .sjp-start-here-link-list {
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  align-items: stretch !important;
+  width: 100% !important;
+  max-width: 320px !important;
+  margin: auto !important;
+  padding: 0 !important;
+  text-align: left !important;
+}
+
+#startHereIntro .sjp-start-here-link-list li {
+  display: grid !important;
+  grid-template-columns: 22px minmax(0, 1fr) !important;
+  align-items: center !important;
+  justify-content: stretch !important;
+  column-gap: 8px !important;
+  width: 100% !important;
+  margin: 4px 0 !important;
+  padding: 0 !important;
+  text-align: left !important;
+}
+
+#startHereIntro .sjp-start-here-link-list li > .sjb-helpDot:first-child {
+  grid-column: 1 !important;
+  justify-self: center !important;
+  align-self: center !important;
+  margin: 0 !important;
+}
+
+#startHereIntro .sjp-start-here-link-list li > .link-style,
+#startHereIntro .sjp-start-here-link-list li > a {
+  grid-column: 2 !important;
+  justify-self: start !important;
+  align-self: center !important;
+  min-width: 0 !important;
+  text-align: left !important;
+}
+
+@media only screen and (max-width: 760px),
+       only screen and (orientation: portrait) and (min-width: 761px) and (max-width: 1024px) {
+  #startHereIntro .sjp-start-here-pair {
+    grid-template-columns: 1fr !important;
+  }
+
+  #startHereIntro .sjp-start-here-linkbox {
+    align-items: center !important;
+  }
+
+  #startHereIntro .sjp-start-here-linkbox .sjp-start-here-link-list {
+    width: min(100%, 320px) !important;
+  }
+}
+
+/* =================================================================================================
+   ✅ 2026-06-05 🧩 [SJL-PASS17E-START-HERE-PROPORTIONS-01]
+   sjLearn Pass17E:
+   - Match the public-site START HERE proportions.
+   - Give the explanatory verbiage column more room and narrow the circled-plus link column.
+   - Preserve the vertically centered link group and fixed plus rail from Pass16.
+   ================================================================================================= */
+#startHereIntro.content-section-chapter > .content-section-verbiage > .sjp-chapter-copy-shell {
+  max-width: 840px !important;
+}
+
+#startHereIntro .sjp-start-here-pair {
+  grid-template-columns: minmax(0, 1fr) clamp(230px, 30%, 255px) !important;
+  column-gap: clamp(10px, 1.5vw, 16px) !important;
+}
+
+#startHereIntro .sjp-start-here-linkbox .sjp-start-here-link-list {
+  width: 100% !important;
+  max-width: 255px !important;
+}
+
+@media only screen and (max-width: 760px),
+       only screen and (orientation: portrait) and (min-width: 761px) and (max-width: 1024px) {
+  #startHereIntro.content-section-chapter > .content-section-verbiage > .sjp-chapter-copy-shell {
+    max-width: 100% !important;
+  }
+
+  #startHereIntro .sjp-start-here-pair {
+    grid-template-columns: 1fr !important;
+  }
+
+  #startHereIntro .sjp-start-here-linkbox .sjp-start-here-link-list {
+    width: min(100%, 255px) !important;
+  }
+}
+
+/* =================================================================================================
+   ✅ 2026-06-05 🧩 [SJL-PASS17F-START-HERE-WIDE-RAIL-01]
+   sjLearn Pass17F:
+   - Let the START HERE pale-green pair cards use the same 940px chapter inner rail as other chapter intros.
+   - Keep the right-side circled-plus list column narrower so the verbiage side gets the extra width.
+   - Add a little more breathing room between the verbiage and the circled-plus list on side-by-side layouts.
+   ================================================================================================= */
+#startHereIntro.content-section-chapter > .content-section-verbiage > .sjp-chapter-copy-shell {
+  max-width: 940px !important;
+}
+
+#startHereIntro .sjp-start-here-pair {
+  grid-template-columns: minmax(0, 1fr) clamp(235px, 27%, 270px) !important;
+  column-gap: clamp(22px, 3vw, 36px) !important;
+}
+
+#startHereIntro .sjp-start-here-linkbox {
+  padding-left: clamp(8px, 1.2vw, 14px) !important;
+  box-sizing: border-box !important;
+}
+
+#startHereIntro .sjp-start-here-linkbox .sjp-start-here-link-list {
+  width: min(100%, 270px) !important;
+  max-width: 270px !important;
+}
+
+@media only screen and (max-width: 760px),
+       only screen and (orientation: portrait) and (min-width: 761px) and (max-width: 1024px) {
+  #startHereIntro.content-section-chapter > .content-section-verbiage > .sjp-chapter-copy-shell {
+    max-width: 100% !important;
+  }
+
+  #startHereIntro .sjp-start-here-pair {
+    grid-template-columns: 1fr !important;
+    column-gap: 0 !important;
+  }
+
+  #startHereIntro .sjp-start-here-linkbox {
+    padding-left: 0 !important;
+  }
+
+  #startHereIntro .sjp-start-here-linkbox .sjp-start-here-link-list {
+    width: min(100%, 270px) !important;
+  }
+}
+
+
+
+/* =================================================================================================
+   ✅ 2026-06-05 🧩 [SJL-PASS17G-SECTION-INTRO-RAIL-01]
+   Public + sjLearn Pass17G:
+   - Give each regular Section intro wrapper the same 940px inner rail used by Chapter intro copy.
+   - Keep the outer section panel full-width, but center the intro copy/image block inside it.
+   - Cap intro sketch width so the narrower rail does not let section intro images dominate the copy.
+   ================================================================================================= */
+.content-section:not(.content-section-chapter) > .content-section-verbiage > .sjIntroWrap {
+  width: 100% !important;
+  max-width: 940px !important;
+  margin: 10px auto 0 auto !important;
+  padding: 0 20px 10px 20px !important;
+  box-sizing: border-box !important;
+  display: flow-root !important;
+  overflow: visible !important;
+}
+
+.content-section:not(.content-section-chapter) > .content-section-verbiage > .sjIntroWrap > .sjIntroWrap-img {
+  width: min(33%, 300px) !important;
+  max-width: min(33%, 300px) !important;
+  height: auto !important;
+}
+
+@media only screen and (max-width: 760px) {
+  .content-section:not(.content-section-chapter) > .content-section-verbiage > .sjIntroWrap {
+    max-width: 100% !important;
+    padding-left: clamp(12px, 3.6vw, 20px) !important;
+    padding-right: clamp(12px, 3.6vw, 20px) !important;
+  }
+
+  .content-section:not(.content-section-chapter) > .content-section-verbiage > .sjIntroWrap > .sjIntroWrap-img {
+    float: none !important;
+    display: block !important;
+    width: min(72%, 220px) !important;
+    max-width: min(72%, 220px) !important;
+    margin: 8px auto 12px auto !important;
+  }
+}
+
+
+/* =================================================================================================
+   ✅ 2026-06-05 🧩 [SJL-PASS17H-ALL-SECTION-RAIL-01]
+   Public + sjLearn Pass17H:
+   - The previous Pass17G change narrowed only the Section intro wrapper.
+   - This rule gives each regular Section's full body rail the same 940px inner width used by Chapter
+     intro copy, so the visible intro content and the expanded More... content share one width.
+   - Chapter intro panels keep their existing .sjp-chapter-copy-shell rail.
+   ================================================================================================= */
+.content-section:not(.content-section-chapter) > .content-section-verbiage,
+.content-section:not(.content-section-chapter) > .content-section-moreMsg {
+  width: 100% !important;
+  max-width: 940px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  box-sizing: border-box !important;
+  /* ✅ 2026-06-05 🧩 [PASS17J-MORELESS-RESTORE-01]
+     Do NOT force display here. More... panels must keep their original display:none state
+     until toggleMore() sets an inline display value. */
+  padding-left: var(--sjContentPad, 20px) !important;
+  padding-right: var(--sjContentPad, 20px) !important;
+  overflow: visible !important;
+  overflow-y: visible !important;
+}
+
+/* The section body rail now supplies the side padding, so the intro wrapper should not add a second inset. */
+.content-section:not(.content-section-chapter) > .content-section-verbiage > .sjIntroWrap {
+  width: 100% !important;
+  max-width: 100% !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  box-sizing: border-box !important;
+}
+
+/* Keep Section-intro sketch images from becoming visually dominant inside the narrower shared rail. */
+.content-section:not(.content-section-chapter) > .content-section-verbiage > .sjIntroWrap > .sjIntroWrap-img {
+  width: min(33%, 300px) !important;
+  max-width: min(33%, 300px) !important;
+  height: auto !important;
+}
+
+@media only screen and (max-width: 760px) {
+  .content-section:not(.content-section-chapter) > .content-section-verbiage,
+  .content-section:not(.content-section-chapter) > .content-section-moreMsg {
+    max-width: 100% !important;
+    padding-left: clamp(12px, 3.6vw, 20px) !important;
+    padding-right: clamp(12px, 3.6vw, 20px) !important;
+  }
+
+  .content-section:not(.content-section-chapter) > .content-section-verbiage > .sjIntroWrap > .sjIntroWrap-img {
+    float: none !important;
+    display: block !important;
+    width: min(72%, 220px) !important;
+    max-width: min(72%, 220px) !important;
+    margin: 8px auto 12px auto !important;
+  }
+}
+
+/* =================================================================================================
+   ✅ 2026-06-05 🧩 [SJL-PASS17I-NESTED-SECTION-RAIL-01]
+   Public + sjLearn Pass17I:
+   - Tools A to Z and Grains A to Z use an extra wrapper <div> around their content body.
+   - Pass17H targeted direct Section body children; this reinforces the same 940px chapter rail for
+     Section bodies / More... bodies that sit one wrapper level deeper.
+   ================================================================================================= */
+.content-section:not(.content-section-chapter) > div > .content-section-verbiage,
+.content-section:not(.content-section-chapter) > div > .content-section-moreMsg {
+  width: 100% !important;
+  max-width: 940px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  box-sizing: border-box !important;
+  /* ✅ 2026-06-05 🧩 [PASS17J-MORELESS-RESTORE-01]
+     Do NOT force display here. More... panels must keep their original display:none state
+     until toggleMore() sets an inline display value. */
+  padding-left: var(--sjContentPad, 20px) !important;
+  padding-right: var(--sjContentPad, 20px) !important;
+  overflow: visible !important;
+  overflow-y: visible !important;
+}
+
+.content-section:not(.content-section-chapter) > div > .content-section-verbiage > .sjIntroWrap {
+  width: 100% !important;
+  max-width: 100% !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  box-sizing: border-box !important;
+}
+
+.content-section:not(.content-section-chapter) > div > .content-section-verbiage > .sjIntroWrap > .sjIntroWrap-img {
+  width: min(33%, 300px) !important;
+  max-width: min(33%, 300px) !important;
+  height: auto !important;
+}
+
+@media only screen and (max-width: 760px) {
+  .content-section:not(.content-section-chapter) > div > .content-section-verbiage,
+  .content-section:not(.content-section-chapter) > div > .content-section-moreMsg {
+    max-width: 100% !important;
+    padding-left: clamp(12px, 3.6vw, 20px) !important;
+    padding-right: clamp(12px, 3.6vw, 20px) !important;
+  }
+
+  .content-section:not(.content-section-chapter) > div > .content-section-verbiage > .sjIntroWrap > .sjIntroWrap-img {
+    float: none !important;
+    display: block !important;
+    width: min(72%, 220px) !important;
+    max-width: min(72%, 220px) !important;
+    margin: 8px auto 12px auto !important;
+  }
+}
+
+/* =================================================================================================
+   ✅ 2026-06-05 🧭 [SJL-PASS17K-SIMPLIFY-01]
+   sjLearn-only Pass17 continuation:
+   - Hide Advanced Topics without deleting its DOM/code.
+   - Simplify the Welcome panel and suppress visible Helper Messages controls.
+   - Add the Book of Sourjoe Guide compass and drawer card styling.
+   ================================================================================================= */
+html[data-sjl-simple="true"] #advancedTopics,
+html[data-sjl-simple="true"] #TOC-advanced-title,
+html[data-sjl-simple="true"] #TOC-advanced-content {
+  display: none !important;
+}
+
+html[data-sjl-simple="true"] #sjbHelperToggleRow,
+html[data-sjl-simple="true"] .sjb-tocHelpersRow {
+  display: none !important;
+}
+
+html[data-sjl-simple="true"] .lead-parent {
+  width: min(100%, 940px) !important;
+  max-width: 940px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  box-sizing: border-box !important;
+}
+
+html[data-sjl-simple="true"] .lead-parent .lead-child {
+  box-sizing: border-box !important;
+}
+
+html[data-sjl-simple="true"] .sjl-welcome-book-line {
+  max-width: 940px !important;
+  margin: 0 auto !important;
+  text-align: center !important;
+}
+
+html[data-sjl-simple="true"] .sjl-welcome-book-line p {
+  margin: 8px auto 0 auto !important;
+  max-width: 820px !important;
+}
+
+html[data-sjl-simple="true"] #openMainTOC {
+  gap: clamp(8px, 1.1vw, 14px) !important;
+}
+
+.sjl-book-guide-link {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex: 0 0 auto !important;
+  width: clamp(34px, calc(29px + 0.9vw), 42px) !important;
+  height: clamp(34px, calc(29px + 0.9vw), 42px) !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  text-decoration: none !important;
+  line-height: 1 !important;
+}
+
+.sjl-book-guide-link:hover,
+.sjl-book-guide-link:focus-visible {
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.sjl-book-guide-link:focus-visible {
+  outline: 2px solid rgba(255,255,255,0.92) !important;
+  outline-offset: 3px !important;
+  border-radius: 4px !important;
+}
+
+.sjl-book-guide-compass {
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain !important;
+  filter: none !important;
+  -webkit-filter: none !important;
+  image-rendering: auto !important;
+}
+
+.sjl-book-guide-drawer {
+  width: min(100%, 940px);
+  margin: 0 auto;
+  padding: clamp(8px, 1.4vw, 16px);
+  box-sizing: border-box;
+  color: #17324d;
+}
+
+.sjl-guide-card {
+  display: grid;
+  grid-template-columns: clamp(64px, 10vw, 92px) minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(12px, 2vw, 20px);
+  width: 100%;
+  margin: 0 0 12px 0;
+  padding: clamp(10px, 1.6vw, 14px);
+  box-sizing: border-box;
+  border: 1px solid rgba(88, 174, 93, 0.28);
+  border-radius: 12px;
+  background: rgba(232, 248, 236, 0.38);
+}
+
+.sjl-guide-card p {
+  margin: 0;
+  line-height: 1.38;
+}
+
+.sjl-guide-symbol {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 52px;
+  box-sizing: border-box;
+}
+
+.sjl-guide-symbol--dark {
+  width: 60px;
+  height: 60px;
+  justify-self: center;
+  padding: 7px;
+  border-radius: 8px;
+  background: #111111;
+}
+
+.sjl-guide-compass {
+  display: block;
+  width: 46px;
+  height: 46px;
+  object-fit: contain;
+}
+
+.sjl-guide-symbol--recipes {
+  gap: 7px;
+  justify-content: flex-start;
+  min-width: 0;
+}
+
+.sjl-guide-logo {
+  width: 42px;
+  height: auto;
+  background: #ffffff;
+  border-radius: 6px;
+  padding: 2px;
+}
+
+.sjl-guide-recipes-text {
+  font-weight: 700;
+  color: #17324d;
+  white-space: nowrap;
+}
+
+.sjl-guide-symbol--dual {
+  gap: 8px;
+}
+
+.sjl-guide-helpdot {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  min-width: 34px;
+  min-height: 34px;
+  border-radius: 50%;
+  font-weight: 700;
+  line-height: 1;
+  box-sizing: border-box;
+  background: #ffffff;
+}
+
+.sjl-guide-helpdot--question {
+  color: #d10000;
+  border: 2px solid rgba(209, 0, 0, 0.58);
+  box-shadow: 0 0 0 2px rgba(255, 246, 190, 0.42), 0 0 10px rgba(235, 184, 54, 0.32);
+}
+
+.sjl-guide-helpdot--plus {
+  color: #111111;
+  border: 2px solid rgba(0, 0, 0, 0.62);
+  box-shadow: 0 0 0 2px rgba(255,255,255,0.52);
+}
+
+.sjl-guide-header-icon {
+  display: block;
+  width: 34px;
+  height: 34px;
+  object-fit: contain;
+}
+
+/* ✅ 2026-06-15 🧮 [SJL-GEN15-GUIDE-TOC-STACK-CSS-01]
+   Stacked Main / Chapter / Section TOC icon sample for the Book Guide drawer. */
+.sjl-guide-toc-stack {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 5px;
+  justify-self: center;
+  min-height: 76px;
+}
+
+.sjl-guide-toc-stack-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #17324d;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.sjl-guide-toc-icon {
+  width: 22px !important;
+  height: 22px !important;
+  min-width: 22px !important;
+  min-height: 22px !important;
+  max-width: 22px !important;
+  max-height: 22px !important;
+  flex: 0 0 22px !important;
+  display: block !important;
+  object-fit: contain !important;
+}
+
+
+/* ✅ 2026-06-09 🧮 [SJL-PASS4-GUIDE-CALC-ICON-CSS-01]
+   Calculator icon entry in the Book Guide drawer.  Kept button-like so the guide item can
+   also serve as a direct launcher to the Calculator List. */
+.sjl-guide-symbol-button {
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 12px;
+}
+
+.sjl-guide-symbol-button:hover,
+.sjl-guide-symbol-button:focus-visible {
+  background: rgba(8, 109, 252, 0.10);
+  outline: 2px solid rgba(8, 109, 252, 0.45);
+  outline-offset: 2px;
+}
+
+.sjl-guide-calculator-icon {
+  width: 52px !important;
+  height: 52px !important;
+  filter: drop-shadow(0 2px 3px rgba(0, 45, 110, 0.30));
+}
+
+.sjl-guide-more-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 76px;
+  min-height: 34px;
+  padding: 3px 12px;
+  border: 1px solid #ffffff;
+  border-radius: 7px;
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 16px;
+  background-color: rgb(20, 137, 84);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.18);
+}
+
+.sjl-guide-more-button--less {
+  background-color: rgb(15, 104, 64);
+}
+
+.sjl-guide-rabbit {
+  display: block;
+  width: 68px;
+  height: 68px;
+  background-image: url("https://sjmedia0.w3spaces.com/sjICONS/rabbitHoleMORE.png");
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+}
+
+@media only screen and (max-width: 520px) {
+  .sjl-book-guide-link {
+    width: clamp(30px, 8vw, 36px) !important;
+    height: clamp(30px, 8vw, 36px) !important;
+  }
+
+  .sjl-guide-card {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    text-align: center;
+  }
+
+  .sjl-guide-symbol--recipes {
+    justify-content: center;
+  }
+}
+
+
+
+/* =================================================================================================
+   ✅ 2026-06-05 🧭 [SJL-PASS17L-WELCOME-GUIDE-TUNE-01]
+   sjLearn-only Pass17L tuning:
+   - Keep the Welcome panel outer box on the same responsive rail as Chapter panels.
+   - Restrict only the inner Welcome content to the 940px Chapter copy rail.
+   - Move/enlarge the compass control to match the Public-site header placement.
+   - Top-align the Book Guide drawer content on small screens so early cards are not clipped.
+   ================================================================================================= */
+html[data-sjl-simple="true"] .lead-parent {
+  width: clamp(68%, calc(-9vw + 693px), 90%) !important;
+  max-width: none !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  padding: clamp(12px, 2vw, 18px) !important;
+  box-sizing: border-box !important;
+}
+
+html[data-sjl-simple="true"] .lead-parent .lead-child {
+  width: 100% !important;
+  max-width: 940px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  box-sizing: border-box !important;
+}
+
+html[data-sjl-simple="true"] .sjl-welcome-book-line {
+  width: 100% !important;
+  max-width: 940px !important;
+  margin: 0 auto !important;
+  padding-left: clamp(14px, 2.2vw, 24px) !important;
+  padding-right: clamp(14px, 2.2vw, 24px) !important;
+  text-align: left !important;
+}
+
+html[data-sjl-simple="true"] .sjl-welcome-book-line p {
+  margin: 8px 0 0 0 !important;
+  max-width: none !important;
+  text-align: left !important;
+  line-height: 1.45 !important;
+}
+
+html[data-sjl-simple="true"] .sjl-welcome-book-line .sjl-welcome-orientation-line {
+  margin-top: 8px !important;
+}
+
+/* Match the Public-site compass control: Recipes | compass | title | TOC. */
+html[data-sjl-simple="true"] .header-top-center-container > .sjl-book-guide-link {
+  order: 2 !important;
+}
+html[data-sjl-simple="true"] .header-top-center-container > .center-box.type-header {
+  order: 3 !important;
+}
+html[data-sjl-simple="true"] .header-top-center-container > #openMainTOC {
+  order: 4 !important;
+}
+html[data-sjl-simple="true"] .header-top-center-container > .back-to-recipes-box {
+  order: 1 !important;
+}
+
+html[data-sjl-simple="true"] .header-top-center-container .left-box.back-to-recipes-box {
+  flex: 0 1 auto !important;
+  width: auto !important;
+  min-width: clamp(112px, 18vw, 160px) !important;
+  justify-content: flex-start !important;
+}
+
+html[data-sjl-simple="true"] .header-top-center-container .center-box.type-header {
+  flex: 1 1 auto !important;
+  width: auto !important;
+  min-width: 0 !important;
+}
+
+html[data-sjl-simple="true"] .header-top-center-container .right-box#openMainTOC {
+  flex: 0 0 auto !important;
+  width: auto !important;
+  min-width: clamp(58px, 9vw, 84px) !important;
+  justify-content: flex-end !important;
+}
+
+html[data-sjl-simple="true"] .sjl-book-guide-link.sjp-top-start-arrow-link {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex: 0 0 auto !important;
+  width: clamp(38px, calc(30px + 1.1vw), 46px) !important;
+  height: clamp(38px, calc(30px + 1.1vw), 46px) !important;
+  padding: 0 !important;
+  margin: 0 clamp(8px, 1.2vw, 14px) !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  line-height: 1 !important;
+}
+
+html[data-sjl-simple="true"] .sjl-book-guide-link.sjp-top-start-arrow-link:hover,
+html[data-sjl-simple="true"] .sjl-book-guide-link.sjp-top-start-arrow-link:focus-visible {
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+html[data-sjl-simple="true"] .sjl-book-guide-link.sjp-top-start-arrow-link:focus-visible {
+  outline: 2px solid rgba(255,255,255,0.92) !important;
+  outline-offset: 3px !important;
+  border-radius: 4px !important;
+}
+
+html[data-sjl-simple="true"] .sjl-book-guide-compass {
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain !important;
+  filter: none !important;
+  -webkit-filter: none !important;
+  image-rendering: auto !important;
+}
+
+/* Book Guide drawer readability and mobile visibility. */
+.sjl-book-guide-drawer {
+  align-self: flex-start !important;
+  padding-top: clamp(10px, 1.8vw, 18px) !important;
+}
+
+.sjl-guide-card {
+  grid-template-columns: clamp(108px, 15vw, 150px) minmax(0, 1fr) !important;
+  column-gap: clamp(20px, 3vw, 32px) !important;
+}
+
+.sjl-guide-card p {
+  padding-left: clamp(2px, 0.6vw, 8px) !important;
+}
+
+.sjl-guide-more-button--less {
+  background-color: rgb(253, 193, 17) !important;
+  color: #000000 !important;
+}
+
+@media only screen and (max-width: 760px) {
+  html[data-sjl-simple="true"] .lead-parent {
+    width: 90% !important;
+    max-width: 90% !important;
+    padding-left: clamp(10px, 3vw, 16px) !important;
+    padding-right: clamp(10px, 3vw, 16px) !important;
+  }
+}
+
+@media only screen and (max-width: 500px) and (orientation: portrait) {
+  html[data-sjl-simple="true"] .header-top-div > .header-rail {
+    width: 100% !important;
+    padding-left: 6px !important;
+    padding-right: 6px !important;
+  }
+
+  html[data-sjl-simple="true"] .header-top-center-container .left-box.back-to-recipes-box {
+    min-width: 0 !important;
+    flex: 0 1 auto !important;
+    gap: 3px !important;
+  }
+
+  html[data-sjl-simple="true"] .back-to-recipes-link {
+    gap: 3px !important;
+  }
+
+  html[data-sjl-simple="true"] .header-icon-top-sjlogo {
+    width: clamp(33px, 10.8vw, 44px) !important;
+  }
+
+  html[data-sjl-simple="true"] .back-to-recipes-text {
+    font-size: clamp(9px, 2.8vw, 12px) !important;
+  }
+
+  html[data-sjl-simple="true"] .sjl-book-guide-link.sjp-top-start-arrow-link {
+    width: clamp(36px, 9.6vw, 43px) !important;
+    height: clamp(36px, 9.6vw, 43px) !important;
+    margin-left: clamp(5px, 1.4vw, 8px) !important;
+    margin-right: clamp(5px, 1.4vw, 8px) !important;
+  }
+
+  html[data-sjl-simple="true"] .center-box.type-header {
+    font-size: clamp(11px, 3.1vw, 14px) !important;
+  }
+
+  html[data-sjl-simple="true"] .header-top-center-container .right-box#openMainTOC {
+    min-width: clamp(48px, 12vw, 62px) !important;
+  }
+}
+
+@media only screen and (max-width: 520px) {
+  .sjl-book-guide-drawer {
+    width: 100% !important;
+    padding-left: 6px !important;
+    padding-right: 6px !important;
+  }
+
+  .sjl-guide-card {
+    grid-template-columns: 1fr !important;
+    row-gap: 10px !important;
+    justify-items: center !important;
+    text-align: center !important;
+  }
+
+  .sjl-guide-card p {
+    padding-left: 0 !important;
+  }
+}
+
+
+/* =================================================================================================
+   ✅ 2026-06-05 🧭 [SJL-PASS17M-GUIDE-DRAWER-COMPASS-01]
+   sjLearn-only Pass17M tuning:
+   - Make the Book Guide open as a left drawer.
+   - Position the compass like the Public-site compass: absolute, measured, right of the title.
+   - Top-align the Guide drawer content so the first cards remain visible on small screens.
+   - Match the Guide card emphasis and make the Less sample use the same orange/yellow as real Less buttons.
+   ================================================================================================= */
+html[data-sjl-simple="true"] .header-top-center-container {
+  position: relative !important;
+}
+
+/* Override the earlier flex-order approach. The compass no longer consumes flex space. */
+html[data-sjl-simple="true"] .sjl-book-guide-link.sjp-top-start-arrow-link,
+html[data-sjl-simple="true"] .header-top-center-container > .sjl-book-guide-link.sjp-top-start-arrow-link {
+  position: absolute !important;
+  top: 50% !important;
+  left: var(--sjl-book-guide-left, 73%) !important;
+  transform: translate(-50%, -50%) !important;
+  z-index: 4 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex: 0 0 auto !important;
+  width: clamp(36px, calc(30px + 1vw), 44px) !important;
+  height: clamp(36px, calc(30px + 1vw), 44px) !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  line-height: 1 !important;
+  opacity: 1 !important;
+  text-decoration: none !important;
+}
+
+html[data-sjl-simple="true"] .sjl-book-guide-link.sjp-top-start-arrow-link:hover,
+html[data-sjl-simple="true"] .sjl-book-guide-link.sjp-top-start-arrow-link:focus-visible {
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+html[data-sjl-simple="true"] .sjl-book-guide-link.sjp-top-start-arrow-link:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.92) !important;
+  outline-offset: 4px !important;
+  border-radius: 4px !important;
+}
+
+html[data-sjl-simple="true"] .sjl-book-guide-link.sjp-top-start-arrow-link.sjp-top-start-arrow-link--tight {
+  width: 34px !important;
+  height: 34px !important;
+}
+
+html[data-sjl-simple="true"] .sjl-book-guide-link.sjp-top-start-arrow-link.sjp-top-start-arrow-link--hidden {
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+html[data-sjl-simple="true"] .sjl-book-guide-link.sjp-top-start-arrow-link .sjl-book-guide-compass,
+html[data-sjl-simple="true"] .sjl-book-guide-link.sjp-top-start-arrow-link .sjp-compass-clean-img {
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain !important;
+  filter: none !important;
+  -webkit-filter: none !important;
+  image-rendering: auto !important;
+}
+
+@media only screen and (max-width: 500px) and (orientation: portrait) {
+  html[data-sjl-simple="true"] .sjl-book-guide-link.sjp-top-start-arrow-link,
+  html[data-sjl-simple="true"] .header-top-center-container > .sjl-book-guide-link.sjp-top-start-arrow-link {
+    width: clamp(32px, 8.2vw, 38px) !important;
+    height: clamp(32px, 8.2vw, 38px) !important;
+  }
+
+  html[data-sjl-simple="true"] .sjl-book-guide-link.sjp-top-start-arrow-link.sjp-top-start-arrow-link--tight {
+    width: 31px !important;
+    height: 31px !important;
+  }
+}
+
+/* The guide drawer content must start at the top; the global drawer rule vertically centers content. */
+.drawer-left.drawer-type-info .drawer-content:has(.sjl-book-guide-drawer),
+.drawer-left[data-drawer-type="info"] .drawer-content:has(.sjl-book-guide-drawer) {
+  justify-content: flex-start !important;
+  align-items: flex-start !important;
+}
+
+.drawer-left .drawer-content .sjl-book-guide-drawer {
+  align-self: flex-start !important;
+  margin-top: 0 !important;
+}
+
+.sjl-book-guide-drawer {
+  width: 100% !important;
+  max-width: 940px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+.sjl-guide-card {
+  grid-template-columns: clamp(116px, 16vw, 156px) minmax(0, 1fr) !important;
+  column-gap: clamp(24px, 3.3vw, 36px) !important;
+}
+
+.sjl-guide-card p strong {
+  font-weight: 800 !important;
+}
+
+.sjl-guide-more-button--less {
+  background-color: rgb(253, 193, 17) !important;
+  color: #000000 !important;
+  border-color: #ffffff !important;
+}
+
+@media only screen and (max-width: 520px) {
+  .drawer-left.drawer-type-info .drawer-content:has(.sjl-book-guide-drawer),
+  .drawer-left[data-drawer-type="info"] .drawer-content:has(.sjl-book-guide-drawer) {
+    justify-content: flex-start !important;
+    align-items: flex-start !important;
+    padding-top: 10px !important;
+  }
+
+  .sjl-guide-card {
+    grid-template-columns: 1fr !important;
+    row-gap: 10px !important;
+    justify-items: center !important;
+    text-align: center !important;
+  }
+
+  .sjl-guide-card p {
+    padding-left: 0 !important;
+  }
+}
+
+
+/* =================================================================================================
+   ✅ 2026-06-05 🧭 [SJL-PASS17N-CENTERED-HEADER-CSS-01]
+   sjLearn-only Pass17N tuning:
+   - True-center the top black header title/search box relative to the header rail/device.
+   - Keep Recipes left and the TOC hamburger right without allowing them to pull the title off center.
+   - Keep the compass as the Public-style absolute control between the centered title/search and TOC.
+   ================================================================================================= */
+html[data-sjl-simple="true"] .header-top-center-container {
+  position: relative !important;
+  justify-content: flex-start !important;
+}
+
+html[data-sjl-simple="true"] .header-top-center-container .left-box.back-to-recipes-box,
+html[data-sjl-simple="true"] .header-top-center-container > .sjl-book-guide-link.sjp-top-start-arrow-link,
+html[data-sjl-simple="true"] .header-top-center-container .right-box#openMainTOC {
+  position: relative !important;
+  z-index: 5 !important;
+}
+
+html[data-sjl-simple="true"] .header-top-center-container .right-box#openMainTOC {
+  margin-left: auto !important;
+}
+
+html[data-sjl-simple="true"] .header-top-center-container > .center-box.type-header {
+  position: absolute !important;
+  left: 50% !important;
+  top: 0 !important;
+  bottom: 0 !important;
+  transform: translateX(-50%) !important;
+  z-index: 2 !important;
+  flex: none !important;
+  width: clamp(170px, 42vw, 500px) !important;
+  min-width: 0 !important;
+  max-width: calc(100% - 220px) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+  pointer-events: auto !important;
+}
+
+html[data-sjl-simple="true"] .center-box.type-header > p {
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  text-align: center !important;
+}
+
+html[data-sjl-simple="true"] #mainTitle {
+  width: 100% !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  text-align: center !important;
+  white-space: nowrap !important;
+}
+
+html[data-sjl-simple="true"] #search {
+  width: clamp(170px, 38vw, 420px) !important;
+  max-width: 100% !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  box-sizing: border-box !important;
+  text-align: left !important;
+}
+
+/* Re-assert the Public-style compass positioning after the centered-header rules above. */
+html[data-sjl-simple="true"] .header-top-center-container > .sjl-book-guide-link.sjp-top-start-arrow-link {
+  position: absolute !important;
+  top: 50% !important;
+  left: var(--sjl-book-guide-left, 73%) !important;
+  transform: translate(-50%, -50%) !important;
+  z-index: 6 !important;
+  margin: 0 !important;
+}
+
+@media only screen and (max-width: 760px) {
+  html[data-sjl-simple="true"] .header-top-center-container > .center-box.type-header {
+    width: clamp(116px, 36vw, 250px) !important;
+    max-width: calc(100% - 190px) !important;
+  }
+
+  html[data-sjl-simple="true"] #search {
+    width: clamp(116px, 34vw, 240px) !important;
+  }
+}
+
+@media only screen and (max-width: 500px) and (orientation: portrait) {
+  html[data-sjl-simple="true"] .header-top-center-container > .center-box.type-header {
+    width: clamp(96px, 34vw, 150px) !important;
+    max-width: calc(100% - 168px) !important;
+  }
+
+  html[data-sjl-simple="true"] #mainTitle {
+    letter-spacing: 0.02em !important;
+  }
+
+  html[data-sjl-simple="true"] #search {
+    width: clamp(96px, 34vw, 150px) !important;
+    font-size: 13px !important;
+  }
+}
+
+
+/* =================================================================================================
+   ✅ 2026-06-05 🧭 [SJL-PASS17O-COMPASS-PUBLIC-MATCH-CSS-01]
+   sjLearn Pass17O:
+   - Re-assert the exact Public-site top-header compass footprint.
+   - The placement script now measures the visible title/search text instead of the wider flex box.
+   ================================================================================================= */
+html[data-sjl-simple="true"] .sjl-book-guide-link.sjp-top-preview-guide-link.sjp-top-start-arrow-link {
+  width: clamp(36px, calc(30px + 1vw), 44px) !important;
+  height: clamp(36px, calc(30px + 1vw), 44px) !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+html[data-sjl-simple="true"] .sjl-book-guide-link.sjp-top-preview-guide-link.sjp-top-start-arrow-link.sjp-top-start-arrow-link--tight {
+  width: 34px !important;
+  height: 34px !important;
+}
+
+html[data-sjl-simple="true"] .sjl-book-guide-link.sjp-top-preview-guide-link.sjp-top-start-arrow-link .sjl-book-guide-compass,
+html[data-sjl-simple="true"] .sjl-book-guide-link.sjp-top-preview-guide-link.sjp-top-start-arrow-link .sjp-compass-clean-img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain !important;
+  filter: none !important;
+  -webkit-filter: none !important;
+  image-rendering: auto !important;
+}
+
+@media only screen and (max-width: 500px) and (orientation: portrait) {
+  html[data-sjl-simple="true"] .sjl-book-guide-link.sjp-top-preview-guide-link.sjp-top-start-arrow-link {
+    width: clamp(32px, 8.2vw, 38px) !important;
+    height: clamp(32px, 8.2vw, 38px) !important;
+  }
+
+  html[data-sjl-simple="true"] .sjl-book-guide-link.sjp-top-preview-guide-link.sjp-top-start-arrow-link.sjp-top-start-arrow-link--tight {
+    width: 31px !important;
+    height: 31px !important;
+  }
+}
+
+
+/* =================================================================================================
+   ✅ 2026-06-06 🧭 [SJL-PASS18A-WELCOME-PANEL-CSS-01]
+   sjLearn Pass18A:
+   - Add the new centered Welcome title.
+   - Convert the Welcome body to a responsive cube-left / copy-right row.
+   - Slightly reduce the cube footprint inside the Welcome panel only.
+   - Add the full-width 940px What's New block.
+   ================================================================================================= */
+html[data-sjl-simple="true"] #lead-box {
+  align-items: stretch !important;
+  gap: clamp(12px, 2vw, 18px) !important;
+}
+
+html[data-sjl-simple="true"] #lead-box .lead-child {
+  background-color: transparent !important;
+}
+
+html[data-sjl-simple="true"] #lead-box .sjl-welcome-title-row,
+html[data-sjl-simple="true"] #lead-box .sjl-welcome-main-row,
+html[data-sjl-simple="true"] #lead-box .sjl-welcome-whats-new {
+  width: 100% !important;
+  max-width: 940px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  box-sizing: border-box !important;
+}
+
+html[data-sjl-simple="true"] #lead-box .sjl-welcome-title-row {
+  padding: 0 clamp(12px, 2vw, 22px) !important;
+}
+
+html[data-sjl-simple="true"] #lead-box .sjl-welcome-top-title {
+  width: 100% !important;
+  text-align: center !important;
+  font-weight: 800 !important;
+  color: darkblue !important;
+  font-size: clamp(18px, calc(16px + 0.75vw), 26px) !important;
+  line-height: 1.2 !important;
+}
+
+html[data-sjl-simple="true"] #lead-box .sjl-welcome-top-title sup {
+  font-size: 45% !important;
+  line-height: 0 !important;
+  vertical-align: super !important;
+  margin-left: 2px !important;
+}
+
+html[data-sjl-simple="true"] #lead-box .sjl-welcome-main-row {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: clamp(18px, 3vw, 34px) !important;
+  padding: clamp(4px, 1vw, 10px) clamp(14px, 2.2vw, 24px) !important;
+}
+
+html[data-sjl-simple="true"] #lead-box .sjl-welcome-cube-column {
+  flex: 0 0 clamp(205px, 28%, 265px) !important;
+  min-width: 188px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  justify-content: center !important;
+  --cubeBaseWidth: 132px;
+  --cubeSideWidth: calc(var(--cubeBaseWidth) / 2);
+}
+
+html[data-sjl-simple="true"] #lead-box .sjl-welcome-cube-column .cube-container-parent {
+  width: 190px !important;
+  height: 172px !important;
+  margin: 0 !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+}
+
+html[data-sjl-simple="true"] #lead-box .sjl-welcome-cube-column .cube-container {
+  width: var(--cubeBaseWidth) !important;
+  height: var(--cubeBaseWidth) !important;
+}
+
+html[data-sjl-simple="true"] #lead-box .sjl-welcome-cube-column .messageContainer {
+  width: 190px !important;
+  height: 56px !important;
+  margin-top: 8px !important;
+}
+
+/* ✅ 2026-06-06 🧭 [SJL-PASS18A-TWEAK-CUBE-COMMENTS-01]
+   Keep Welcome cube cheeky comments readable and reduce awkward wrapping. */
+html[data-sjl-simple="true"] #lead-box .sjl-welcome-cube-column .flipBoxMsgBox {
+  color: black !important;
+}
+
+html[data-sjl-simple="true"] #lead-box .sjl-welcome-copy-column {
+  flex: 1 1 auto !important;
+  min-width: 0 !important;
+  color: darkblue !important;
+  text-align: left !important;
+}
+
+html[data-sjl-simple="true"] #lead-box .sjl-welcome-copy-line {
+  margin: 0 0 clamp(8px, 1.2vw, 12px) 0 !important;
+  max-width: none !important;
+  text-align: left !important;
+  line-height: 1.45 !important;
+}
+
+html[data-sjl-simple="true"] #lead-box .sjl-welcome-copy-line:last-child {
+  margin-bottom: 0 !important;
+}
+
+html[data-sjl-simple="true"] #lead-box .sjl-welcome-compass-line {
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+}
+
+/* ✅ 2026-06-15 🧮 [SJL-GEN15-WELCOME-CALC-LINE-CSS-01]
+   Calculator Welcome-line icon mirrors the Compass-line rhythm without changing the Welcome panel structure. */
+html[data-sjl-simple="true"] #lead-box .sjl-welcome-calculator-line {
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+}
+
+html[data-sjl-simple="true"] #lead-box .sjl-welcome-calculator-bullet {
+  flex: 0 0 auto !important;
+  width: 34px !important;
+  height: 34px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-decoration: none !important;
+  border: 0 !important;
+  background: #ffffff !important;
+  border-radius: 50% !important;
+  padding: 4px !important;
+  box-shadow: 0 0 0 1px rgba(113,163,193,0.78) inset, 0 1px 3px rgba(0,0,0,0.18) !important;
+}
+
+html[data-sjl-simple="true"] #lead-box .sjl-welcome-calculator-bullet:hover,
+html[data-sjl-simple="true"] #lead-box .sjl-welcome-calculator-bullet:focus-visible {
+  outline: 2px solid #71a3c1 !important;
+  outline-offset: 2px !important;
+}
+
+html[data-sjl-simple="true"] #lead-box .sjl-welcome-calculator-bullet img,
+html[data-sjl-simple="true"] #lead-box .sjl-welcome-calculator-img {
+  width: 24px !important;
+  height: 24px !important;
+  min-width: 24px !important;
+  min-height: 24px !important;
+  max-width: 24px !important;
+  max-height: 24px !important;
+  flex: 0 0 24px !important;
+  object-fit: contain !important;
+  display: block !important;
+}
+
+html[data-sjl-simple="true"] #lead-box .sjl-welcome-compass-bullet {
+  flex: 0 0 auto !important;
+  width: 34px !important;
+  height: 34px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-decoration: none !important;
+  border: 0 !important;
+  background: #212429 !important;
+  border-radius: 50% !important;
+  padding: 5px !important;
+  box-shadow: 0 0 0 1px rgba(255,255,255,0.65) inset !important;
+}
+
+html[data-sjl-simple="true"] #lead-box .sjl-welcome-compass-bullet:hover,
+html[data-sjl-simple="true"] #lead-box .sjl-welcome-compass-bullet:focus-visible {
+  outline: 2px solid #71a3c1 !important;
+  outline-offset: 2px !important;
+}
+
+html[data-sjl-simple="true"] #lead-box .sjl-welcome-compass-bullet img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain !important;
+  display: block !important;
+}
+
+html[data-sjl-simple="true"] #lead-box .sjl-welcome-whats-new {
+  padding: clamp(12px, 2vw, 18px) clamp(16px, 2.4vw, 26px) !important;
+  border: 2px solid #71a3c1 !important;
+  border-radius: 5px !important;
+  background-color: rgba(255,255,255,0.28) !important;
+  color: darkblue !important;
+  text-align: left !important;
+}
+
+html[data-sjl-simple="true"] #lead-box .sjl-welcome-whats-new h2 {
+  margin: 0 0 10px 0 !important;
+  text-align: center !important;
+  font-size: clamp(20px, calc(17px + 0.8vw), 28px) !important;
+  line-height: 1.2 !important;
+  font-weight: 800 !important;
+  color: darkblue !important;
+}
+
+html[data-sjl-simple="true"] #lead-box .sjl-welcome-whats-new p {
+  margin: 8px 0 0 0 !important;
+  max-width: none !important;
+  text-align: left !important;
+  line-height: 1.45 !important;
+}
+
+html[data-sjl-simple="true"] #lead-box .sjl-welcome-whats-new a {
+  color: blue !important;
+  font-weight: 700 !important;
+  text-decoration: underline !important;
+}
+
+@media only screen and (max-width: 760px) {
+  html[data-sjl-simple="true"] #lead-box .sjl-welcome-main-row {
+    align-items: center !important;
+    gap: clamp(14px, 3.2vw, 24px) !important;
+  }
+
+  html[data-sjl-simple="true"] #lead-box .sjl-welcome-cube-column {
+    flex-basis: clamp(178px, 32vw, 226px) !important;
+    min-width: 170px !important;
+    --cubeBaseWidth: 120px;
+  }
+
+  html[data-sjl-simple="true"] #lead-box .sjl-welcome-cube-column .cube-container-parent,
+  html[data-sjl-simple="true"] #lead-box .sjl-welcome-cube-column .messageContainer {
+    width: 172px !important;
+  }
+
+  html[data-sjl-simple="true"] #lead-box .sjl-welcome-cube-column .cube-container-parent {
+    height: 156px !important;
+  }
+}
+
+@media only screen and (max-width: 620px) {
+  html[data-sjl-simple="true"] #lead-box .sjl-welcome-main-row {
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: left !important;
+  }
+
+  html[data-sjl-simple="true"] #lead-box .sjl-welcome-cube-column {
+    flex: 0 0 auto !important;
+    align-items: center !important;
+  }
+
+  html[data-sjl-simple="true"] #lead-box .sjl-welcome-copy-column {
+    width: 100% !important;
+  }
+}
+
+@media only screen and (max-width: 420px) {
+  html[data-sjl-simple="true"] #lead-box .sjl-welcome-title-row,
+  html[data-sjl-simple="true"] #lead-box .sjl-welcome-main-row,
+  html[data-sjl-simple="true"] #lead-box .sjl-welcome-whats-new {
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+  }
+
+  html[data-sjl-simple="true"] #lead-box .sjl-welcome-compass-line,
+  html[data-sjl-simple="true"] #lead-box .sjl-welcome-calculator-line {
+    align-items: flex-start !important;
+  }
+}
+
+/* =================================================================================================
+   ✅ 2026-06-06 🧭 [SJL-PASS18A-FINALTWEAKS-CSS-01]
+   sjLearn Pass18A final minor tweaks:
+   - Return the top-header search input to a narrower large-screen footprint.
+   - Center the Search placeholder/text while the search session is active.
+   - Match the "What's New?" heading size to the top Welcome title.
+   - Keep only the spinning cube's bubble-enabled behavior visually safe while general helpers stay hidden.
+   ================================================================================================= */
+html[data-sjl-simple="true"] #search {
+  width: clamp(160px, 30vw, 330px) !important;
+  max-width: 100% !important;
+  text-align: center !important;
+}
+
+html[data-sjl-simple="true"] #search::placeholder {
+  text-align: center !important;
+  opacity: 1 !important;
+}
+
+html[data-sjl-simple="true"] #lead-box .sjl-welcome-whats-new h2 {
+  font-size: clamp(18px, calc(16px + 0.75vw), 26px) !important;
+}
+
+html[data-sjl-simple="true"] #lead-box .sjl-welcome-cube-column .cube-container-parent[behaviour-sjb="enabled"] {
+  cursor: help !important;
+}
+
+@media only screen and (max-width: 760px) {
+  html[data-sjl-simple="true"] #search {
+    width: clamp(116px, 34vw, 240px) !important;
+  }
+}
+
+@media only screen and (max-width: 500px) and (orientation: portrait) {
+  html[data-sjl-simple="true"] #search {
+    width: clamp(96px, 34vw, 150px) !important;
+    font-size: 13px !important;
+  }
+}
+
+/* =================================================================================================
+   ✅ 2026-06-10 ⚖️ [SJ-ABOUT-DISCLAIMER-01]
+   About Sourjoe drawer: compact disclaimer panel below the visible build/revision marker.
+   ================================================================================================= */
+.sj-about-disclaimer {
+  max-width: 940px;
+  margin: 12px auto 0;
+  padding: 14px 16px;
+  text-align: left;
+  color: #463a00;
+  background: rgba(255, 248, 185, 0.55);
+  border: 1px solid rgba(214, 176, 29, 0.55);
+  border-radius: 14px;
+  font-size: 0.92rem;
+  line-height: 1.38;
+}
+
+.sj-about-disclaimer-title {
+  margin: 0 0 8px;
+  text-align: center;
+  color: #463a00;
+  font-size: 1.02rem;
+}
+
+.sj-about-disclaimer p {
+  margin: 0 0 8px;
+}
+
+.sj-about-disclaimer p:last-child {
+  margin-bottom: 0;
+}
+
+/* =================================================================================================
+   ✅ 2026-06-27 🪟 [SJ-DRAWER-MODE-CSS-01] Phase 2 — Drawer-mode overrides.
+   Applied when sjLearn.html is loaded inside a p.html iframe drawer (?mode=drawer).
+   html.sj-drawer-mode is added by the drawer-mode shim script BEFORE this CSS loads,
+   so these rules suppress the header and entry chrome without any visible flash.
+   ================================================================================================= */
+
+/* Hide fixed chrome that belongs to the standalone page */
+html.sj-drawer-mode .header-container    { display: none !important; }
+html.sj-drawer-mode #lead-box            { display: none !important; }
+html.sj-drawer-mode .sjp-entry-cloud-overlay { display: none !important; }
+
+/* ✅ 30Jun26r 🧮 [SJP-DRAWER-MODE-TOC-BLOCK-01] Phase 5 tweak: .header-container above already
+   hides the page-level #openMainTOC, but sjLearn.html also has ~30 local per-section
+   ".content-title-menu" icons scattered throughout its content (one in nearly every section
+   header, including whichever section is currently showing inside the veiled Live/Timed
+   preview), plus several separate calculator-list launcher buttons/links
+   (.sjl-welcome-calculator-bullet, .sjcalc-chapter-toc-button, .sjcalc-toc-shortcut-button,
+   .sjl-guide-symbol-button). None of these live inside .header-container, so they were still
+   fully visible and clickable inside a veiled preview — clicking one opens a TOC/calculator
+   list with links to other content, leaving the user unable to find their way back to what
+   they were originally previewing. Block all of them the same way #openMainTOC is blocked on
+   the parent page (see sjSetTocIconsBlockedForDemo in sjDrawerScripts.js). More/Less buttons
+   and Rabbit Hole icons use entirely different classes and are untouched by this rule. */
+html.sj-drawer-mode .content-title-menu,
+html.sj-drawer-mode .sjl-welcome-calculator-bullet,
+html.sj-drawer-mode .sjcalc-chapter-toc-button,
+html.sj-drawer-mode .sjcalc-toc-shortcut-button,
+html.sj-drawer-mode .sjl-guide-symbol-button,
+html.sj-drawer-mode #openMainTOC {
+  display: none !important;
+  pointer-events: none !important;
+}
+
+/* Remove top padding that compensates for the fixed header */
+html.sj-drawer-mode body {
+  padding-top: 0 !important;
+  overflow-x: hidden;
+}
+
+/* Keep guided-cues public-note blocks visible inside the drawer */
+html.sj-drawer-mode .sjp-guided-cues .sjp-public-note { display: block !important; }
+
+/* ✅ 29Jun26e 🧩 [SJP-DRAWER-STICKY-TITLE-02]
+   In drawer mode, content-section-title sticky top must be 0 (no page header offset) */
+html.sj-drawer-mode .content-section-title {
+  top: 0 !important;
+  z-index: 10 !important;
+}
+
+/* ✅ 29Jun26f 🧩 [SJP-DRAWER-BORDER-SUPPRESS-01]
+   In drawer mode, suppress the outer green border and rounded corners
+   from content-section-style — the drawer frame is the visual container. */
+html.sj-drawer-mode .content-section-style {
+  border: none !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+
+
+/* =================================================================================================
+   ✅ 2026-07-04 🧭 [SJ-RECIPE-PREVIEW-STANDARD-SECTION-01]
+   Recipe Stats' complete recipe preview is a normal managed Book Section. Keep the screenshots and
+   working Recipe Step sample on the same readable inner rail used by the other Section panels.
+   ================================================================================================= */
+#recipeAppPreview .content-section-verbiage {
+  box-sizing: border-box;
+}
+
+#recipeAppPreview .sjrp-recipe-preview-card {
+  /* The pale-green presentation shell matches the full usable width of the Section body. */
+  width: 100%;
+  max-width: none;
+  box-sizing: border-box;
+  margin: 0 auto;
+  padding: clamp(14px, 2.2vw, 24px);
+  border: 1.5px solid rgba(117, 186, 117, 0.86);
+  border-radius: 7px;
+  background: rgba(230, 244, 237, 0.74);
+}
+
+#recipeAppPreview .sjrp-recipe-preview-copy,
+#recipeAppPreview .sjrp-recipe-preview-figure,
+#recipeAppPreview .sj2-ctrl,
+#recipeAppPreview .sj2-video,
+#recipeAppPreview .sj2-step > .sj2-pane {
+  width: 100%;
+  max-width: 420px;
+  box-sizing: border-box;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+#recipeAppPreview .sjrp-recipe-preview-copy {
+  margin-top: 0;
+  margin-bottom: 10px;
+  padding: 0 2px;
+  color: #273c22;
+  font-size: 0.98rem;
+  font-weight: 700;
+  line-height: 1.42;
+}
+
+#recipeAppPreview .sjrp-recipe-preview-copy:not(:first-child) {
+  margin-top: clamp(22px, 3vw, 32px);
+}
+
+/* The first image is the Recipe List overview, so it intentionally fills the wider panel.
+   The Recipe Card and interactive Recipe Step retain the compact 420px reading width above. */
+#recipeAppPreview .sjrp-recipe-preview-figure--list {
+  width: 100%;
+  max-width: none;
+}
+
+#recipeAppPreview .sjrp-recipe-preview-figure {
+  display: block;
+  margin-top: 0;
+  margin-bottom: 0;
+  padding: 0;
+  line-height: 0;
+}
+
+#recipeAppPreview .sjrp-recipe-preview-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid rgba(117, 186, 117, 0.85);
+  border-radius: 5px;
+  background: #ffffff;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.10);
+}
+
+#recipeAppPreview .sj2-step {
+  width: 100%;
+  max-width: none;
+  margin: 2px auto 0;
+  overflow: visible;
+}
+
+#recipeAppPreview .sj2-video {
+  overflow: visible;
+  border: 0;
+  box-shadow: 0 0 0 3px transparent;
+}
+
+#recipeAppPreview .sj2-video .sj2-embed {
+  overflow: hidden;
+  border-radius: 4px;
+  background: #000000;
+}
+
+#recipeAppPreview .sj2-step[data-open="details"] > .sj2-video {
+  box-shadow: 0 0 0 3px #007BFF;
+}
+
+#recipeAppPreview .sj2-step[data-open="explore"] > .sj2-video {
+  box-shadow: 0 0 0 3px #28a745;
+}
+
+#recipeAppPreview .sj2-txt,
+#recipeAppPreview .sj2-links a {
+  text-align: left;
+}
+
+#calculatorIntro .sjcalc-chapter-chooser-link {
+  margin-top: clamp(18px, 2.4vw, 26px);
+}
+
+@media (max-width: 420px) {
+  #recipeAppPreview .sjrp-recipe-preview-card {
+    padding: 10px;
+  }
+
+  #recipeAppPreview .sjrp-recipe-preview-copy {
+    font-size: 0.92rem;
+  }
+
+  #recipeAppPreview .sj2-button {
+    padding: 7px 12px;
+    font-size: 13px;
+  }
+}
+
+/* Calculator Intro is intentionally not a managed Chapter Intro, so it receives the same
+   conventional centred Chapter-link treatment explicitly rather than inheriting that selector. */
+#calculatorIntro .sjcalc-chapter-chooser-link {
+  display: block;
+  width: 100%;
+  margin-right: auto;
+  margin-left: auto;
+  text-align: center;
+}
+
+#calculatorIntro .sjcalc-chapter-chooser-link .sjsc-chapter-card-title {
+  margin: 0 0 7px;
+  color: darkgreen;
+  font-size: larger;
+  font-weight: bold;
+  text-align: center;
+}
+
+#calculatorIntro .sjcalc-chapter-chooser-link .sjsc-section-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+
+#calculatorIntro .sjcalc-chapter-chooser-link .sjsc-section-list li {
+  margin: 6px 0;
+  padding: 0;
+}
+
+#calculatorIntro .sjcalc-chapter-chooser-link .sjsc-section-link {
+  display: inline;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: blue;
+  cursor: pointer;
+  font: inherit;
+  font-weight: bold;
+  line-height: 1.35;
+  text-align: center;
+  text-decoration: underline;
+}
+
+#calculatorIntro .sjcalc-chapter-chooser-link .sjsc-section-link:hover,
+#calculatorIntro .sjcalc-chapter-chooser-link .sjsc-section-link:focus-visible {
+  color: mediumblue;
+}
+
+#calculatorIntro .sjcalc-chapter-chooser-link .sjsc-section-link:focus-visible {
+  outline: 2px solid mediumblue;
+  outline-offset: 3px;
+}

@@ -1,0 +1,1195 @@
+/* ====================== SECTION 2: GLOBAL & LAYOUT CSS ====================== */
+  /* ===== SECTION 2A: ROOT VARS & BASE TYPOGRAPHY ===== */
+  /* 🧩 [NL-CSS-01] Global root variables & base typography */
+  :root{
+    --sj-logo-url: url(https://sjMedia0.w3spaces.com/sjIcons/logoSOURJOETRANSPARENT_Cropped_31Aug21.png);
+  }
+
+  /* ===== SECTION 2B: SHARED BLOCK WIDTHS ===== */
+  /* 🧩 [NL-CSS-02] Shared width constraints for header/panels */
+  /* 🧩 [NL-CSS-02] Shared width constraints for header/panels */
+.control-wrap,
+.tabs-wrap,
+.panel-wrap{
+  width:100%;          /* fill the content column */
+  max-width:420px;     /* but never exceed original card width */
+  margin:0 auto;
+}
+
+  /* ===== SECTION 2C: SLIDER HELPER (TUNING UI) ===== */
+  /* 🧩 [NL-CSS-03] Hidden tuning slider for left padding (can be re-enabled for layout tuning) */
+  .tune{
+    display:none;
+    width:100%;
+    max-width:420px;
+    margin:8px auto 4px;
+    font-size:.85rem;
+  }
+  .tune label{
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .tune input[type="range"]{
+    flex:1;
+  }
+
+  /* ===== SECTION 2D: PANEL CONTAINER & STACKED CARDS ===== */
+  /* 🧩 [NL-CSS-04] Panel stack layout + bottom scroll spacer */
+  .panel-wrap{
+    margin:0 auto 16px;
+  }
+  .view-panel{
+    margin-bottom:16px; /* stacked cards */
+  }
+
+  /* Empty spacer at bottom to improve scroll/jump experience for last card */
+  .scroll-spacer{
+    height:500px;          /* tweakable: extra space after Steps card */
+    pointer-events:none;  /* purely visual spacer */
+  }
+
+/* ====================== SECTION 2E: GLOBAL PRINT RULES (RESTORED TO STABLE) ====================== */
+
+/* 🧩 [NL-CSS-05] Label-only print scaffolding (hide chrome, center label, strip borders) */
+@media print{
+  /* 🧩 [SJ-PRINT-MARGIN-01] Small, consistent margins (Desktop browsers) */
+  @page{ margin:8mm; }
+
+  /* Clean background for label-only mode */
+  body.sj-print-label-only{
+    background:#fff !important;
+  }
+
+  /* Hide global app header + drawers */
+  body.sj-print-label-only .header-bottom-div,
+  body.sj-print-label-only .type-header,
+  body.sj-print-label-only .drawer{
+    display:none !important;
+  }
+
+  /* Hide the green chapter header band */
+  body.sj-print-label-only .content-section-title{
+    display:none !important;
+  }
+
+  /* In the main content, keep only Recipes / Nutrition section */
+  body.sj-print-label-only main > *:not(#recipeFactoids){
+    display:none !important;
+  }
+
+  /* Inside Recipes: hide embedded sticky header + tuner */
+  body.sj-print-label-only .header-wrap,
+  body.sj-print-label-only .tune{
+    display:none !important;
+    visibility:hidden !important;
+  }
+
+  /* Hide other panels inside the Recipes module */
+  body.sj-print-label-only #panel-formula,
+  body.sj-print-label-only #panel-statistics,
+  body.sj-print-label-only #panel-steps{
+    display:none !important;
+  }
+
+  /* Constrain the label width (left-justified within the printable page margins) */
+  body.sj-print-label-only .panel-wrap{
+    width:auto !important;
+    max-width:90mm;
+    margin:0 !important;
+  }
+
+  /* Strip green section border / shadow from the outer container */
+  body.sj-print-label-only .content-section-style{
+    border:none !important;
+    box-shadow:none !important;
+  }
+
+  /* Kill any section separator line in label-only print (if present) */
+  body.sj-print-label-only .separator-line{
+    display:none !important;
+    border:0 !important;
+    margin:0 !important;
+    padding:0 !important;
+    height:0 !important;
+  }
+}
+
+/* ===== SECTION 2F: EXTRA PRINT CLEANUP: HIDE DV TOOLS + SHOW LOGO (DESKTOP PRINT) ===== */
+/* 🧩 [NL-CSS-06] Print cleanup: hide DV tools column and use the logo instead */
+body.sj-print-label-only .dv-tools{
+  display:none !important;  /* avoids grid auto-placement issues */
+}
+
+  /* Header grid with logo occupying the AMOUNT/DV% column width */
+  body.sj-print-label-only .headbar{
+    display:grid;
+    grid-template-columns: 1fr var(--nl-value-col-width, 120px);
+    grid-template-areas:
+      "title logo"
+      "serve logo";
+    align-items:center;
+  }
+
+  /* Logo: centered in the right column so it sits nicely above AMOUNT / DV% */
+  body.sj-print-label-only .sj-print-logo{
+    display:block !important;
+    grid-area:logo;
+    justify-self:center;
+    align-self:center;
+    height:14mm;
+    width:auto;
+    max-width:28mm;
+    object-fit:contain;
+    margin-left:0;
+    transform:none;
+  }
+  
+  /* RESTORED ORIGINAL PRINT TWEAKS for Nutrition card (thicker borders, 12pt font) */
+    .nutrition{
+      color:#000;
+      background:#fff;
+      border-width:6px;
+      box-shadow:none !important;
+      break-inside:avoid;
+      page-break-inside:avoid;
+      font-size:12pt;
+      line-height:1.35;
+    }
+    .hr{ border-top-width:3px; }
+    header{
+      border-bottom:6px solid #000;
+      padding:10px var(--pad-x) 8px;
+    }
+    /* Footer top line */
+    .foot{
+      border-top:6px solid #000;
+      padding:6px var(--pad-x) 10px;
+    }
+/* ====================== SECTION 2G: MOBILE/TABLET SCREENSHOT OVERLAY ====================== */
+
+/* 🧩 [SJ-SCREENSHOT-01] Full-screen label preview for mobile/tablet screenshot workflow */
+.sj-screenshot-overlay{
+  position:fixed;
+  inset:0;
+  background:#fff;
+  z-index:99999;
+  overflow:auto;
+  padding:12px;
+}
+
+.sj-screenshot-topbar{
+  position:sticky;
+  top:0;
+  background:#fff;
+  border-bottom:1px solid rgba(0,0,0,.18);
+  padding:10px 8px;
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:12px;
+}
+
+/* When user dismisses the helper bar, keep only the label for a clean screenshot */
+.sj-screenshot-topbar.is-hidden{
+  display:none;
+}
+
+.sj-screenshot-actions{
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+
+.sj-screenshot-hide{
+  border:2px solid #000;
+  background:#fff;
+  border-radius:999px;
+  /* Slightly smaller button, but with a more prominent X glyph */
+  width:28px;
+  height:28px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:900;
+  font-size:24px;
+  line-height:1;
+}
+
+.sj-screenshot-instructions{
+  display:flex;
+  flex-direction:column;
+  gap:2px;
+}
+
+.sj-screenshot-title{
+  font-weight:900;
+  font-size:1.05rem;
+}
+
+.sj-screenshot-sub{
+  font-size:.92rem;
+  line-height:1.25;
+  opacity:.9;
+  max-width:560px;
+}
+
+
+/* 🧩 [SJ-SCREENSHOT-02] Post-helper Close X (appears AFTER helper is dismissed)
+   - Uses the SAME look as the helper X button
+   - Appears in the SAME top-right spot (so it feels consistent)
+   - Hidden at first so screenshots are perfectly clean */
+.sj-screenshot-close-x{
+  position:fixed;
+  top:14px;
+  right:14px;
+  z-index:100000;
+
+  border:2px solid #000;
+  background:#fff;
+  border-radius:999px;
+
+  width:28px;
+  height:28px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:900;
+  font-size:24px;
+  line-height:1;
+
+  /* Hidden by default */
+  opacity:0;
+  pointer-events:none;
+  transform:translateY(-3px);
+  transition:opacity .18s ease, transform .18s ease;
+}
+
+.sj-screenshot-close-x.is-visible{
+  opacity:1;
+  pointer-events:auto;
+  transform:translateY(0);
+}
+
+/* Extra-small phones: keep the X even less invasive */
+@media (max-width: 380px){
+  .sj-screenshot-hide,
+  .sj-screenshot-close-x{
+    width:26px;
+    height:26px;
+    font-size:22px;
+  }
+}
+
+.sj-screenshot-body{
+  padding:14px 0 30px;
+  display:flex;
+  justify-content:center;
+}
+
+/* Make the label fit nicely on phone screens */
+.sj-screenshot-body .nutrition{
+  width:min(90mm, calc(100vw - 24px));
+  max-width:90mm;
+  margin:0 auto;
+  box-shadow:none !important;
+}
+
+/* Force the logo layout inside the overlay */
+.sj-screenshot-overlay .headbar{
+  display:grid;
+  grid-template-columns: 1fr var(--nl-value-col-width, 120px);
+  grid-template-areas:
+    "title logo"
+    "serve logo";
+  align-items:center;
+}
+
+.sj-screenshot-overlay .sj-print-logo{
+  display:block !important;
+  grid-area:logo;
+  justify-self:center;
+  align-self:center;
+  height:14mm;
+  width:auto;
+  max-width:28mm;
+  object-fit:contain;
+}
+
+
+
+/* ====================== SECTION 3: TOP UI CSS (DROPDOWNS, TABS, HEADER) ====================== */
+
+  /* ===== SECTION 3A: STICKY HEADER WRAPPER (RECIPE + TABS) ===== */
+  /* 🧩 [NL-CSS-07] Sticky header: recipe select + view tabs */
+  .header-wrap{
+    position:sticky;
+    top:0;
+    z-index:20;
+    background:transparent; /* full-width shell, no color */
+  }
+
+.header-inner{
+  width:100%;
+  max-width:420px;
+  margin:0 auto;
+  background:#e5f1ff;
+  padding:8px 0 6px;
+  box-shadow:0 2px 4px rgba(0,0,0,.06);
+}
+
+  /* ===== SECTION 3B: WRAPPERS FOR THE CHOOSER & TABS ===== */
+/* 🧩 [NL-CSS-08] Header inner layout wrappers */
+.control-wrap{
+  margin:0 auto 6px;             /* small gap below dropdown */
+  position:relative;             /* allow arrow overlay */
+}
+
+/* 🧩 [NL-CSS-08b] White dropdown arrow on the right */
+.control-wrap::after{
+  content:"";
+  position:absolute;
+  pointer-events:none;
+  right:16px;
+  top:50%;
+  transform:translateY(-50%);
+
+  /* little white down-pointing triangle */
+  border-left:6px solid transparent;
+  border-right:6px solid transparent;
+  border-top:6px solid #fff;
+}
+
+  .tabs-wrap{
+    margin:0 auto;
+    display:flex;
+    gap:4px;
+    padding-bottom:2px;
+    overflow-x:auto;         /* allow gentle horiz scroll if ever needed */
+    flex-wrap:nowrap;
+  }
+
+  /* ===== SECTION 3C: SHARED BASE STYLE FOR RECIPE SELECT ===== */
+  /* 🧩 [NL-CSS-09] Recipe selector base styling w/ left icon + chevron */
+  .recipe-select{
+  width:100%;
+  font:inherit;
+  font-weight:700;
+  padding:8px 48px;
+  border:2px solid #2563eb;  /* blue border */
+  border-radius:4px;
+  background:#2563eb;        /* blue background */
+  color:#fff;                /* white text */
+  cursor:pointer;
+  text-align:center;
+  text-align-last:center;
+  -moz-text-align-last:center;
+  line-height:1.3;
+  appearance:none;
+  -webkit-appearance:none;
+  -moz-appearance:none;
+  text-transform:uppercase;
+  letter-spacing:0.03em;
+
+  background-image:
+    var(--left-icon),
+    linear-gradient(45deg, transparent 50%, #fff 50%),
+    linear-gradient(135deg, #fff 50%, transparent 50%);
+  background-repeat:no-repeat, no-repeat, no-repeat;
+  background-size:26px 26px, 6px 6px, 6px 6px;
+  background-position:
+    10px center,
+    calc(100% - 18px) center,
+    calc(100% - 12px) center;
+  }
+
+  /* 🧩 [NL-CSS-09b] Dropdown list option styling (muted blue) */
+.recipe-select option{
+  background:#e5f1ff;  /* soft blue background for list items */
+  color:#0f172a;       /* dark ink text */
+}
+
+/* Selected option in the list (when highlighted) */
+.recipe-select option:checked{
+  background:#bfdbfe;  /* slightly stronger blue when selected */
+  color:#0f172a;
+}
+
+  /* ===== SECTION 3D: RECIPE CHOOSER (WITH LOGO) ===== */
+  /* 🧩 [NL-CSS-10] Hook in SourJoe logo as left icon */
+  .recipe-select{
+    --left-icon: var(--sj-logo-url);
+  }
+
+  /* ===== SECTION 3E: VIEW TABS (NUTRITION / FORMULA / STATS / STEPS) ===== */
+  /* 🧩 [NL-CSS-11] View tabs styling (single row on normal screens, wrap on very small screens) */
+  .tabs-wrap{
+    margin:0 auto;
+    display:flex;
+    gap:4px;
+    padding-bottom:2px;
+    overflow-x:auto;         /* default: allow gentle horizontal scroll if needed */
+    flex-wrap:nowrap;        /* keep in one row on normal screens */
+  }
+
+  .tabs-wrap::-webkit-scrollbar{
+    height:4px;
+  }
+
+  .view-tab{
+    flex:1 0 auto;
+    min-width:0;             /* allow shrinking when wrapping */
+    padding:6px 8px;
+    border:1px solid #000;
+    border-radius:4px;       /* ⬅️ match recipe chooser style (no more extreme pill) */
+    background:#f3f4f6;
+    font-size:.8rem;
+    font-weight:600;
+    text-transform:uppercase;
+    letter-spacing:0.06em;
+    cursor:pointer;
+    text-align:center;
+    white-space:nowrap;      /* no wrapping on normal screens */
+  }
+
+  .tab-label-short{
+    display:none;
+  }
+
+  .view-tab.active{
+    background:#2563eb;   /* match table header blue */
+    border-color:#2563eb;
+    color:#fff;
+  }
+
+  /* 🧩 [NL-CSS-11-SM] Small-screen behavior: wrap tabs and shrink font so they stay on screen */
+
+  @media (max-width: 300px){
+    .view-tab[data-view="steps"] .tab-label-full{ display:none; }
+    .view-tab[data-view="steps"] .tab-label-short{ display:inline; }
+  }
+
+  @media (max-width: 500px){
+    .tabs-wrap{
+      overflow-x:visible;            /* no horizontal scroll; let them wrap */
+      flex-wrap:wrap;                /* allow 2 rows of tabs */
+      justify-content:stretch;
+    }
+    .view-tab{
+      flex:1 1 calc(50% - 4px);      /* roughly two tabs per row */
+      font-size:.7rem;               /* smaller font for tiny screens */
+      padding:4px 6px;               /* slimmer buttons */
+      white-space:normal;            /* allow text to wrap if needed */
+    }
+  }
+
+
+/* ===== SECTION 4A: CARD WRAPPER & BASE ===== */
+  /* 🧩 [NL-CSS-12] Nutrition card outer shell */
+  .nutrition-wrap{ width:100%; margin:0 auto; }
+
+  .nutrition{
+    --left-width: 40%;
+    --body-left-nudge: 20px;
+    --ink:#111; --line:#000; --muted:#5d5d5d; --bg:#fff;
+    --radius:6px;
+    --pad-x:14px; /* RESTORED STANDARD PADDING */
+
+    background:var(--bg);
+    color:var(--ink);
+    border:4px solid var(--line);
+    border-radius:var(--radius);
+    box-shadow:0 2px 18px rgba(0,0,0,.05);
+    line-height:1.32;
+    overflow:hidden;
+  }
+
+  /* ===== SECTION 4B: RESPONSIVE FONT SCALING ===== */
+  /* 🧩 [NL-CSS-13] Responsive font sizing for Nutrition label (small/medium/large breakpoints) */
+  @media (max-width: 600px){
+    .nutrition{ font-size:clamp(1px, 4.5vw, 20px); }
+  }
+  @media (min-width: 601px) and (max-width: 1024px){
+    .nutrition{ font-size:clamp(20px, 2vw, 24px); }
+  }
+  @media (min-width: 1025px){
+    .nutrition{ font-size:24px; }
+  }
+
+  /* ===== SECTION 4C: HEADER GRID (TITLE / DV / SERVE / PRINT) ===== */
+  /* 🧩 [NL-CSS-14] Nutrition header grid layout */
+  header{
+    padding:12px var(--pad-x) 10px;
+    border-bottom:4px solid var(--line);
+    background:#fff;
+  }
+.headbar{
+    display:grid;
+    grid-template-columns: 1fr max-content;
+    grid-template-areas:
+      "title dv"
+      "serve dv";     /* dv column now spans both rows */
+    row-gap:4px;      /* a bit tighter so header isn’t so “fat” */
+    align-items:center;
+  }
+
+  /* 🧩 [SJ-PRINT-LOGO-01] Logo in Nutrition header (hidden on screen, shown in print) */
+.sj-print-logo{
+  display:none;   /* default: do not show on screen */
+}
+
+  h2.title{
+    grid-area:title;
+    margin:0;
+    /* Keep Nutrition on one line and cap max size */
+    font-size:clamp(16px, 6vw, 22px);
+    font-weight:900;
+    letter-spacing:.2px;
+    white-space:nowrap;   /* avoid wrapping on very small screens */
+  }
+
+/* Update .dv-select for correct width/size */
+.dv-select {
+  grid-area: dv;
+  --flag: none;
+  height: 32px;
+  max-width: 110px;      /* Safe width */
+  font: inherit;
+  font-size: 0.9rem;     /* Readable size */
+  line-height: 1.2;
+  border: 2px solid var(--line);
+  border-radius: 6px;
+  background: #fff;
+  padding: 4px 28px 4px 30px; 
+  cursor: pointer;
+  background-image:
+    var(--flag),
+    linear-gradient(45deg, transparent 50%, #000 50%),
+    linear-gradient(135deg, #000 50%, transparent 50%);
+  background-repeat: no-repeat, no-repeat, no-repeat;
+  background-size: 18px 12px, 6px 6px, 6px 6px;
+  background-position: 8px center, calc(100% - 18px) center, calc(100% - 12px) center;
+  appearance: none;
+  justify-self: end;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+/* 🧩 [SJ-PNG-01] DV tools column: selector on top, buttons below */
+.dv-tools{
+  grid-area:dv;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;   /* center vertically in dv column */
+  align-items:stretch;
+  gap:0;                    /* we’ll use margin on .dv-actions instead */
+  justify-self:end;
+}
+
+/* ADD THESE NEW RULES to sjRecipes.css (Section 4C) */
+
+/* 1. Aligns "DV:" label and "Box" side-by-side */
+.dv-row {
+  display: flex;
+  align-items: center; /* Vertical center alignment */
+  justify-content: flex-end; /* Push to right */
+  gap: 6px; /* Space between "DV:" and the box */
+}
+
+/* 2. Styles the "DV:" text */
+.dv-label {
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: #000;
+  white-space: nowrap; /* Prevent wrapping */
+  line-height: 32px;
+}
+
+/* Row 2: print (left) and PNG (right), aligned to selector width */
+.dv-actions{
+  display:flex;
+  align-items:center;
+  /* RESTORED: Centered print button */
+  justify-content:center; 
+  margin-top:10px;               
+}
+
+  .serve{
+    grid-area:serve;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    font-weight:600;
+    flex-wrap:wrap;
+  }
+
+  .serve-prefix{
+    /* "Per" text before the input */
+    display:inline;
+  }
+
+  /* Units after the input: “grams” normally, “g” on very small screens */
+  .serve-unit{
+    display:inline;
+  }
+  .serve-unit-short{
+    display:none;   /* default: hide the short 'g' */
+  }
+
+  .serve input[type="number"]{
+    /* Larger, readable font now that the box size is right */
+    width:90px;                        /* default width on normal/small screens */
+    font:inherit;
+    font-size:0.90em;
+    padding:2px 6px;
+    height:32px;                       /* same visual height as .dv-select */
+    box-sizing:border-box;             /* include border in height */
+    border:2px solid var(--line);
+    border-radius:6px;
+    text-align:center;
+  }
+
+  @media (max-width: 350px){
+    .serve input[type="number"]{
+      /* Slightly tighter padding on tiny screens, but keep font size */
+      padding:2px 4px;
+    }
+  }
+
+  /* On small screens, swap "grams" → "g"
+     but keep "Per" visible; also narrow the input a bit. */
+  @media (max-width: 500px){
+    .serve-unit-full{
+      display:none;      /* hide "grams" text */
+    }
+    .serve-unit-short{
+      display:inline;    /* show "g" */
+    }
+    .serve-prefix{
+      display:inline;    /* keep "Per" */
+    }
+    .serve input[type="number"]{
+      width:70px;        /* optional: slightly narrower to avoid wrapping */
+    }
+  }
+
+  .print-btn{
+    grid-area:print;
+    justify-self:center;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    width:36px;
+    height:36px;
+    background:none;
+    border:none;
+    cursor:pointer;
+    padding:0;
+    line-height:1;
+  }
+  .print-btn svg{
+    width:28px;
+    height:28px;
+    stroke:#000;
+  }
+
+  /* ===== SECTION 4D: TABLE BODY & ROWS ===== */
+  /* 🧩 [NL-CSS-15] Nutrient table grid: left label / right values (amount + DV%) */
+  .table{
+    padding:8px var(--pad-x) 0;
+    padding-left: calc(var(--pad-x) + var(--body-left-nudge));
+  }
+
+  .hr{
+    border-top:2px solid var(--line);
+    margin:6px 0;
+  }
+
+  .rows{
+    display:flex;
+    flex-direction:column;
+  }
+
+  .row{
+    display:grid;
+    grid-template-columns: var(--left-width) 1fr;
+    align-items:baseline;
+    padding:4px 0;
+    white-space:nowrap;
+  }
+
+  .name{
+    grid-column:1;
+    text-align:left;
+    padding-right:8px;
+    font-weight:700;
+    /* Pull NUTRIENT labels left so they line up with "Nutrition" header */
+    margin-left: calc(-1 * var(--body-left-nudge));
+  }
+
+  .row.sub .name{
+    text-align:right;
+    color:#5d5d5d;
+    font-weight:600;
+    font-size:.94em;
+  }
+
+  .value{
+    grid-column:2;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    align-items:baseline;
+    gap:6px;
+  }
+
+  .value .amt{
+    /* Right-align all numeric AMOUNT values, no extra horizontal nudge */
+    text-align:right;
+    margin-left:0;
+    margin-right: 5px;
+  }
+
+  .value .pct{
+    text-align:center;
+    color:#5d5d5d;
+    font-size:.88em;
+    margin-right: 10px;    
+  }
+  .row.sub .value .pct{
+    opacity:.9;
+  }
+
+  .row.legend{
+    padding-top:0;
+    padding-bottom:2px;
+    color:#2563eb;
+    font-weight:600;
+    font-size:.9em;
+  }
+
+  .row.legend .value{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:6px;
+    text-align:center;
+  }
+
+  /* ===== SECTION 4E: FOOTER TEXT ===== */
+  /* 🧩 [NL-CSS-16] Nutrition footer: recipe name binding */
+  .foot{
+    color:#5d5d5d;
+    font-size:.82rem;
+    padding:8px var(--pad-x) 12px;
+    border-top:4px solid var(--line);
+  }
+  #footInfo{
+    display:block;
+    text-align:center;
+    font-weight:700;
+    font-size:1.05rem;
+  }
+
+  /* ===== SECTION 4F: PRINT TWEAKS FOR LABEL (RESTORED TO ORIGINAL) ===== */
+  /* 🧩 [NL-CSS-17] Print tweaks for Nutrition card (thicker borders, 12pt font) */
+  @media print{
+    .nutrition{
+      color:#000;
+      background:#fff;
+      border-width:6px;
+      box-shadow:none !important;
+      break-inside:avoid;
+      page-break-inside:avoid;
+      font-size:12pt;
+      line-height:1.35;
+    }
+    .hr{ border-top-width:3px; }
+    header{
+      border-bottom:6px solid #000;
+      padding:10px var(--pad-x) 8px;
+    }
+    /* Footer top line */
+    .foot{
+      border-top:6px solid #000;
+      padding:6px var(--pad-x) 10px;
+    }
+  }
+
+
+/* ---------- 5A. Formula card shell ---------- */
+  /* 🧩 [NL-CSS-18] Shared “card” styling for Formula / Stats / Steps panels */
+  .formula-card{
+    border:2px solid #000;
+    border-radius:6px;
+    padding:12px 12px 16px;
+    background:#fff;
+    box-shadow:0 2px 18px rgba(0,0,0,.05);
+    min-height:0vh;
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+  }
+
+  .panel-title{
+    margin:0 0 4px;
+    font-size:1.1rem;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:0.06em;
+  }
+
+  /* ---------- 5B. Base table layout (Formula) ---------- */
+  /* 🧩 [NL-CSS-19] Formula table: 4-column layout with small-screen tweaks */
+  .formula-table{
+    width:100%;
+    border-collapse:collapse;
+    font-size:.9rem;
+  }
+  .formula-table th,
+  .formula-table td{
+    padding:6px 6px;
+    border-bottom:1px solid #ddd;
+    vertical-align:baseline;
+  }
+  .formula-table th{
+    font-size:.8rem;
+    text-transform:uppercase;
+    letter-spacing:0.06em;
+    color:#fff;
+    background:#2563eb;          /* dark blue header */
+    text-align:left;
+  }
+
+  /* 🧩 [NL-CSS-19a] Formula table: indent AMOUNT + BAKER'S % values by ~1ch */
+  .formula-table td.amount,
+  .formula-table td.bakers{
+    padding-left: calc(6px + 2ch);  /* base 6px + one character width */
+  }
+
+  /* zebra striping */
+  .formula-table tbody tr:nth-child(even){
+    background:#e8f1ff;          /* light blue */
+  }
+
+  /* ---------- Small-screen adjustments so table fits down to ~300px ---------- */
+  @media (max-width: 400px){
+    .formula-table{
+      font-size:.72rem;          /* smaller minimum font on narrow screens */
+    }
+    .formula-table th,
+    .formula-table td{
+      padding:3px 2px;           /* slightly tighter padding to save width */
+    }
+    /* Let the "Baker's %" header wrap so it doesn’t force extra width */
+    .formula-table th.bakers{
+      white-space:normal;
+      font-size:.60rem;
+    }
+    /* Allow ingredient names to wrap instead of pushing width */
+    .formula-table td:first-child{
+      white-space:normal;
+    }
+  }
+
+  /* Below ~300px, accept horizontal scroll rather than crushing the layout */
+  @media (max-width: 300px){
+    .formula-card{
+      overflow-x:auto;
+    }
+    .formula-table{
+      min-width:280px;           /* ensure a sensible minimum width */
+    }
+  }
+
+  /* ---------- 5D. Footer row & bottom borders ---------- */
+  .formula-table tr:last-child td{
+    border-bottom:none;
+  }
+  .formula-table tfoot td{
+    border-top:2px solid #000;
+    font-weight:600;
+  }
+  .formula-table tfoot td.label-total{
+    text-transform:uppercase;
+    letter-spacing:0.06em;
+  }
+
+  /* ---------- 5E. Statistics table layout (2 columns) ---------- */
+  /* 🧩 [NL-CSS-20] Statistics table: 2-column key/value layout */
+  .stats-table{
+    width:100%;
+    border-collapse:collapse;
+    font-size:.9rem;
+    margin-top:0;
+  }
+  .stats-table th,
+  .stats-table td{
+    padding:6px 6px;
+    border-bottom:1px solid #e5e7eb;
+    vertical-align:baseline;
+  }
+  .stats-table th{
+    background:#2563eb;
+    color:#fff;
+    font-size:.85rem;
+    text-transform:uppercase;
+    letter-spacing:0.06em;
+    text-align:center;
+  }
+
+  .stats-table tbody tr:nth-child(even){
+    background:#e8f1ff;
+  }
+
+  .stats-label{
+    width:70%;
+    font-weight:600;
+    text-align:left;
+  }
+
+  .stats-value{
+    width:30%;
+    text-align:center;
+    font-variant-numeric:tabular-nums;
+  }
+
+  .stats-value .stats-input{
+    width:4.5em;            /* wide enough for 4 digits + caret on desktop */
+    max-width:5em;
+    padding:2px 4px;
+    font:inherit;
+    text-align:right;
+    box-sizing:border-box;
+  }
+
+  .stats-value .stats-unit{
+    margin-left:4px;
+    font-size:.85em;
+  }
+
+  /* ---------- 5F. Steps Review video embed ---------- */
+  /* 🧩 [NL-CSS-21] Steps Review: Cloudflare video container */
+  .steps-video-shell{
+    margin-top:8px;
+  }
+
+  /* We only style the chrome (radius + shadow), not the geometry */
+  .steps-video-frame{
+    border-radius:8px;
+    overflow:hidden;
+    box-shadow:0 2px 10px rgba(0,0,0,.15);
+    background:#000;
+  }
+
+  .steps-video-frame iframe{
+    display:block;
+    border:none;
+  }
+
+  /* Steps Review header: full-width dark blue bar with centered white text */
+  #panel-steps .steps-header{
+    margin:-12px -12px 8px;   /* cancel card padding so bar spans full width */
+    padding:6px 12px;
+    background:#2563eb;       /* same dark blue as other UI elements */
+  }
+
+  #panel-steps #stepsTitle{
+    margin:0;
+    text-align:center;
+    color:#fff;               /* white text on blue bar */
+  }
+
+  /* 🧩 [NL-CSS-22] Steps Review navigator (Prev/Next + chapter line) */
+  .steps-nav{
+    margin:4px 0 6px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:8px;
+    font-size:.85rem;
+  }
+
+  .steps-nav-center{
+    flex:0 0 auto;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    text-align:center;      /* center the step name + position */
+    line-height:1.2;
+  }
+
+  .steps-nav-position{
+    font-weight:600;
+  }
+
+  .steps-nav-chapter{
+    font-size:.78rem;
+    color:#374151;
+  }
+
+      /* 🧩 [NL-CSS-22-SM] Small-screen layout: buttons on one row, text below */
+    @media (max-width: 450px){
+      .steps-nav{
+        flex-wrap:wrap;            /* allow 2 rows */
+        justify-content:center;    /* center the whole group */
+      }
+
+      /* Put Prev + Next on the first row */
+      #stepsPrev{
+        order:1;
+      }
+      #stepsNext{
+        order:2;
+      }
+
+      /* Step text block always on its own row, full width */
+      .steps-nav-center{
+        order:3;
+        flex-basis:100%;
+        margin-top:4px;
+        align-items:center;       /* center text under the buttons */
+        text-align:center;      /* center the step name + position */
+      }
+
+      .steps-nav-btn{
+        min-width:88px;           /* keep buttons usable but not huge */
+        padding:4px 8px;
+        font-size:.78rem;
+      }
+
+      .steps-nav-position{
+        font-size:.8rem;
+      }
+      .steps-nav-chapter{
+        font-size:.72rem;
+      }
+    }
+
+.steps-nav-btn{
+  flex:0 0 auto;
+  padding:4px 10px;
+  border:1px solid #000;
+  border-radius:999px;
+  background:#f3f4f6;
+  font-size:.8rem;
+  font-weight:600;
+  text-transform:uppercase;
+  letter-spacing:0.06em;
+  cursor:pointer;
+  min-width:80px;
+}
+
+.steps-nav-btn:disabled{
+  opacity:.35;
+  cursor:default;
+}
+
+  /* 🧩 [NL-CSS-21a] Steps Review header: fixed min-height so title/desc
+     changes (within 2+4 lines) don’t move the nav or video */
+  .steps-header{
+    margin-bottom:6px;
+  }
+
+  /* 🧩 [NL-CSS-23] Baker's Process buttons (centered, tab-like, 2-line) */
+  .steps-desc{
+  margin:8px 0 2px;   /* less bottom space */
+  font-size:.9rem;
+  color:#374151;
+}
+
+.baker-process{
+  margin-top:4px;      /* smaller gap above buttons */
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:4px;
+  font-size:.85rem;
+}
+
+.baker-row{
+  display:flex;
+  justify-content:center;
+}
+
+  .baker-btn{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+
+    /* 🔧 Fixed, equal width for all buttons (≈20% wider than 170px) */
+    flex:0 0 204px;
+    width:204px;
+    max-width:204px;
+
+    padding:6px 10px;
+    border:1px solid #000;
+    border-radius:4px;
+    background:#f3f4f6;
+    font-size:.8rem;
+    font-weight:600;
+    text-transform:uppercase;
+    letter-spacing:0.06em;
+    cursor:pointer;
+    text-align:center;
+    line-height:1.2;
+  }
+
+  .baker-label{
+    /* inherits color from button; just the chapter name line */
+  }
+
+  .baker-step{
+    /* second line: only visible on active button */
+    font-size:.72rem;
+    margin-top:2px;
+    display:none;          /* hidden by default */
+    text-transform:none;   /* keep "Step x of y in this Chapter" readable */
+  }
+
+  .baker-btn.active{
+    background:#2563eb;   /* same blue */
+    border-color:#2563eb;
+    color:#fff;
+  }
+
+  /* ensure inner spans also go white */
+  .baker-btn.active span{
+    color:#fff;
+  }
+
+  .baker-btn.active .baker-step{
+    display:block;
+    color:#fff;            /* explicit, though parent is already white */
+  }
+
+  /* 🧩 [SJ-NUT-ALIGN] Force AMOUNT + DV% to align right in Nutrition panel */
+#panel-nutrition .row .value{
+  display:flex;
+  justify-content:flex-end;   /* push content to the right edge */
+  align-items:baseline;
+  gap:20px;                   /* space between AMOUNT and DV% */
+  white-space:nowrap;
+}
+
+#panel-nutrition .row .amt{
+  min-width:55px;             /* stable column width */
+  text-align:right;           /* 🔒 right-justify AMOUNT values */
+}
+
+#panel-nutrition .row .pct{
+  min-width:38px;             /* stable column width for DV% */
+  text-align:right;
+}
+
+  @media (max-width: 360px){
+    .baker-btn{
+      flex:0 0 170px;
+      width:170px;
+      max-width:170px;
+      padding:4px 8px;
+      font-size:.75rem;
+    }
+    .baker-step{
+      font-size:.68rem;
+    }
+  }

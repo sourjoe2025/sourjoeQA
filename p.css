@@ -1,0 +1,30 @@
+/*
+  Sourjoe | Pass 2C revision - Public Entry & Guided Navigation
+  04 July 2026
+
+  p.html is now a quiet same-origin route into the real Book of Sourjoe.
+  The orientation panel lives in normal Book flow, above the Book Welcome panel.
+*/
+:root { color-scheme: light; }
+
+html,
+body { min-height: 100%; }
+
+body.sjp-route-page {
+  margin: 0;
+  min-width: 320px;
+  color: #263a22;
+  font-family: Arial, Helvetica, sans-serif;
+  background: #f8f4df;
+}
+
+.sjp-route-page__fallback {
+  width: min(100% - 40px, 560px);
+  margin: 18vh auto 0;
+  text-align: center;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.sjp-route-page__fallback p { margin: 0 0 12px; }
+.sjp-route-page__fallback a { color: #304f2a; font-weight: 700; }
